@@ -457,7 +457,13 @@ def set_tiles():
         pos = board_canvas.coords(tiles[i][0][0])
         pos_x = (pos[0]+pos[6])/2
         pos_y = (pos[1]+pos[7])/2
-        if tiles[i][2]>0:
+        if tiles[i][2]>0 and tiles[i][2]<6:
+            tiles[i][0][1] = board_canvas.create_text(pos_x, pos_y,
+                font=("Helvetica", txt_size), text=tiles[i][2])
+        elif tiles[i][2]==6 or tiles[i][2]==8:
+            tiles[i][0][1] = board_canvas.create_text(pos_x, pos_y,
+                font=("Helvetica", txt_size), text=tiles[i][2], fill="red")
+        elif tiles[i][2]>8:
             tiles[i][0][1] = board_canvas.create_text(pos_x, pos_y,
                 font=("Helvetica", txt_size), text=tiles[i][2])
 
