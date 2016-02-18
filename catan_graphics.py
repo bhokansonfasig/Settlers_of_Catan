@@ -1,4 +1,5 @@
-from main import version
+from tkinter import *
+from random import *
 
 
 # Define aesthetic parameters
@@ -113,9 +114,10 @@ active_tiles = [1,2,3,5,6,7,8,10,11,12,13,14,15,16,17,18,21,22,23]
 # App screen class
 class App(Frame):
 
-    def __init__(self,parent):
+    def __init__(self,parent,version):
         Frame.__init__(self,parent)
         self.parent = parent
+        self.version = version
         self.initUI()
 
     def initUI(self):
@@ -127,7 +129,7 @@ class App(Frame):
         splash_canvas.create_text(200, 50, font=("Helvetica", 36),
             text="Settlers of Catan")
         splash_canvas.create_text(200, 100, font=("Helvetica", 18),
-            text="Version "+version)
+            text="Version "+self.version)
         splash_canvas.pack(fill=BOTH, expand=1)
         # Buttons
         play_button = Button(splash_canvas, font=("Helvetica", 16),
@@ -463,6 +465,18 @@ def set_tiles():
                 font=("Helvetica", txt_size), text=tiles[i][2])
 
     print("Tiles set")
+
+
+################################################################################
+# Main loop for calling from main.py
+def open_app(version):
+    global root
+    root = Tk()
+    app = App(root, version)
+    # Draw splash window and run app
+    root.geometry("400x300+100+100")
+    root.mainloop()
+
 
 
 ################################################################################
