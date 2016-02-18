@@ -19,12 +19,13 @@ if __name__ == '__main__':
 # Function definitions
 def new_game(splash,board):
     from catan_graphics import get_tiles, draw_tiles
+    from catan_graphics import open_board_window, close_board_window
     from catan_logic import set_tiles
-    # Switch windows
+
     print("New game started")
-    splash.withdraw()
-    board.update()
-    board.deiconify()
+
+    # Switch windows
+    open_board_window(splash,board)
 
     # Get the arrangement of tiles, then draw them to the board window
     tiles = get_tiles()
@@ -36,26 +37,20 @@ def new_game(splash,board):
     while string=="":
         string = input("Type anything to confirm exit: ")
 
-    close_game(splash,board)
+    close_board_window(splash,board)
 
 
 def load_game(splash,board):
-    # Switch windows
+    from catan_graphics import open_board_window, close_board_window
+
     print("Old game loaded")
-    splash.withdraw()
-    board.update()
-    board.deiconify()
+
+    # Switch windows
+    open_board_window(splash,board)
 
     # Temporary pause
     string = ""
     while string=="":
         string = input("Type anything to confirm exit: ")
 
-    close_game(splash,board)
-
-
-def close_game(splash,board):
-    # Resets window
-    board.withdraw()
-    splash.update()
-    splash.deiconify()
+    close_board_window(splash,board)

@@ -321,6 +321,18 @@ def aesthetics():
     hex_y_off = int(win_height-hex_height-water_width)
 
 
+def open_board_window(splash,board):
+    splash.withdraw()
+    board.update()
+    board.deiconify()
+
+
+def close_board_window(splash,board):
+    board.withdraw()
+    splash.update()
+    splash.deiconify()
+
+
 def get_tiles():
     return tiles
 
