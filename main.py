@@ -4,7 +4,6 @@
 # Last update 02-17-16
 
 
-from tkinter import *
 from catan_graphics import open_app
 
 

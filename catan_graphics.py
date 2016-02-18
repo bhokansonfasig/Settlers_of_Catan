@@ -1,5 +1,5 @@
 from tkinter import *
-from random import *
+from random import choice
 
 
 # Define aesthetic parameters
@@ -392,47 +392,66 @@ def end_game(board):
 # Minor function calls
 def set_tiles():
     # Suggested preset:
-    tiles[1][1] = "wood"
-    tiles[1][2] = 11
-    tiles[2][1] = "sheep"
-    tiles[2][2] = 12
-    tiles[3][1] = "wheat"
-    tiles[3][2] = 9
-    tiles[5][1] = "brick"
-    tiles[5][2] = 4
-    tiles[6][1] = "stone"
-    tiles[6][2] = 6
-    tiles[7][1] = "brick"
-    tiles[7][2] = 5
-    tiles[8][1] = "sheep"
-    tiles[8][2] = 10
-    tiles[10][1] = "desert"
-    tiles[10][2] = 0
-    tiles[11][1] = "wood"
-    tiles[11][2] = 3
-    tiles[12][1] = "wheat"
-    tiles[12][2] = 11
-    tiles[13][1] = "wood"
-    tiles[13][2] = 4
-    tiles[14][1] = "wheat"
-    tiles[14][2] = 8
-    tiles[15][1] = "brick"
-    tiles[15][2] = 8
-    tiles[16][1] = "sheep"
-    tiles[16][2] = 10
-    tiles[17][1] = "sheep"
-    tiles[17][2] = 9
-    tiles[18][1] = "stone"
-    tiles[18][2] = 3
-    tiles[21][1] = "stone"
-    tiles[21][2] = 5
-    tiles[22][1] = "wheat"
-    tiles[22][2] = 2
-    tiles[23][1] = "wood"
-    tiles[23][2] = 6
+    # tiles[1][1] = "wood"
+    # tiles[1][2] = 11
+    # tiles[2][1] = "sheep"
+    # tiles[2][2] = 12
+    # tiles[3][1] = "wheat"
+    # tiles[3][2] = 9
+    # tiles[5][1] = "brick"
+    # tiles[5][2] = 4
+    # tiles[6][1] = "stone"
+    # tiles[6][2] = 6
+    # tiles[7][1] = "brick"
+    # tiles[7][2] = 5
+    # tiles[8][1] = "sheep"
+    # tiles[8][2] = 10
+    # tiles[10][1] = "desert"
+    # tiles[10][2] = 0
+    # tiles[11][1] = "wood"
+    # tiles[11][2] = 3
+    # tiles[12][1] = "wheat"
+    # tiles[12][2] = 11
+    # tiles[13][1] = "wood"
+    # tiles[13][2] = 4
+    # tiles[14][1] = "wheat"
+    # tiles[14][2] = 8
+    # tiles[15][1] = "brick"
+    # tiles[15][2] = 8
+    # tiles[16][1] = "sheep"
+    # tiles[16][2] = 10
+    # tiles[17][1] = "sheep"
+    # tiles[17][2] = 9
+    # tiles[18][1] = "stone"
+    # tiles[18][2] = 3
+    # tiles[21][1] = "stone"
+    # tiles[21][2] = 5
+    # tiles[22][1] = "wheat"
+    # tiles[22][2] = 2
+    # tiles[23][1] = "wood"
+    # tiles[23][2] = 6
 
     # Random layout
-    # use choice(array) to get one item from the array randomly
+    numbers = [2,3,3,4,4,5,5,6,6,8,8,9,9,10,10,11,11,12]
+    resources = ["wood","wood","wood","wood","brick","brick","brick","sheep",
+        "sheep","sheep","sheep","wheat","wheat","wheat","wheat","stone","stone",
+        "stone","desert"]
+
+    for i in active_tiles:
+        # Pick a random resource
+        tiles[i][1] = choice(resources)
+        # Remove one copy of that resource from the remaining choices
+        resources.remove(tiles[i][1])
+        # Pick a random dice value and remove it from the remaining choices
+        #  unless the resource is "desert", then set dice value to 0
+        if tiles[i][1]!="desert":
+            tiles[i][2] = choice(numbers)
+            numbers.remove(tiles[i][2])
+        else:
+            tiles[i][2] = 0
+
+    # Need to implement check that high numbers are not adjacent
+
 
     # Fill in the appropriate colors and numbers
     for i in active_tiles:
@@ -482,4 +501,4 @@ def open_app(version):
 ################################################################################
 # If this file is run itself, do the following
 if __name__ == '__main__':
-    print(version)
+    set_tiles()
