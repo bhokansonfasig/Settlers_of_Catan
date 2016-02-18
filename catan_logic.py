@@ -8,28 +8,6 @@ from random import choice
 
 ################################################################################
 # Function definitions
-def set_players():
-    playnum = 0
-    compnum = 0
-
-    comp1diff = 0
-    comp2diff = 0
-    comp3diff = 0
-    comp4diff = 0
-
-    while (playnum<=1 or playnum>=5) or (compnum<=-1 or compnum>=5):
-        playnum = eval(input("Total number of players: "))
-        compnum = eval(input("Number of computer players: "))
-        if playnum==compnum:
-            comp1diff = eval(input("Computer 1 level: "))
-        if playnum<=compnum+1:
-            comp2diff = eval(input("Computer 2 level: "))
-        if playnum<=compnum+2 and playnum>=3:
-            comp3diff = eval(input("Computer 3 level: "))
-        if playnum<=compnum+3 and playnum==4:
-            comp4diff = eval(input("Computer 4 level: "))
-
-
 
 def set_tiles(tiles):
     global active_tiles

@@ -18,11 +18,15 @@ if __name__ == '__main__':
 ################################################################################
 # Function definitions
 def new_game(splash,board):
-    from catan_graphics import get_tiles, draw_tiles
-    from catan_graphics import open_board_window, close_board_window
     from catan_logic import set_tiles
+    from catan_graphics import set_players, get_tiles, draw_tiles
+    from catan_graphics import open_board_window, close_board_window
+
 
     print("New game started")
+
+    # Set the number of players, their names, and levels of AI
+    players = set_players()
 
     # Switch windows
     open_board_window(splash,board)

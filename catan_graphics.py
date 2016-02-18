@@ -333,6 +333,46 @@ def close_board_window(splash,board):
     splash.deiconify()
 
 
+def set_players():
+    # Players array, one row for each player
+    #  0 - Name (string)
+    #  1 - AI difficulty (-1 for human player)
+    players = [["nobody",0],["nobody",0],["nobody",0],["nobody",0]]
+    playnum = 0
+    compnum = 0
+
+    # Command line implementation
+    while (playnum<=1 or playnum>=5) or (compnum<=-1 or compnum>=5):
+        playnum = eval(input("Total number of players: "))
+        compnum = eval(input("Number of computer players: "))
+        if playnum==compnum:
+            players[0][0] = "Computer 1"
+            players[0][1] = eval(input("Computer 1 level: "))
+        else:
+            players[0][0] = input("Player 1 name: ")
+            players[0][1] = -1
+        if playnum<=compnum+1:
+            players[1][0] = "Computer 2"
+            players[1][1] = eval(input("Computer 2 level: "))
+        else:
+            players[1][0] = input("Player 2 name: ")
+            players[1][1] = -1
+        if playnum<=compnum+2 and playnum>=3:
+            players[2][0] = "Computer 3"
+            players[2][1] = eval(input("Computer 3 level: "))
+        else:
+            players[2][0] = input("Player 3 name: ")
+            players[2][1] = -1
+        if playnum<=compnum+3 and playnum==4:
+            players[3][0] = "Computer 4"
+            players[3][1] = eval(input("Computer 4 level: "))
+        else:
+            players[3][0] = input("Player 4 name: ")
+            players[3][1] = -1
+
+    return players
+
+
 def get_tiles():
     return tiles
 
