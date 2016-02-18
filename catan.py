@@ -437,6 +437,9 @@ def set_tiles():
     tiles[23][1] = "wood"
     tiles[23][2] = 6
 
+    # Random layout
+    # use choice(array) to get one item from the array randomly
+
     # Fill in the appropriate colors and numbers
     for i in active_tiles:
         # Filling colors
