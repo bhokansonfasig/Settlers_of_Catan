@@ -1,4 +1,4 @@
 Settlers of Catan game to be played among some mix of human players located remotely and AI.
 
 Running main.py should run the game
-  graphics.py and game_logic.py control graphics and game logic respectively
+  catan_graphics.py and catan_logic.py control graphics and game logic respectively
