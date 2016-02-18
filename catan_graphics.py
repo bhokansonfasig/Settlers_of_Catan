@@ -1,25 +1,60 @@
 from tkinter import *
 from random import choice
+from __main__ import version
 
 
-# Define aesthetic parameters
-win_width = 1200  #window width
-win_height = 800  #window height
-menu_color = "#EECC8C"
-button_color = "#FFFFCC"
-sand_color = "#D7B992"
-wood_color = "#2C8236"
-brick_color = "#8B0000"
-sheep_color = "#A6FFA6"
-wheat_color = "#F5B800"
-stone_color = "#686868"
+def aesthetics():
+    # Define window dimensions and colors
+    global win_width, win_height, menu_color, button_color, sand_color
+    global wood_color, brick_color, sheep_color, wheat_color, stone_color
+    win_width = 1200
+    win_height = 800
+    menu_color = "#EECC8C"
+    button_color = "#FFFFCC"
+    sand_color = "#D7B992"
+    wood_color = "#2C8236"
+    brick_color = "#8B0000"
+    sheep_color = "#A6FFA6"
+    wheat_color = "#F5B800"
+    stone_color = "#686868"
 
-if win_height<167:
-    txt_size = 5
-elif win_height>1200:
-    txt_size = 36
-else:
-    txt_size = int(.03*win_height)
+    global txt_size
+    if win_height<167:
+        txt_size = 5
+    elif win_height>1200:
+        txt_size = 36
+    else:
+        txt_size = int(.03*win_height)
+
+    # Raise errors for strange dimensions
+    if 2*win_width!=3*win_height:
+        print("Board dimensions are incorrect, some elements may appear\
+            distorted.")
+    if win_width<800 or win_height<800:
+        print("Board window too small, some features may not appear properly.")
+
+    # Geometry for board window
+    global board_geometry
+    board_geometry = "%dx%d+50+50" % (win_width,win_height)
+
+    # Set width and height of hexagon section
+    global hex_height, hex_width
+    hex_height = win_height*75/100
+    if win_width>=win_height:
+        hex_width = hex_height
+    else:
+        hex_width = win_width*75/100
+        hex_height = hex_width
+
+    # Set width of water region
+    global water_width
+    water_width = int(hex_width/10)
+
+    # Set offsets from top right corner for hexagon section (without water)
+    global hex_x_off, hex_y_off
+    hex_x_off = int(win_width-hex_width-water_width)
+    hex_y_off = int(win_height-hex_height-water_width)
+
 
 
 ################################################################################
@@ -45,44 +80,12 @@ else:
 #         comp4diff = eval(input("Computer 4 level: "))
 
 
-# Raise errors for strange dimensions
-if 2*win_width!=3*win_height:
-    print("Board dimensions are incorrect, some elements may appear distorted.")
-if win_width<800 or win_height<800:
-    print("Board window too small, some features may not appear properly.")
 
 ################################################################################
 # Define variables
 
-# Geometry for board window
-board_geometry = "%dx%d+50+50" % (win_width,win_height)
 
-# Set width and height of hexagon section
-hex_height = win_height*75/100
-if win_width>=win_height:
-    hex_width = hex_height
-else:
-    hex_width = win_width*75/100
-    hex_height = hex_width
 
-# Set width of water region
-water_width = int(hex_width/10)
-
-# Set offsets from top right corner for hexagon section (not including water)
-hex_x_off = int(win_width-hex_width-water_width)
-hex_y_off = int(win_height-hex_height-water_width)
-
-# 49 tiles with attributes:
-#  0 - tkinter index numbers: [hexagon, number]
-#  1 - tile resource type
-#  2 - tile dice roll number
-#  3 - array of owners of settlement points cw from top
-#  4 - array of owners of road sides cw from top right
-tiles = []
-for i in range(49):
-    tiles.append([[-1,-1], "none", -1, [0,0,0,0,0,0], [0,0,0,0,0,0]])
-
-active_tiles = [9,10,11,16,17,18,19,22,23,24,25,26,30,31,32,33,37,38,39]
 
 
 ################################################################################
@@ -91,10 +94,10 @@ active_tiles = [9,10,11,16,17,18,19,22,23,24,25,26,30,31,32,33,37,38,39]
 # App screen class
 class App(Frame):
 
-    def __init__(self,parent,version):
+    def __init__(self,parent):
         Frame.__init__(self,parent)
         self.parent = parent
-        self.version = version
+        #self.version = version
         self.initUI()
 
     def initUI(self):
@@ -106,7 +109,7 @@ class App(Frame):
         splash_canvas.create_text(200, 50, font=("Helvetica", 36),
             text="Settlers of Catan")
         splash_canvas.create_text(200, 100, font=("Helvetica", 18),
-            text="Version "+self.version)
+            text="Version "+version)
         splash_canvas.pack(fill=BOTH, expand=1)
         # Buttons
         play_button = Button(splash_canvas, font=("Helvetica", 16),
@@ -293,6 +296,17 @@ class App(Frame):
         board_canvas.create_rectangle(hex_x_off-water_width,
             hex_y_off-water_width, win_width, win_height, fill="#6680FF")
 
+        # 49 tiles with attributes:
+        #  0 - tkinter index numbers: [hexagon, number]
+        #  1 - tile resource type
+        #  2 - tile dice roll number
+        #  3 - array of owners of settlement points cw from top
+        #  4 - array of owners of road sides cw from top right
+        global tiles
+        tiles = []
+        for i in range(49):
+            tiles.append([[-1,-1], "none", -1, [0,0,0,0,0,0], [0,0,0,0,0,0]])
+
         tiles[9][0][0] = board_canvas.create_polygon(hex9_points,
             outline=sand_color, fill='white', width=4)
         tiles[10][0][0] = board_canvas.create_polygon(hex10_points,
@@ -335,31 +349,41 @@ class App(Frame):
 
 
 ################################################################################
-# Major function calls
+# Function definitions
 def new_game():
+    # Switch windows
     print("New game started")
     root.withdraw()
     board.update()
     board.deiconify()
-    set_tiles()
+
+    tiles = set_tiles()
+
+    # Temporary pause
     string = ""
     while string=="":
         string = input("Type anything to confirm exit: ")
-    end_game(board)
+
+    close_game(board)
 
 
 def load_game():
+    # Switch windows
     print("Old game loaded")
     root.withdraw()
     board.update()
     board.deiconify()
+
+    # Temporary pause
     string = ""
     while string=="":
         string = input("Type anything to confirm exit: ")
-    end_game(board)
+
+    close_game(board)
 
 
-def end_game(board):
+def close_game(board):
+    # Resets window
     board.withdraw()
     root.update()
     root.deiconify()
@@ -368,6 +392,9 @@ def end_game(board):
 ################################################################################
 # Minor function calls
 def set_tiles():
+    global active_tiles
+    active_tiles = [9,10,11,16,17,18,19,22,23,24,25,26,30,31,32,33,37,38,39]
+
     # Suggested preset:
     # tiles[1][1] = "wood"
     # tiles[1][2] = 11
@@ -499,13 +526,16 @@ def set_tiles():
 
     print("Tiles set")
 
+    return tiles
+
 
 ################################################################################
 # Main loop for calling from main.py
-def open_app(version):
+def open_app():
+    aesthetics()
     global root
     root = Tk()
-    app = App(root, version)
+    app = App(root)
     # Draw splash window and run app
     root.geometry("400x300+100+100")
     root.mainloop()
