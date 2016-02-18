@@ -72,40 +72,17 @@ water_width = int(hex_width/10)
 hex_x_off = int(win_width-hex_width-water_width)
 hex_y_off = int(win_height-hex_height-water_width)
 
-# 25 tiles with attributes:
+# 49 tiles with attributes:
 #  0 - tkinter index numbers: [hexagon, number]
-#  1 - tile resource type ("empty" for nonlegal hexagon)
-#  2 - tile dice roll number (-1 for nonlegal hexagon)
+#  1 - tile resource type
+#  2 - tile dice roll number
 #  3 - array of owners of settlement points cw from top
 #  4 - array of owners of road sides cw from top right
-tiles = [
-    [[-1,-1], "empty", -1, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "none", 0, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "none", 0, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "none", 0, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "empty", -1, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "none", 0, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "none", 0, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "none", 0, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "none", 0, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "empty", -1, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "none", 0, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "none", 0, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "none", 0, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "none", 0, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "none", 0, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "none", 0, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "none", 0, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "none", 0, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "none", 0, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "empty", -1, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "empty", -1, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "none", 0, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "none", 0, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "none", 0, [0,0,0,0,0,0], [0,0,0,0,0,0]],
-    [[-1,-1], "empty", -1, [0,0,0,0,0,0], [0,0,0,0,0,0]]]
+tiles = []
+for i in range(49):
+    tiles.append([[-1,-1], "none", -1, [0,0,0,0,0,0], [0,0,0,0,0,0]])
 
-active_tiles = [1,2,3,5,6,7,8,10,11,12,13,14,15,16,17,18,21,22,23]
+active_tiles = [9,10,11,16,17,18,19,22,23,24,25,26,30,31,32,33,37,38,39]
 
 
 ################################################################################
@@ -160,7 +137,7 @@ class App(Frame):
         board_canvas.pack(fill=BOTH, expand=1)
         board.withdraw()
         #Skeleton
-        hex1_points = [
+        hex9_points = [
             int(hex_width*2/10)+hex_x_off,int(hex_height*1/16)+hex_y_off,
             int(hex_width*2/10)+hex_x_off,int(hex_height*3/16)+hex_y_off,
             int(hex_width*3/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
@@ -168,7 +145,7 @@ class App(Frame):
             int(hex_width*4/10)+hex_x_off,int(hex_height*1/16)+hex_y_off,
             int(hex_width*3/10)+hex_x_off,int(hex_height*0/16)+hex_y_off,
             int(hex_width*2/10)+hex_x_off,int(hex_height*1/16)+hex_y_off]
-        hex2_points = [
+        hex10_points = [
             int(hex_width*4/10)+hex_x_off,int(hex_height*1/16)+hex_y_off,
             int(hex_width*4/10)+hex_x_off,int(hex_height*3/16)+hex_y_off,
             int(hex_width*5/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
@@ -176,7 +153,7 @@ class App(Frame):
             int(hex_width*6/10)+hex_x_off,int(hex_height*1/16)+hex_y_off,
             int(hex_width*5/10)+hex_x_off,int(hex_height*0/16)+hex_y_off,
             int(hex_width*4/10)+hex_x_off,int(hex_height*1/16)+hex_y_off]
-        hex3_points = [
+        hex11_points = [
             int(hex_width*6/10)+hex_x_off,int(hex_height*1/16)+hex_y_off,
             int(hex_width*6/10)+hex_x_off,int(hex_height*3/16)+hex_y_off,
             int(hex_width*7/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
@@ -184,7 +161,7 @@ class App(Frame):
             int(hex_width*8/10)+hex_x_off,int(hex_height*1/16)+hex_y_off,
             int(hex_width*7/10)+hex_x_off,int(hex_height*0/16)+hex_y_off,
             int(hex_width*6/10)+hex_x_off,int(hex_height*1/16)+hex_y_off]
-        hex5_points = [
+        hex16_points = [
             int(hex_width*1/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
             int(hex_width*1/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
             int(hex_width*2/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
@@ -192,7 +169,7 @@ class App(Frame):
             int(hex_width*3/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
             int(hex_width*2/10)+hex_x_off,int(hex_height*3/16)+hex_y_off,
             int(hex_width*1/10)+hex_x_off,int(hex_height*4/16)+hex_y_off]
-        hex6_points = [
+        hex17_points = [
             int(hex_width*3/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
             int(hex_width*3/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
             int(hex_width*4/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
@@ -200,7 +177,7 @@ class App(Frame):
             int(hex_width*5/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
             int(hex_width*4/10)+hex_x_off,int(hex_height*3/16)+hex_y_off,
             int(hex_width*3/10)+hex_x_off,int(hex_height*4/16)+hex_y_off]
-        hex7_points = [
+        hex18_points = [
             int(hex_width*5/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
             int(hex_width*5/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
             int(hex_width*6/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
@@ -208,7 +185,7 @@ class App(Frame):
             int(hex_width*7/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
             int(hex_width*6/10)+hex_x_off,int(hex_height*3/16)+hex_y_off,
             int(hex_width*5/10)+hex_x_off,int(hex_height*4/16)+hex_y_off]
-        hex8_points = [
+        hex19_points = [
             int(hex_width*7/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
             int(hex_width*7/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
             int(hex_width*8/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
@@ -216,7 +193,7 @@ class App(Frame):
             int(hex_width*9/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
             int(hex_width*8/10)+hex_x_off,int(hex_height*3/16)+hex_y_off,
             int(hex_width*7/10)+hex_x_off,int(hex_height*4/16)+hex_y_off]
-        hex10_points = [
+        hex22_points = [
             int(hex_width*0/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
             int(hex_width*0/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
             int(hex_width*1/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
@@ -224,7 +201,7 @@ class App(Frame):
             int(hex_width*2/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
             int(hex_width*1/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
             int(hex_width*0/10)+hex_x_off,int(hex_height*7/16)+hex_y_off]
-        hex11_points = [
+        hex23_points = [
             int(hex_width*2/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
             int(hex_width*2/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
             int(hex_width*3/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
@@ -232,7 +209,7 @@ class App(Frame):
             int(hex_width*4/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
             int(hex_width*3/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
             int(hex_width*2/10)+hex_x_off,int(hex_height*7/16)+hex_y_off]
-        hex12_points = [
+        hex24_points = [
             int(hex_width*4/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
             int(hex_width*4/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
             int(hex_width*5/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
@@ -240,7 +217,7 @@ class App(Frame):
             int(hex_width*6/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
             int(hex_width*5/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
             int(hex_width*4/10)+hex_x_off,int(hex_height*7/16)+hex_y_off]
-        hex13_points = [
+        hex25_points = [
             int(hex_width*6/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
             int(hex_width*6/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
             int(hex_width*7/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
@@ -248,7 +225,7 @@ class App(Frame):
             int(hex_width*8/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
             int(hex_width*7/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
             int(hex_width*6/10)+hex_x_off,int(hex_height*7/16)+hex_y_off]
-        hex14_points = [
+        hex26_points = [
             int(hex_width*8/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
             int(hex_width*8/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
             int(hex_width*9/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
@@ -256,7 +233,7 @@ class App(Frame):
             int(hex_width*10/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
             int(hex_width*9/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
             int(hex_width*8/10)+hex_x_off,int(hex_height*7/16)+hex_y_off]
-        hex15_points = [
+        hex30_points = [
             int(hex_width*1/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
             int(hex_width*1/10)+hex_x_off,int(hex_height*12/16)+hex_y_off,
             int(hex_width*2/10)+hex_x_off,int(hex_height*13/16)+hex_y_off,
@@ -264,7 +241,7 @@ class App(Frame):
             int(hex_width*3/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
             int(hex_width*2/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
             int(hex_width*1/10)+hex_x_off,int(hex_height*10/16)+hex_y_off]
-        hex16_points = [
+        hex31_points = [
             int(hex_width*3/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
             int(hex_width*3/10)+hex_x_off,int(hex_height*12/16)+hex_y_off,
             int(hex_width*4/10)+hex_x_off,int(hex_height*13/16)+hex_y_off,
@@ -272,7 +249,7 @@ class App(Frame):
             int(hex_width*5/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
             int(hex_width*4/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
             int(hex_width*3/10)+hex_x_off,int(hex_height*10/16)+hex_y_off]
-        hex17_points = [
+        hex32_points = [
             int(hex_width*5/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
             int(hex_width*5/10)+hex_x_off,int(hex_height*12/16)+hex_y_off,
             int(hex_width*6/10)+hex_x_off,int(hex_height*13/16)+hex_y_off,
@@ -280,7 +257,7 @@ class App(Frame):
             int(hex_width*7/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
             int(hex_width*6/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
             int(hex_width*5/10)+hex_x_off,int(hex_height*10/16)+hex_y_off]
-        hex18_points = [
+        hex33_points = [
             int(hex_width*7/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
             int(hex_width*7/10)+hex_x_off,int(hex_height*12/16)+hex_y_off,
             int(hex_width*8/10)+hex_x_off,int(hex_height*13/16)+hex_y_off,
@@ -288,7 +265,7 @@ class App(Frame):
             int(hex_width*9/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
             int(hex_width*8/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
             int(hex_width*7/10)+hex_x_off,int(hex_height*10/16)+hex_y_off]
-        hex21_points = [
+        hex37_points = [
             int(hex_width*2/10)+hex_x_off,int(hex_height*13/16)+hex_y_off,
             int(hex_width*2/10)+hex_x_off,int(hex_height*15/16)+hex_y_off,
             int(hex_width*3/10)+hex_x_off,int(hex_height*16/16)+hex_y_off,
@@ -296,7 +273,7 @@ class App(Frame):
             int(hex_width*4/10)+hex_x_off,int(hex_height*13/16)+hex_y_off,
             int(hex_width*3/10)+hex_x_off,int(hex_height*12/16)+hex_y_off,
             int(hex_width*2/10)+hex_x_off,int(hex_height*13/16)+hex_y_off]
-        hex22_points = [
+        hex38_points = [
             int(hex_width*4/10)+hex_x_off,int(hex_height*13/16)+hex_y_off,
             int(hex_width*4/10)+hex_x_off,int(hex_height*15/16)+hex_y_off,
             int(hex_width*5/10)+hex_x_off,int(hex_height*16/16)+hex_y_off,
@@ -304,7 +281,7 @@ class App(Frame):
             int(hex_width*6/10)+hex_x_off,int(hex_height*13/16)+hex_y_off,
             int(hex_width*5/10)+hex_x_off,int(hex_height*12/16)+hex_y_off,
             int(hex_width*4/10)+hex_x_off,int(hex_height*13/16)+hex_y_off]
-        hex23_points = [
+        hex39_points = [
             int(hex_width*6/10)+hex_x_off,int(hex_height*13/16)+hex_y_off,
             int(hex_width*6/10)+hex_x_off,int(hex_height*15/16)+hex_y_off,
             int(hex_width*7/10)+hex_x_off,int(hex_height*16/16)+hex_y_off,
@@ -316,31 +293,11 @@ class App(Frame):
         board_canvas.create_rectangle(hex_x_off-water_width,
             hex_y_off-water_width, win_width, win_height, fill="#6680FF")
 
-        tiles[1][0][0] = board_canvas.create_polygon(hex1_points,
-            outline=sand_color, fill='white', width=4)
-        tiles[2][0][0] = board_canvas.create_polygon(hex2_points,
-            outline=sand_color, fill='white', width=4)
-        tiles[3][0][0] = board_canvas.create_polygon(hex3_points,
-            outline=sand_color, fill='white', width=4)
-        tiles[5][0][0] = board_canvas.create_polygon(hex5_points,
-            outline=sand_color, fill='white', width=4)
-        tiles[6][0][0] = board_canvas.create_polygon(hex6_points,
-            outline=sand_color, fill='white', width=4)
-        tiles[7][0][0] = board_canvas.create_polygon(hex7_points,
-            outline=sand_color, fill='white', width=4)
-        tiles[8][0][0] = board_canvas.create_polygon(hex8_points,
+        tiles[9][0][0] = board_canvas.create_polygon(hex9_points,
             outline=sand_color, fill='white', width=4)
         tiles[10][0][0] = board_canvas.create_polygon(hex10_points,
             outline=sand_color, fill='white', width=4)
         tiles[11][0][0] = board_canvas.create_polygon(hex11_points,
-            outline=sand_color, fill='white', width=4)
-        tiles[12][0][0] = board_canvas.create_polygon(hex12_points,
-            outline=sand_color, fill='white', width=4)
-        tiles[13][0][0] = board_canvas.create_polygon(hex13_points,
-            outline=sand_color, fill='white', width=4)
-        tiles[14][0][0] = board_canvas.create_polygon(hex14_points,
-            outline=sand_color, fill='white', width=4)
-        tiles[15][0][0] = board_canvas.create_polygon(hex15_points,
             outline=sand_color, fill='white', width=4)
         tiles[16][0][0] = board_canvas.create_polygon(hex16_points,
             outline=sand_color, fill='white', width=4)
@@ -348,11 +305,31 @@ class App(Frame):
             outline=sand_color, fill='white', width=4)
         tiles[18][0][0] = board_canvas.create_polygon(hex18_points,
             outline=sand_color, fill='white', width=4)
-        tiles[21][0][0] = board_canvas.create_polygon(hex21_points,
+        tiles[19][0][0] = board_canvas.create_polygon(hex19_points,
             outline=sand_color, fill='white', width=4)
         tiles[22][0][0] = board_canvas.create_polygon(hex22_points,
             outline=sand_color, fill='white', width=4)
         tiles[23][0][0] = board_canvas.create_polygon(hex23_points,
+            outline=sand_color, fill='white', width=4)
+        tiles[24][0][0] = board_canvas.create_polygon(hex24_points,
+            outline=sand_color, fill='white', width=4)
+        tiles[25][0][0] = board_canvas.create_polygon(hex25_points,
+            outline=sand_color, fill='white', width=4)
+        tiles[26][0][0] = board_canvas.create_polygon(hex26_points,
+            outline=sand_color, fill='white', width=4)
+        tiles[30][0][0] = board_canvas.create_polygon(hex30_points,
+            outline=sand_color, fill='white', width=4)
+        tiles[31][0][0] = board_canvas.create_polygon(hex31_points,
+            outline=sand_color, fill='white', width=4)
+        tiles[32][0][0] = board_canvas.create_polygon(hex32_points,
+            outline=sand_color, fill='white', width=4)
+        tiles[33][0][0] = board_canvas.create_polygon(hex33_points,
+            outline=sand_color, fill='white', width=4)
+        tiles[37][0][0] = board_canvas.create_polygon(hex37_points,
+            outline=sand_color, fill='white', width=4)
+        tiles[38][0][0] = board_canvas.create_polygon(hex38_points,
+            outline=sand_color, fill='white', width=4)
+        tiles[39][0][0] = board_canvas.create_polygon(hex39_points,
             outline=sand_color, fill='white', width=4)
 
 
@@ -432,7 +409,6 @@ def set_tiles():
     # tiles[23][2] = 6
 
     # Random layout
-    numbers = [2,3,3,4,4,5,5,6,6,8,8,9,9,10,10,11,11,12]
     resources = ["wood","wood","wood","wood","brick","brick","brick","sheep",
         "sheep","sheep","sheep","wheat","wheat","wheat","wheat","stone","stone",
         "stone","desert"]
@@ -442,15 +418,53 @@ def set_tiles():
         tiles[i][1] = choice(resources)
         # Remove one copy of that resource from the remaining choices
         resources.remove(tiles[i][1])
-        # Pick a random dice value and remove it from the remaining choices
-        #  unless the resource is "desert", then set dice value to 0
-        if tiles[i][1]!="desert":
-            tiles[i][2] = choice(numbers)
-            numbers.remove(tiles[i][2])
-        else:
-            tiles[i][2] = 0
 
-    # Need to implement check that high numbers are not adjacent
+    acceptable_placement = False
+    # Loop through number placement until high numbers are not adjacent
+    while not(acceptable_placement):
+        print("Placing numbers")
+        numbers = [2,3,3,4,4,5,5,6,6,8,8,9,9,10,10,11,11,12]
+        for i in active_tiles:
+            # Pick a random dice value and remove it from the remaining choices
+            #  unless the resource is "desert", then set dice value to 0
+            if tiles[i][1]!="desert":
+                tiles[i][2] = choice(numbers)
+                numbers.remove(tiles[i][2])
+            else:
+                tiles[i][2] = 0
+        # Assume the placement is good
+        acceptable_placement = True
+        # Check each tile to be sure tiles with a 6 or 8 are not adjacent
+        for i in active_tiles:
+            # Note there are two ways adjacent tiles relate, depending on the
+            #  offset of the row
+            # These can be differentiated by checking if #%7 = #%14
+            if (tiles[i][2]==6 or tiles[i][2]==8) and (i%7==i%14):
+                if tiles[i-8][2]==6 or tiles[i-8][2]==8:
+                    acceptable_placement = False
+                if tiles[i-7][2]==6 or tiles[i-7][2]==8:
+                    acceptable_placement = False
+                if tiles[i-1][2]==6 or tiles[i-1][2]==8:
+                    acceptable_placement = False
+                if tiles[i+1][2]==6 or tiles[i+1][2]==8:
+                    acceptable_placement = False
+                if tiles[i+6][2]==6 or tiles[i+6][2]==8:
+                    acceptable_placement = False
+                if tiles[i+7][2]==6 or tiles[i+7][2]==8:
+                    acceptable_placement = False
+            if (tiles[i][2]==6 or tiles[i][2]==8) and (i%7!=i%14):
+                if tiles[i-7][2]==6 or tiles[i-7][2]==8:
+                    acceptable_placement = False
+                if tiles[i-6][2]==6 or tiles[i-6][2]==8:
+                    acceptable_placement = False
+                if tiles[i-1][2]==6 or tiles[i-1][2]==8:
+                    acceptable_placement = False
+                if tiles[i+1][2]==6 or tiles[i+1][2]==8:
+                    acceptable_placement = False
+                if tiles[i+7][2]==6 or tiles[i+7][2]==8:
+                    acceptable_placement = False
+                if tiles[i+8][2]==6 or tiles[i+8][2]==8:
+                    acceptable_placement = False
 
 
     # Fill in the appropriate colors and numbers
