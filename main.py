@@ -24,7 +24,7 @@ def new_game(splash,board):
     from catan_graphics import set_players, get_tiles, draw_tiles
     from catan_graphics import player_place_settlement, player_place_road
     from catan_graphics import computer_place_settlement, computer_place_road
-    from catan_graphics import draw_settlement, draw_road
+    from catan_graphics import draw_settlement, draw_city, draw_road
 
 
     print("New game started")

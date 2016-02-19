@@ -456,6 +456,12 @@ def draw_road(side, player_index):
     pass
 
 
+def draw_city(point, player_index):
+    """Clears the settlement at 'point' and draws a city there owned by player
+    number 'index'"""
+    pass
+
+
 
 ################################################################################
 # If this file is run itself, do the following

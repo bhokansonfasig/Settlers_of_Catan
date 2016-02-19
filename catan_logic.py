@@ -127,7 +127,7 @@ def claim_settlement(point,player_index):
     # Maybe return array or whatever variable player data is stored in
 
 
-def claim_settlement(side,player_index):
+def claim_road(side,player_index):
     """Gives claim of the road at 'side' to player number 'index'"""
     pass
     # Maybe return array or whatever variable player data is stored in
