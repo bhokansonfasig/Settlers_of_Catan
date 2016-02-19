@@ -1,5 +1,6 @@
 from tkinter import *
 from main import version, new_game, load_game
+#from catan_logic import get_stats
 
 
 ################################################################################
@@ -426,7 +427,7 @@ def draw_tiles(tiles):
                 font=("Helvetica", txt_size), text=tiles[i][2])
 
 
-def draw_stats():
+def draw_stats(stats):
     """Draws player statistics such as victory points, total resources, etc.
     to game board window"""
     pass

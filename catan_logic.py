@@ -4,6 +4,7 @@ from random import choice
 ################################################################################
 # Set up logic classes
 
+# Classes for roads and settlements?
 
 
 ################################################################################
@@ -122,22 +123,43 @@ def set_tiles(tiles):
     return tiles
 
 
-def claim_settlement(point,player_index):
+def set_stats(number_of_players):
+    """Doesn't do anything really. Just here to set up the player_stats array"""
+    # Player statistics array, one row for each player
+    #  0 - Owned settlements
+    #  1 - Owned cities
+    #  2 - Owned resources (cards)
+    #  3 - Owned development cards
+    #  4 - Victory points
+    global player_stats
+    player_stats = []
+    for i in range(number_of_players):
+        player_stats.append([[], [], [], [], 0])
+
+    return player_stats
+
+
+#def get_stats():
+#    """Returns player statistics array"""
+#    return player_stats
+
+
+def claim_settlement(point,player_index,player_stats):
     """Gives claim of the settlement at 'point' to player number 'index'"""
-    pass
-    # Maybe return array or whatever variable player data is stored in
+
+    return player_stats
 
 
-def claim_road(side,player_index):
+def claim_road(side,player_index,player_stats):
     """Gives claim of the road at 'side' to player number 'index'"""
-    pass
-    # Maybe return array or whatever variable player data is stored in
+
+    return player_stats
 
 
-def give_card(resource,player_index):
+def give_card(resource,player_index,player_stats):
     """Gives player number 'index' a card of resource type 'resource'"""
-    pass
-    # Maybe return list of cards player has?
+
+    return player_stats
 
 
 def point_resources(point):
