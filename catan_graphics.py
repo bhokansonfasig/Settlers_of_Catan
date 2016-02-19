@@ -426,6 +426,12 @@ def draw_tiles(tiles):
                 font=("Helvetica", txt_size), text=tiles[i][2])
 
 
+def draw_stats():
+    """Draws player statistics such as victory points, total resources, etc.
+    to game board window"""
+    pass
+
+
 def player_place_settlement(player_index):
     """Asks player to click hex point on board to place settlement. Returns
     tuple of the placed settlement"""

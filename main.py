@@ -22,7 +22,7 @@ def new_game(splash,board):
     from catan_logic import give_card, point_resources, check_winner
     from catan_logic import roll_dice, distribute_resources
     from catan_graphics import open_board_window, close_board_window
-    from catan_graphics import set_players, get_tiles, draw_tiles
+    from catan_graphics import set_players, get_tiles, draw_tiles, draw_stats
     from catan_graphics import player_place_settlement, player_place_road
     from catan_graphics import computer_place_settlement, computer_place_road
     from catan_graphics import draw_settlement, draw_city, draw_road, draw_dice
@@ -44,6 +44,9 @@ def new_game(splash,board):
     tiles = set_tiles(tiles)
     draw_tiles(tiles)
 
+    # Draw player stats on board window
+    draw_stats()
+
     # Place two settlements per player for the first turn
     for player in players:
         if player[2]<0:
@@ -60,6 +63,7 @@ def new_game(splash,board):
             road = computer_place_road(player[0])
             claim_road(road,player[0])
             draw_road(road,player[0])
+        draw_stats()
     for player in reversed(players):
         if player[2]<0:
             settlement = player_place_settlement(player[0])
@@ -78,11 +82,14 @@ def new_game(splash,board):
         resources = point_resources(settlement)
         for resource in resources:
             give_card(resource,player[0])
+        draw_stats()
 
     # Loop through player turns until someone wins!
     loop_index = 0
+    whose_turn = 1
     playnum = len(players)  # Number of players
-    while check_winner()==0:
+    # Additional condition that players can only win on their turn
+    while check_winner()!=whose_turn:
         whose_turn = loop_index%playnum + 1
         print(players[whose_turn-1][1],"'s turn", sep='')
 
@@ -93,6 +100,7 @@ def new_game(splash,board):
         else:
             # Robber sequence
             pass
+        draw_stats()
 
         draw_resource_panel(whose_turn)
 
@@ -100,6 +108,8 @@ def new_game(splash,board):
         #  during their turn
 
         clear_resource_panel()
+        draw_stats()
+
         loop_index += 1
 
     winner = check_winner()
