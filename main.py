@@ -91,6 +91,7 @@ def new_game(splash,board):
             distribute_resources(die_1+die_2)
         else:
             # Robber sequence
+            pass
 
         draw_resource_panel(whose_turn)
 
@@ -100,7 +101,7 @@ def new_game(splash,board):
         clear_resource_panel()
         loop_index += 1
 
-    print("*****Congratulations Player ",whose_turn,"!*****", sep='')
+    print("*****Congratulations Player ",check_winner(),"!*****", sep='')
 
     close_board_window(splash,board)
 
