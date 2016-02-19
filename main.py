@@ -81,9 +81,10 @@ def new_game(splash,board):
 
     # Loop through player turns until someone wins!
     loop_index = 0
+    playnum = len(players)  # Number of players
     while check_winner()==0:
-        whose_turn = loop_index%4 + 1
-        print("Player ",whose_turn,"'s turn", sep='')
+        whose_turn = loop_index%playnum + 1
+        print(players[whose_turn-1][1],"'s turn", sep='')
 
         die_1,die_2 = roll_dice()
         draw_dice(die_1,die_2)
@@ -101,7 +102,8 @@ def new_game(splash,board):
         clear_resource_panel()
         loop_index += 1
 
-    print("*****Congratulations Player ",check_winner(),"!*****", sep='')
+    winner = check_winner()
+    print("*****Congratulations ",players[winner-1][1],"!*****", sep='')
 
     close_board_window(splash,board)
 

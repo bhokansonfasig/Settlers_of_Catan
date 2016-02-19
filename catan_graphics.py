@@ -347,34 +347,40 @@ def set_players():
     playnum = 0
     compnum = 0
 
-    # Command line implementation
+    # Command line implementation; pretty broken honestly...
     while (playnum<=1 or playnum>=5) or (compnum<=-1 or compnum>=5):
         playnum = eval(input("Total number of players: "))
         compnum = eval(input("Number of computer players: "))
-        if playnum==compnum:
-            players[0][1] = "Computer 1"
-            players[0][2] = eval(input("Computer 1 level: "))
-        else:
-            players[0][1] = input("Player 1 name: ")
-            players[0][2] = -1
-        if playnum<=compnum+1:
-            players[1][1] = "Computer 2"
-            players[1][2] = eval(input("Computer 2 level: "))
-        else:
-            players[1][1] = input("Player 2 name: ")
-            players[1][2] = -1
-        if playnum<=compnum+2 and playnum>=3:
-            players[2][1] = "Computer 3"
-            players[2][2] = eval(input("Computer 3 level: "))
-        else:
-            players[2][1] = input("Player 3 name: ")
-            players[2][2] = -1
-        if playnum<=compnum+3 and playnum==4:
-            players[3][1] = "Computer 4"
-            players[3][2] = eval(input("Computer 4 level: "))
-        else:
-            players[3][1] = input("Player 4 name: ")
-            players[3][2] = -1
+    if playnum==compnum:
+        players[0][1] = "Computer 1"
+        players[0][2] = eval(input("Computer 1 level: "))
+    else:
+        players[0][1] = input("Player 1 name: ")
+        players[0][2] = -1
+    if playnum<=compnum+1:
+        players[1][1] = "Computer 2"
+        players[1][2] = eval(input("Computer 2 level: "))
+    else:
+        players[1][1] = input("Player 2 name: ")
+        players[1][2] = -1
+    if playnum<=compnum+2 and playnum>=3:
+        players[2][1] = "Computer 3"
+        players[2][2] = eval(input("Computer 3 level: "))
+    elif playnum>=3:
+        players[2][1] = input("Player 3 name: ")
+        players[2][2] = -1
+    if playnum<=compnum+3 and playnum==4:
+        players[3][1] = "Computer 4"
+        players[3][2] = eval(input("Computer 4 level: "))
+    elif playnum==4:
+        players[3][1] = input("Player 4 name: ")
+        players[3][2] = -1
+
+    # Get rid of extra players from array
+    if playnum<4:
+        players.pop(3)
+    if playnum<3:
+        players.pop(2)
 
     return players
 
