@@ -9,7 +9,14 @@ from random import choice
 ################################################################################
 # Function definitions
 
+def randomize(array):
+    """Mix the elements of array and return it"""
+    pass
+
 def set_tiles(tiles):
+    """Takes array of tiles and sets resources and dice roll numbers to the
+    appropriate game board tiles"""
+
     global active_tiles
     active_tiles = [9,10,11,16,17,18,19,22,23,24,25,26,30,31,32,33,37,38,39]
 
@@ -112,6 +119,30 @@ def set_tiles(tiles):
                     acceptable_placement = False
 
     return tiles
+
+
+def claim_settlement(point,player_index):
+    """Gives claim of the settlement at 'point' to player number 'index'"""
+    pass
+    # Maybe return array or whatever variable player data is stored in
+
+
+def claim_settlement(side,player_index):
+    """Gives claim of the road at 'side' to player number 'index'"""
+    pass
+    # Maybe return array or whatever variable player data is stored in
+
+
+def give_card(resource,player_index):
+    """Gives player number 'index' a card of resource type 'resource'"""
+    pass
+    # Maybe return list of cards player has?
+
+
+def point_resources(point):
+    """Gets resources on hexagons connected to 'point'"""
+
+    return ["sheep","wheat","stone"]
 
 
 ################################################################################

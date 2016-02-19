@@ -214,12 +214,12 @@ class App(Frame):
         #  0 - tkinter index numbers: [hexagon, number]
         #  1 - tile resource type
         #  2 - tile dice roll number
-        #  3 - array of owners of settlement points cw from top
-        #  4 - array of owners of road sides cw from top right
+        #  3 - array of owners of settlement points (up to 6; i.e. 3 cities)
+        #  4 - array of owners of road sides (up to 6)
         global tiles
         tiles = []
         for i in range(49):
-            tiles.append([[-1,-1], "none", -1, [0,0,0,0,0,0], [0,0,0,0,0,0]])
+            tiles.append([[-1,-1], "none", -1, [], []])
 
         tiles[9][0][0] = board_canvas.create_polygon(hex9_points,
             outline=sand_color, fill='white', width=4)
@@ -269,6 +269,8 @@ class App(Frame):
 # Function definitions
 
 def aesthetics():
+    """Defines aesthetic parameters for the GUI"""
+
     # Define window dimensions and colors
     global win_width, win_height, menu_color, button_color, sand_color
     global wood_color, brick_color, sheep_color, wheat_color, stone_color
@@ -322,22 +324,26 @@ def aesthetics():
 
 
 def open_board_window(splash,board):
+    """Hides splash window and reveals board window"""
     splash.withdraw()
     board.update()
     board.deiconify()
 
 
 def close_board_window(splash,board):
+    """Hides board window and reveals splash window"""
     board.withdraw()
     splash.update()
     splash.deiconify()
 
 
 def set_players():
+    """Gets the number and type of players and returns an array of this info"""
     # Players array, one row for each player
-    #  0 - Name (string)
-    #  1 - AI difficulty (-1 for human player)
-    players = [["nobody",0],["nobody",0],["nobody",0],["nobody",0]]
+    #  0 - Player index (1-4)
+    #  1 - Name (string)
+    #  2 - AI difficulty (-1 for human player)
+    players = [[1,"nobody",0],[2,"nobody",0],[3,"nobody",0],[4,"nobody",0]]
     playnum = 0
     compnum = 0
 
@@ -346,38 +352,40 @@ def set_players():
         playnum = eval(input("Total number of players: "))
         compnum = eval(input("Number of computer players: "))
         if playnum==compnum:
-            players[0][0] = "Computer 1"
-            players[0][1] = eval(input("Computer 1 level: "))
+            players[0][1] = "Computer 1"
+            players[0][2] = eval(input("Computer 1 level: "))
         else:
-            players[0][0] = input("Player 1 name: ")
-            players[0][1] = -1
+            players[0][1] = input("Player 1 name: ")
+            players[0][2] = -1
         if playnum<=compnum+1:
-            players[1][0] = "Computer 2"
-            players[1][1] = eval(input("Computer 2 level: "))
+            players[1][1] = "Computer 2"
+            players[1][2] = eval(input("Computer 2 level: "))
         else:
-            players[1][0] = input("Player 2 name: ")
-            players[1][1] = -1
+            players[1][1] = input("Player 2 name: ")
+            players[1][2] = -1
         if playnum<=compnum+2 and playnum>=3:
-            players[2][0] = "Computer 3"
-            players[2][1] = eval(input("Computer 3 level: "))
+            players[2][1] = "Computer 3"
+            players[2][2] = eval(input("Computer 3 level: "))
         else:
-            players[2][0] = input("Player 3 name: ")
-            players[2][1] = -1
+            players[2][1] = input("Player 3 name: ")
+            players[2][2] = -1
         if playnum<=compnum+3 and playnum==4:
-            players[3][0] = "Computer 4"
-            players[3][1] = eval(input("Computer 4 level: "))
+            players[3][1] = "Computer 4"
+            players[3][2] = eval(input("Computer 4 level: "))
         else:
-            players[3][0] = input("Player 4 name: ")
-            players[3][1] = -1
+            players[3][1] = input("Player 4 name: ")
+            players[3][2] = -1
 
     return players
 
 
 def get_tiles():
+    """Returns tile array"""
     return tiles
 
 
 def draw_tiles(tiles):
+    """Draws tiles on game board window"""
     global active_tiles
     active_tiles = [9,10,11,16,17,18,19,22,23,24,25,26,30,31,32,33,37,38,39]
 
@@ -410,6 +418,42 @@ def draw_tiles(tiles):
         elif tiles[i][2]>8:
             tiles[i][0][1] = board_canvas.create_text(pos_x, pos_y,
                 font=("Helvetica", txt_size), text=tiles[i][2])
+
+
+def player_place_settlement(player_index):
+    """Asks player to click hex point on board to place settlement. Returns
+    tuple of the placed settlement"""
+
+    return (0,1,2)
+
+
+def player_place_road(player_index):
+    """Asks player to click two hex points on board to place road between them.
+    Returns tuples of the placed road"""
+
+    return ((0,1,2),(1,2,3))
+
+
+def computer_place_settlement(player_index):
+    """Has computer place settlement. Returns tuple of the placed settlement"""
+
+    return (0,1,2)
+
+
+def computer_place_road(player_index):
+    """Has computer place road. Returns tuples of the placed road"""
+
+    return ((0,1,2),(1,2,3))
+
+
+def draw_settlement(point, player_index):
+    """Draws a settlement at 'point' owned by player number 'index'"""
+    pass
+
+
+def draw_road(side, player_index):
+    """Draws a road on 'side' owned by player number 'index'"""
+    pass
 
 
 
