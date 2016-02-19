@@ -31,8 +31,10 @@ def new_game(splash,board):
 
     # Set the number of players, their names, and levels of AI
     players = set_players()
+    print(players)
     # Randomize player order
     players = randomize(players)
+    print(players)
 
     # Switch windows
     open_board_window(splash,board)

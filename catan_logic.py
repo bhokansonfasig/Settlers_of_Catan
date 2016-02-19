@@ -11,7 +11,8 @@ from random import choice
 
 def randomize(array):
     """Mix the elements of array and return it"""
-    pass
+
+    return array
 
 def set_tiles(tiles):
     """Takes array of tiles and sets resources and dice roll numbers to the
