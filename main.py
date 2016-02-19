@@ -19,22 +19,22 @@ if __name__ == '__main__':
 # Function definitions
 def new_game(splash,board):
     from catan_logic import randomize, set_tiles, claim_settlement, claim_road
-    from catan_logic import give_card, point_resources
+    from catan_logic import give_card, point_resources, check_winner
+    from catan_logic import roll_dice, distribute_resources
     from catan_graphics import open_board_window, close_board_window
     from catan_graphics import set_players, get_tiles, draw_tiles
     from catan_graphics import player_place_settlement, player_place_road
     from catan_graphics import computer_place_settlement, computer_place_road
-    from catan_graphics import draw_settlement, draw_city, draw_road
+    from catan_graphics import draw_settlement, draw_city, draw_road, draw_dice
+    from catan_graphics import draw_resource_panel, clear_resource_panel
 
 
     print("New game started")
 
     # Set the number of players, their names, and levels of AI
     players = set_players()
-    print(players)
     # Randomize player order
     players = randomize(players)
-    print(players)
 
     # Switch windows
     open_board_window(splash,board)
@@ -80,11 +80,27 @@ def new_game(splash,board):
             give_card(resource,player[0])
 
     # Loop through player turns until someone wins!
+    loop_index = 0
+    while check_winner()==0:
+        whose_turn = loop_index%4 + 1
+        print("Player ",whose_turn,"'s turn", sep='')
 
-    # Temporary pause
-    string = ""
-    while string=="":
-        string = input("Type anything to confirm end: ")
+        die_1,die_2 = roll_dice()
+        draw_dice(die_1,die_2)
+        if die_1+die_2!=7:
+            distribute_resources(die_1+die_2)
+        else:
+            # Robber sequence
+
+        draw_resource_panel(whose_turn)
+
+        # Button events should be able to handle what the player really does
+        #  during their turn
+
+        clear_resource_panel()
+        loop_index += 1
+
+    print("*****Congratulations Player ",whose_turn,"!*****", sep='')
 
     close_board_window(splash,board)
 

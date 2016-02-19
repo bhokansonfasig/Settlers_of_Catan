@@ -462,6 +462,22 @@ def draw_city(point, player_index):
     pass
 
 
+def draw_dice(die_1,die_2):
+    """Draws dice of values 'die_1' and 'die_2'."""
+    pass
+
+
+def draw_resource_panel(player_index):
+    """Draws resources available to player number 'index' in the resource panel
+    of the board window. Also activates buttons available to player."""
+    pass
+
+
+def clear_resource_panel():
+    """Clears out all resources from the resource panel of the board window.
+    Also dims all button states."""
+    pass
+
 
 ################################################################################
 # If this file is run itself, do the following

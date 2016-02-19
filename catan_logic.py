@@ -146,6 +146,31 @@ def point_resources(point):
     return ["sheep","wheat","stone"]
 
 
+def check_winner():
+    """Checks winning condition for all players. Returns player index if someone
+    has won, 0 otherwise."""
+
+    # Temporary way of breaking out of loop
+    winner = eval(input("Who won? "))
+
+    return winner
+
+
+def roll_dice():
+    """Rolls two six sided dice and returns their values."""
+
+    return 1,2
+
+
+def distribute_resources(dice_value):
+    """Distributes the appropriate resources to players with settlements on
+    hexagons with number 'dice_value'"""
+
+    # Probably want to call give_card in here
+
+    pass
+
+
 ################################################################################
 # If this file is run itself, do the following
 if __name__ == '__main__':
