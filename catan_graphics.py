@@ -81,8 +81,17 @@ class App(Frame):
             # Later may use this to create saves
             close_board_window(self.parent,board)
 
+        # def click_return_circles(event):
+        #     """Returns tags of circles near clicked pixel."""
+        #     objects = board_canvas.find_enclosed(event.x-35, event.y-35,
+        #         event.x+35, event.y+35)
+        #     for obj in objects:
+        #         print(board_canvas.gettags(obj))
+
+
         # Set board bindings & protocols
         board_canvas.bind("<Configure>", reset_size)
+        #board_canvas.bind("<Button-1>", click_return_circles)
         board.protocol("WM_DELETE_WINDOW", user_closed)
 
 
@@ -128,8 +137,8 @@ def aesthetics(width,height):
 
     # Set width and height of hexagon section
     global hex_height, hex_width
-    hex_height = win_height*75/100
     if win_width>=win_height:
+        hex_height = win_height*75/100
         hex_width = hex_height
     else:
         hex_width = win_width*75/100
