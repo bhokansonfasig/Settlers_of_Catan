@@ -215,6 +215,8 @@ def get_tiles():
 
 
 def draw_tile_skeleton():
+    """Draws the outlines for the hexagon tiles."""
+    # Hexagon vertices
     hex9_points = [
         int(hex_width*2/10)+hex_x_off,int(hex_height*1/16)+hex_y_off,
         int(hex_width*2/10)+hex_x_off,int(hex_height*3/16)+hex_y_off,
@@ -368,47 +370,54 @@ def draw_tile_skeleton():
         int(hex_width*7/10)+hex_x_off,int(hex_height*12/16)+hex_y_off,
         int(hex_width*6/10)+hex_x_off,int(hex_height*13/16)+hex_y_off]
 
+    # Water base
     board_canvas.create_rectangle(hex_x_off-water_width,
         hex_y_off-water_width, win_width, win_height, fill="#6680FF")
 
+    # Hexagon outlines
     tiles[9][0][0] = board_canvas.create_polygon(hex9_points,
-        outline=sand_color, fill='white', width=4)
+        outline=sand_color, fill='white', width=4, tags="hex")
     tiles[10][0][0] = board_canvas.create_polygon(hex10_points,
-        outline=sand_color, fill='white', width=4)
+        outline=sand_color, fill='white', width=4, tags="hex")
     tiles[11][0][0] = board_canvas.create_polygon(hex11_points,
-        outline=sand_color, fill='white', width=4)
+        outline=sand_color, fill='white', width=4, tags="hex")
     tiles[16][0][0] = board_canvas.create_polygon(hex16_points,
-        outline=sand_color, fill='white', width=4)
+        outline=sand_color, fill='white', width=4, tags="hex")
     tiles[17][0][0] = board_canvas.create_polygon(hex17_points,
-        outline=sand_color, fill='white', width=4)
+        outline=sand_color, fill='white', width=4, tags="hex")
     tiles[18][0][0] = board_canvas.create_polygon(hex18_points,
-        outline=sand_color, fill='white', width=4)
+        outline=sand_color, fill='white', width=4, tags="hex")
     tiles[19][0][0] = board_canvas.create_polygon(hex19_points,
-        outline=sand_color, fill='white', width=4)
+        outline=sand_color, fill='white', width=4, tags="hex")
     tiles[22][0][0] = board_canvas.create_polygon(hex22_points,
-        outline=sand_color, fill='white', width=4)
+        outline=sand_color, fill='white', width=4, tags="hex")
     tiles[23][0][0] = board_canvas.create_polygon(hex23_points,
-        outline=sand_color, fill='white', width=4)
+        outline=sand_color, fill='white', width=4, tags="hex")
     tiles[24][0][0] = board_canvas.create_polygon(hex24_points,
-        outline=sand_color, fill='white', width=4)
+        outline=sand_color, fill='white', width=4, tags="hex")
     tiles[25][0][0] = board_canvas.create_polygon(hex25_points,
-        outline=sand_color, fill='white', width=4)
+        outline=sand_color, fill='white', width=4, tags="hex")
     tiles[26][0][0] = board_canvas.create_polygon(hex26_points,
-        outline=sand_color, fill='white', width=4)
+        outline=sand_color, fill='white', width=4, tags="hex")
     tiles[30][0][0] = board_canvas.create_polygon(hex30_points,
-        outline=sand_color, fill='white', width=4)
+        outline=sand_color, fill='white', width=4, tags="hex")
     tiles[31][0][0] = board_canvas.create_polygon(hex31_points,
-        outline=sand_color, fill='white', width=4)
+        outline=sand_color, fill='white', width=4, tags="hex")
     tiles[32][0][0] = board_canvas.create_polygon(hex32_points,
-        outline=sand_color, fill='white', width=4)
+        outline=sand_color, fill='white', width=4, tags="hex")
     tiles[33][0][0] = board_canvas.create_polygon(hex33_points,
-        outline=sand_color, fill='white', width=4)
+        outline=sand_color, fill='white', width=4, tags="hex")
     tiles[37][0][0] = board_canvas.create_polygon(hex37_points,
-        outline=sand_color, fill='white', width=4)
+        outline=sand_color, fill='white', width=4, tags="hex")
     tiles[38][0][0] = board_canvas.create_polygon(hex38_points,
-        outline=sand_color, fill='white', width=4)
+        outline=sand_color, fill='white', width=4, tags="hex")
     tiles[39][0][0] = board_canvas.create_polygon(hex39_points,
-        outline=sand_color, fill='white', width=4)
+        outline=sand_color, fill='white', width=4, tags="hex")
+
+    # Circles at hexagon vertices for settlement / road placement
+    r = int(hex_height/25)
+    board_canvas.create_oval(hex9_points[0]-r,hex9_points[1]-r,
+        hex9_points[0]+r,hex9_points[1]+r, width=3, tags="circle")
 
 
 def draw_tiles(tiles):
@@ -457,7 +466,9 @@ def player_place_settlement(player_index):
     """Asks player to click hex point on board to place settlement. Returns
     tuple of the placed settlement"""
 
-    return (0,1,2)
+    coordinate = (0,1,2)
+
+    return coordinate
 
 
 def player_place_road(player_index):
