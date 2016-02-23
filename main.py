@@ -27,6 +27,7 @@ def new_game(splash,board):
     from catan_graphics import computer_place_settlement, computer_place_road
     from catan_graphics import draw_settlement, draw_city, draw_road, draw_dice
     from catan_graphics import draw_resource_panel, clear_resource_panel
+    from catan_graphics import update_dimensions
 
 
     print("New game started")
@@ -67,6 +68,7 @@ def new_game(splash,board):
             road = computer_place_road(player[0])
             player_stats = claim_road(road,player[0],player_stats)
             draw_road(road,player[0])
+        update_dimensions(board)
         draw_stats(player_stats)
     for player in reversed(players):
         if player[2]<0:
@@ -86,6 +88,7 @@ def new_game(splash,board):
         resources = point_resources(settlement)
         for resource in resources:
             give_card(resource,player[0],player_stats)
+        update_dimensions(board)
         draw_stats(player_stats)
 
     # Loop through player turns until someone wins!
@@ -93,6 +96,7 @@ def new_game(splash,board):
     whose_turn = 1
     # Additional condition that players can only win on their turn
     while check_winner()!=whose_turn:
+        update_dimensions(board)
         whose_turn = loop_index%playnum + 1
         print(players[whose_turn-1][1],"'s turn", sep='')
 

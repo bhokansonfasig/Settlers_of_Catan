@@ -275,8 +275,8 @@ def aesthetics():
     # Define window dimensions and colors
     global win_width, win_height, menu_color, button_color, sand_color
     global wood_color, brick_color, sheep_color, wheat_color, stone_color
-    win_width = 1200
-    win_height = 800
+    win_width = 900
+    win_height = 600
     menu_color = "#EECC8C"
     button_color = "#FFFFCC"
     sand_color = "#D7B992"
@@ -336,6 +336,12 @@ def close_board_window(splash,board):
     board.withdraw()
     splash.update()
     splash.deiconify()
+
+
+def update_dimensions(board):
+    """Updates the dimensions of the board window if it has been manually
+    ajdusted"""
+    pass
 
 
 def set_players():
