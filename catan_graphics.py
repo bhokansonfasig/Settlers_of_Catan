@@ -216,213 +216,61 @@ def get_tiles():
 
 def draw_tile_skeleton():
     """Draws the outlines for the hexagon tiles."""
-    # Hexagon vertices
-    hex9_points = [
-        int(hex_width*2/10)+hex_x_off,int(hex_height*1/16)+hex_y_off,
-        int(hex_width*2/10)+hex_x_off,int(hex_height*3/16)+hex_y_off,
-        int(hex_width*3/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
-        int(hex_width*4/10)+hex_x_off,int(hex_height*3/16)+hex_y_off,
-        int(hex_width*4/10)+hex_x_off,int(hex_height*1/16)+hex_y_off,
-        int(hex_width*3/10)+hex_x_off,int(hex_height*0/16)+hex_y_off,
-        int(hex_width*2/10)+hex_x_off,int(hex_height*1/16)+hex_y_off]
-    hex10_points = [
-        int(hex_width*4/10)+hex_x_off,int(hex_height*1/16)+hex_y_off,
-        int(hex_width*4/10)+hex_x_off,int(hex_height*3/16)+hex_y_off,
-        int(hex_width*5/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
-        int(hex_width*6/10)+hex_x_off,int(hex_height*3/16)+hex_y_off,
-        int(hex_width*6/10)+hex_x_off,int(hex_height*1/16)+hex_y_off,
-        int(hex_width*5/10)+hex_x_off,int(hex_height*0/16)+hex_y_off,
-        int(hex_width*4/10)+hex_x_off,int(hex_height*1/16)+hex_y_off]
-    hex11_points = [
-        int(hex_width*6/10)+hex_x_off,int(hex_height*1/16)+hex_y_off,
-        int(hex_width*6/10)+hex_x_off,int(hex_height*3/16)+hex_y_off,
-        int(hex_width*7/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
-        int(hex_width*8/10)+hex_x_off,int(hex_height*3/16)+hex_y_off,
-        int(hex_width*8/10)+hex_x_off,int(hex_height*1/16)+hex_y_off,
-        int(hex_width*7/10)+hex_x_off,int(hex_height*0/16)+hex_y_off,
-        int(hex_width*6/10)+hex_x_off,int(hex_height*1/16)+hex_y_off]
-    hex16_points = [
-        int(hex_width*1/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
-        int(hex_width*1/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
-        int(hex_width*2/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
-        int(hex_width*3/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
-        int(hex_width*3/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
-        int(hex_width*2/10)+hex_x_off,int(hex_height*3/16)+hex_y_off,
-        int(hex_width*1/10)+hex_x_off,int(hex_height*4/16)+hex_y_off]
-    hex17_points = [
-        int(hex_width*3/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
-        int(hex_width*3/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
-        int(hex_width*4/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
-        int(hex_width*5/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
-        int(hex_width*5/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
-        int(hex_width*4/10)+hex_x_off,int(hex_height*3/16)+hex_y_off,
-        int(hex_width*3/10)+hex_x_off,int(hex_height*4/16)+hex_y_off]
-    hex18_points = [
-        int(hex_width*5/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
-        int(hex_width*5/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
-        int(hex_width*6/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
-        int(hex_width*7/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
-        int(hex_width*7/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
-        int(hex_width*6/10)+hex_x_off,int(hex_height*3/16)+hex_y_off,
-        int(hex_width*5/10)+hex_x_off,int(hex_height*4/16)+hex_y_off]
-    hex19_points = [
-        int(hex_width*7/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
-        int(hex_width*7/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
-        int(hex_width*8/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
-        int(hex_width*9/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
-        int(hex_width*9/10)+hex_x_off,int(hex_height*4/16)+hex_y_off,
-        int(hex_width*8/10)+hex_x_off,int(hex_height*3/16)+hex_y_off,
-        int(hex_width*7/10)+hex_x_off,int(hex_height*4/16)+hex_y_off]
-    hex22_points = [
-        int(hex_width*0/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
-        int(hex_width*0/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
-        int(hex_width*1/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
-        int(hex_width*2/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
-        int(hex_width*2/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
-        int(hex_width*1/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
-        int(hex_width*0/10)+hex_x_off,int(hex_height*7/16)+hex_y_off]
-    hex23_points = [
-        int(hex_width*2/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
-        int(hex_width*2/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
-        int(hex_width*3/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
-        int(hex_width*4/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
-        int(hex_width*4/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
-        int(hex_width*3/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
-        int(hex_width*2/10)+hex_x_off,int(hex_height*7/16)+hex_y_off]
-    hex24_points = [
-        int(hex_width*4/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
-        int(hex_width*4/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
-        int(hex_width*5/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
-        int(hex_width*6/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
-        int(hex_width*6/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
-        int(hex_width*5/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
-        int(hex_width*4/10)+hex_x_off,int(hex_height*7/16)+hex_y_off]
-    hex25_points = [
-        int(hex_width*6/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
-        int(hex_width*6/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
-        int(hex_width*7/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
-        int(hex_width*8/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
-        int(hex_width*8/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
-        int(hex_width*7/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
-        int(hex_width*6/10)+hex_x_off,int(hex_height*7/16)+hex_y_off]
-    hex26_points = [
-        int(hex_width*8/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
-        int(hex_width*8/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
-        int(hex_width*9/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
-        int(hex_width*10/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
-        int(hex_width*10/10)+hex_x_off,int(hex_height*7/16)+hex_y_off,
-        int(hex_width*9/10)+hex_x_off,int(hex_height*6/16)+hex_y_off,
-        int(hex_width*8/10)+hex_x_off,int(hex_height*7/16)+hex_y_off]
-    hex30_points = [
-        int(hex_width*1/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
-        int(hex_width*1/10)+hex_x_off,int(hex_height*12/16)+hex_y_off,
-        int(hex_width*2/10)+hex_x_off,int(hex_height*13/16)+hex_y_off,
-        int(hex_width*3/10)+hex_x_off,int(hex_height*12/16)+hex_y_off,
-        int(hex_width*3/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
-        int(hex_width*2/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
-        int(hex_width*1/10)+hex_x_off,int(hex_height*10/16)+hex_y_off]
-    hex31_points = [
-        int(hex_width*3/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
-        int(hex_width*3/10)+hex_x_off,int(hex_height*12/16)+hex_y_off,
-        int(hex_width*4/10)+hex_x_off,int(hex_height*13/16)+hex_y_off,
-        int(hex_width*5/10)+hex_x_off,int(hex_height*12/16)+hex_y_off,
-        int(hex_width*5/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
-        int(hex_width*4/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
-        int(hex_width*3/10)+hex_x_off,int(hex_height*10/16)+hex_y_off]
-    hex32_points = [
-        int(hex_width*5/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
-        int(hex_width*5/10)+hex_x_off,int(hex_height*12/16)+hex_y_off,
-        int(hex_width*6/10)+hex_x_off,int(hex_height*13/16)+hex_y_off,
-        int(hex_width*7/10)+hex_x_off,int(hex_height*12/16)+hex_y_off,
-        int(hex_width*7/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
-        int(hex_width*6/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
-        int(hex_width*5/10)+hex_x_off,int(hex_height*10/16)+hex_y_off]
-    hex33_points = [
-        int(hex_width*7/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
-        int(hex_width*7/10)+hex_x_off,int(hex_height*12/16)+hex_y_off,
-        int(hex_width*8/10)+hex_x_off,int(hex_height*13/16)+hex_y_off,
-        int(hex_width*9/10)+hex_x_off,int(hex_height*12/16)+hex_y_off,
-        int(hex_width*9/10)+hex_x_off,int(hex_height*10/16)+hex_y_off,
-        int(hex_width*8/10)+hex_x_off,int(hex_height*9/16)+hex_y_off,
-        int(hex_width*7/10)+hex_x_off,int(hex_height*10/16)+hex_y_off]
-    hex37_points = [
-        int(hex_width*2/10)+hex_x_off,int(hex_height*13/16)+hex_y_off,
-        int(hex_width*2/10)+hex_x_off,int(hex_height*15/16)+hex_y_off,
-        int(hex_width*3/10)+hex_x_off,int(hex_height*16/16)+hex_y_off,
-        int(hex_width*4/10)+hex_x_off,int(hex_height*15/16)+hex_y_off,
-        int(hex_width*4/10)+hex_x_off,int(hex_height*13/16)+hex_y_off,
-        int(hex_width*3/10)+hex_x_off,int(hex_height*12/16)+hex_y_off,
-        int(hex_width*2/10)+hex_x_off,int(hex_height*13/16)+hex_y_off]
-    hex38_points = [
-        int(hex_width*4/10)+hex_x_off,int(hex_height*13/16)+hex_y_off,
-        int(hex_width*4/10)+hex_x_off,int(hex_height*15/16)+hex_y_off,
-        int(hex_width*5/10)+hex_x_off,int(hex_height*16/16)+hex_y_off,
-        int(hex_width*6/10)+hex_x_off,int(hex_height*15/16)+hex_y_off,
-        int(hex_width*6/10)+hex_x_off,int(hex_height*13/16)+hex_y_off,
-        int(hex_width*5/10)+hex_x_off,int(hex_height*12/16)+hex_y_off,
-        int(hex_width*4/10)+hex_x_off,int(hex_height*13/16)+hex_y_off]
-    hex39_points = [
-        int(hex_width*6/10)+hex_x_off,int(hex_height*13/16)+hex_y_off,
-        int(hex_width*6/10)+hex_x_off,int(hex_height*15/16)+hex_y_off,
-        int(hex_width*7/10)+hex_x_off,int(hex_height*16/16)+hex_y_off,
-        int(hex_width*8/10)+hex_x_off,int(hex_height*15/16)+hex_y_off,
-        int(hex_width*8/10)+hex_x_off,int(hex_height*13/16)+hex_y_off,
-        int(hex_width*7/10)+hex_x_off,int(hex_height*12/16)+hex_y_off,
-        int(hex_width*6/10)+hex_x_off,int(hex_height*13/16)+hex_y_off]
-
     # Water base
     board_canvas.create_rectangle(hex_x_off-water_width,
         hex_y_off-water_width, win_width, win_height, fill="#6680FF")
 
-    # Hexagon outlines
-    tiles[9][0][0] = board_canvas.create_polygon(hex9_points,
-        outline=sand_color, fill='white', width=4, tags="hex")
-    tiles[10][0][0] = board_canvas.create_polygon(hex10_points,
-        outline=sand_color, fill='white', width=4, tags="hex")
-    tiles[11][0][0] = board_canvas.create_polygon(hex11_points,
-        outline=sand_color, fill='white', width=4, tags="hex")
-    tiles[16][0][0] = board_canvas.create_polygon(hex16_points,
-        outline=sand_color, fill='white', width=4, tags="hex")
-    tiles[17][0][0] = board_canvas.create_polygon(hex17_points,
-        outline=sand_color, fill='white', width=4, tags="hex")
-    tiles[18][0][0] = board_canvas.create_polygon(hex18_points,
-        outline=sand_color, fill='white', width=4, tags="hex")
-    tiles[19][0][0] = board_canvas.create_polygon(hex19_points,
-        outline=sand_color, fill='white', width=4, tags="hex")
-    tiles[22][0][0] = board_canvas.create_polygon(hex22_points,
-        outline=sand_color, fill='white', width=4, tags="hex")
-    tiles[23][0][0] = board_canvas.create_polygon(hex23_points,
-        outline=sand_color, fill='white', width=4, tags="hex")
-    tiles[24][0][0] = board_canvas.create_polygon(hex24_points,
-        outline=sand_color, fill='white', width=4, tags="hex")
-    tiles[25][0][0] = board_canvas.create_polygon(hex25_points,
-        outline=sand_color, fill='white', width=4, tags="hex")
-    tiles[26][0][0] = board_canvas.create_polygon(hex26_points,
-        outline=sand_color, fill='white', width=4, tags="hex")
-    tiles[30][0][0] = board_canvas.create_polygon(hex30_points,
-        outline=sand_color, fill='white', width=4, tags="hex")
-    tiles[31][0][0] = board_canvas.create_polygon(hex31_points,
-        outline=sand_color, fill='white', width=4, tags="hex")
-    tiles[32][0][0] = board_canvas.create_polygon(hex32_points,
-        outline=sand_color, fill='white', width=4, tags="hex")
-    tiles[33][0][0] = board_canvas.create_polygon(hex33_points,
-        outline=sand_color, fill='white', width=4, tags="hex")
-    tiles[37][0][0] = board_canvas.create_polygon(hex37_points,
-        outline=sand_color, fill='white', width=4, tags="hex")
-    tiles[38][0][0] = board_canvas.create_polygon(hex38_points,
-        outline=sand_color, fill='white', width=4, tags="hex")
-    tiles[39][0][0] = board_canvas.create_polygon(hex39_points,
-        outline=sand_color, fill='white', width=4, tags="hex")
+    active_tiles = [9,10,11,16,17,18,19,22,23,24,25,26,30,31,32,33,37,38,39]
 
-    # Circles at hexagon vertices for settlement / road placement
-    r = int(hex_height/25)
-    board_canvas.create_oval(hex9_points[0]-r,hex9_points[1]-r,
-        hex9_points[0]+r,hex9_points[1]+r, width=3, tags="circle")
+    # Hexagon tiles
+    for i in active_tiles:
+        x_i = 2*(i%7)
+        y_i = 3*int(i/7)
+        if i%7==i%14:
+            vertices = [
+                int(hex_width*(x_i-3)/10)+hex_x_off,
+                int(hex_height*(y_i-2)/16)+hex_y_off,
+                int(hex_width*(x_i-3)/10)+hex_x_off,
+                int(hex_height*(y_i)/16)+hex_y_off,
+                int(hex_width*(x_i-2)/10)+hex_x_off,
+                int(hex_height*(y_i+1)/16)+hex_y_off,
+                int(hex_width*(x_i-1)/10)+hex_x_off,
+                int(hex_height*(y_i)/16)+hex_y_off,
+                int(hex_width*(x_i-1)/10)+hex_x_off,
+                int(hex_height*(y_i-2)/16)+hex_y_off,
+                int(hex_width*(x_i-2)/10)+hex_x_off,
+                int(hex_height*(y_i-3)/16)+hex_y_off,
+                int(hex_width*(x_i-3)/10)+hex_x_off,
+                int(hex_height*(y_i-2)/16)+hex_y_off]
+        if i%7!=i%14:
+            vertices = [
+                int(hex_width*(x_i-2)/10)+hex_x_off,
+                int(hex_height*(y_i-2)/16)+hex_y_off,
+                int(hex_width*(x_i-2)/10)+hex_x_off,
+                int(hex_height*(y_i)/16)+hex_y_off,
+                int(hex_width*(x_i-1)/10)+hex_x_off,
+                int(hex_height*(y_i+1)/16)+hex_y_off,
+                int(hex_width*(x_i)/10)+hex_x_off,
+                int(hex_height*(y_i)/16)+hex_y_off,
+                int(hex_width*(x_i)/10)+hex_x_off,
+                int(hex_height*(y_i-2)/16)+hex_y_off,
+                int(hex_width*(x_i-1)/10)+hex_x_off,
+                int(hex_height*(y_i-3)/16)+hex_y_off,
+                int(hex_width*(x_i-2)/10)+hex_x_off,
+                int(hex_height*(y_i-2)/16)+hex_y_off]
+        tiles[i][0][0] = board_canvas.create_polygon(vertices,
+            outline=sand_color, width=4, fill='white', tags="hex")
+
+        # Circles at hexagon vertices for settlement / road placement
+        r = int(hex_height/25)
+        for j in [0,2,4,6,8,10]:
+            board_canvas.create_oval(vertices[j]-r,vertices[j+1]-r,
+                vertices[j]+r,vertices[j+1]+r, width=3, tags=("circle",i),
+                state=HIDDEN)
 
 
 def draw_tiles(tiles):
     """Draws tiles on game board window"""
-    global active_tiles
     active_tiles = [9,10,11,16,17,18,19,22,23,24,25,26,30,31,32,33,37,38,39]
 
     # Fill in the appropriate colors and numbers
