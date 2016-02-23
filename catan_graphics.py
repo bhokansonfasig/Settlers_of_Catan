@@ -66,8 +66,9 @@ class App(Frame):
 
         draw_tile_skeleton()
 
-        # Define board bindings
+        # Define board bindings & protocols
         def reset_size(event):
+            """Resizes board elements when the window size is changed."""
             win_width = event.width
             win_height = event.height
             aesthetics(win_width,win_height)
@@ -75,8 +76,14 @@ class App(Frame):
             draw_tile_skeleton()
             draw_tiles(tiles)
 
-        # Set board bindings
+        def user_closed():
+            """Closes board window nicely if user manually closes it."""
+            # Later may use this to create saves
+            close_board_window(self.parent,board)
+
+        # Set board bindings & protocols
         board_canvas.bind("<Configure>", reset_size)
+        board.protocol("WM_DELETE_WINDOW", user_closed)
 
 
 ################################################################################
