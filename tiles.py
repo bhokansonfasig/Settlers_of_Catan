@@ -57,18 +57,21 @@ class Tile:
 
     def draw_skeleton(self, canvas):
         """Draws the outline for the tile on canvas"""
-        from catan_graphics import set_colors
-        menu_color,button_color,sand_color,wood_color,brick_color,sheep_color, \
-            wheat_color,stone_color = set_colors()
+        from catan_graphics import set_color
+        sand_color = set_color("sand")
 
         self.tk_hex = canvas.create_polygon(self.vertices, outline=sand_color,
             width=4, fill='white', tags="hex")
 
     def draw(self, canvas):
         """Draws the tile with appropriate fill color on canvas"""
-        from catan_graphics import set_colors
-        menu_color,button_color,sand_color,wood_color,brick_color,sheep_color, \
-            wheat_color,stone_color = set_colors()
+        from catan_graphics import set_color
+        sand_color = set_color("sand")
+        wood_color = set_color("wood")
+        brick_color = set_color("brick")
+        sheep_color = set_color("sheep")
+        wheat_color = set_color("wheat")
+        stone_color = set_color("stone")
         if self.resource=="wood":
             canvas.itemconfig(self.tk_hex,fill=wood_color)
         elif self.resource=="brick":

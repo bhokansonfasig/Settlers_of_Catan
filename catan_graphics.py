@@ -104,8 +104,14 @@ def aesthetics(width,height):
 
     win_width = width
     win_height = height
-    menu_color,button_color,sand_color,wood_color,brick_color,sheep_color, \
-        wheat_color,stone_color = set_colors()
+    menu_color = set_color("menu")
+    button_color = set_color("button")
+    sand_color = set_color("sand")
+    wood_color = set_color("wood")
+    brick_color = set_color("brick")
+    sheep_color = set_color("sheep")
+    wheat_color = set_color("wheat")
+    stone_color = set_color("stone")
 
     global txt_size
     if win_height<167:
@@ -147,19 +153,25 @@ def aesthetics(width,height):
     return width, height
 
 
-def set_colors():
-    """Returns menu, button, sand, wood, brick, sheep, wheat, and stone colors
-        in that order"""
-    # menu_color = "#EECC8C"
-    # button_color = "#FFFFCC"
-    # sand_color = "#D7B992"
-    # wood_color = "#2C8236"
-    # brick_color = "#8B0000"
-    # sheep_color = "#A6FFA6"
-    # wheat_color = "#F5B800"
-    # stone_color = "#686868"
-    return "#EECC8C","#FFFFCC","#D7B992","#2C8236","#8B0000","#A6FFA6", \
-        "#F5B800","#686868"
+def set_color(element):
+    """Returns color of requested element (options: menu, button, sand, wood,
+        brick, sheep, wheat, stone)"""
+    if element.lower()=="menu":
+        return "#EECC8C"
+    if element.lower()=="button":
+        return "#FFFFCC"
+    if element.lower()=="sand":
+        return "#D7B992"
+    if element.lower()=="wood":
+        return "#2C8236"
+    if element.lower()=="brick":
+        return "#8B0000"
+    if element.lower()=="sheep":
+        return "#A6FFA6"
+    if element.lower()=="wheat":
+        return "#F5B800"
+    if element.lower()=="stone":
+        return "#686868"
 
 
 def open_board_window(splash,board):
