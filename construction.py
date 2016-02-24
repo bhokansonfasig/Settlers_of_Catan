@@ -10,10 +10,17 @@ constructed_cities = []
 
 #checks if two given tiles are neighbors, doesn't matter if a road cannot be constructed between them (like 40 and 41)
 def neighbor_tile(hex1,hex2): #hex1 must be smaller than hex2
-	
-	if(hex1>hex2): #ensuring that hex1 is always smaller so we can search for hex2 downwards
-		print("change the order of hex tiles in neighbor_tile function")
-		sys.exit()
+
+	# if(hex1>hex2): #ensuring that hex1 is always smaller so we can search for hex2 downwards
+	# 	print("change the order of hex tiles in neighbor_tile function")
+	# 	sys.exit()
+
+	if (hex1>hex2):
+		# If the hexagons are ordered wrong, just switch them
+		hex1,hex2 = hex2,hex1
+
+	if hex1==hex2:
+		return False
 
 	hex1_on_edge = hex1 in  edge_tiles
 	hex2_on_edge = hex2 in edge_tiles
@@ -21,10 +28,10 @@ def neighbor_tile(hex1,hex2): #hex1 must be smaller than hex2
 	if(abs(hex1-hex2)>8): #tiles are too far apart to be neighbors
 		# print("Too far apart")
 		return False
-	
+
 	elif(abs(hex1-hex2)==1):
 		# print("Could be in the same row")
-		if(hex1_on_edge and hex2_on_edge): 
+		if(hex1_on_edge and hex2_on_edge):
 			if(hex1%7==6):
 				return False #eg: tile 13 and 14 are not neighbors
 			else:
@@ -50,7 +57,7 @@ def neighbor_tile(hex1,hex2): #hex1 must be smaller than hex2
 		print("What the hell")
 		sys.exit()
 
-#checks the validity of a point	
+#checks the validity of a point
 def point(hex1,hex2,hex3):
 	if((hex1==hex2) or (hex2==hex3) or (hex3==hex1)):
 		print("Enter three unique tiles.")
@@ -60,7 +67,7 @@ def point(hex1,hex2,hex3):
 	x = min(hex1,hex2,hex3)
 	z = max(hex1,hex2,hex3)
 	y = hex1+hex2+hex3-x-z
-	
+
 	#check if such a point exists
 	# print(neighbor_tile(x,y), neighbor_tile(y,z), neighbor_tile(x,z))
 	if(neighbor_tile(x,y) and neighbor_tile(y,z) and neighbor_tile(x,z)):
