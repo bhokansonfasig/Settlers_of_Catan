@@ -2,12 +2,6 @@ from random import choice
 
 
 ################################################################################
-# Set up logic classes
-
-# Classes for roads and settlements?
-
-
-################################################################################
 # Function definitions
 
 def set_tiles(tiles):
@@ -96,27 +90,6 @@ def set_tiles(tiles):
     return tiles
 
 
-# def set_stats(number_of_players):
-#     """Doesn't do anything really. Just here to set up the player_stats array"""
-#     # Player statistics array, one row for each player
-#     #  0 - Owned settlements
-#     #  1 - Owned cities
-#     #  2 - Owned resources (cards)
-#     #  3 - Owned development cards
-#     #  4 - Victory points
-#     global player_stats
-#     player_stats = []
-#     for i in range(number_of_players):
-#         player_stats.append([[], [], [], [], 0])
-#
-#     return player_stats
-
-
-#def get_stats():
-#    """Returns player statistics array"""
-#    return player_stats
-
-
 def claim_settlement(point,player):
     """Gives claim of the settlement at 'point' to player number 'index'"""
     pass
@@ -158,7 +131,7 @@ def distribute_resources(dice_value):
     """Distributes the appropriate resources to players with settlements on
     hexagons with number 'dice_value'"""
 
-    # Probably want to call give_card in here
+    # Probably want to call give_resource in here
 
     pass
 

@@ -38,9 +38,6 @@ def new_game(splash,board):
     # Randomize player order
     shuffle(players)
 
-    # Set up the player statistics array
-    #player_stats = set_stats(len(players))
-
     # Switch windows
     open_board_window(splash,board)
 
