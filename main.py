@@ -18,12 +18,13 @@ if __name__ == '__main__':
 ################################################################################
 # Function definitions
 def new_game(splash,board):
+    from random import shuffle
+    from tiles import Tile
     from catan_logic import randomize, set_tiles, claim_settlement, claim_road
     from catan_logic import set_stats, give_card, point_resources, check_winner
     from catan_logic import roll_dice, distribute_resources
     from catan_graphics import open_board_window, close_board_window, close_all
     from catan_graphics import set_players, get_tiles, draw_tiles, draw_stats
-    from tiles import Tile
     from catan_graphics import player_place_settlement, player_place_road
     from catan_graphics import computer_place_settlement, computer_place_road
     from catan_graphics import draw_settlement, draw_city, draw_road, draw_dice
@@ -34,7 +35,7 @@ def new_game(splash,board):
     # Set the number of players, their names, and levels of AI
     players = set_players()
     # Randomize player order
-    players = randomize(players)
+    shuffle(players)
 
     # Set up the player statistics array
     player_stats = set_stats(len(players))

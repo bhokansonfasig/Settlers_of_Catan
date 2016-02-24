@@ -10,11 +10,6 @@ from random import choice
 ################################################################################
 # Function definitions
 
-def randomize(array):
-    """Mix the elements of array and return it"""
-
-    return array
-
 def set_tiles(tiles):
     """Takes array of tiles and sets resources and dice roll numbers to the
     appropriate game board tiles"""
