@@ -285,8 +285,9 @@ def draw_tile_skeleton():
         r = int(hex_height/25)
         for j in [0,2,4,6,8,10]:
             board_canvas.create_oval(vertices[j]-r,vertices[j+1]-r,
-                vertices[j]+r,vertices[j+1]+r, width=3, tags=("circle",i),
-                state=HIDDEN)
+                vertices[j]+r,vertices[j+1]+r, width=3, tags=("circle",i))
+
+    board_canvas.tag_lower("circle")
 
 
 def draw_tiles(tiles):
@@ -330,11 +331,38 @@ def draw_stats(stats):
     pass
 
 
+def click_return_coordinate(event):
+    global coordinate
+    coordinate = []
+    objects = board_canvas.find_enclosed(event.x-35, event.y-35,
+        event.x+35, event.y+35)
+    for obj in objects:
+        tags = board_canvas.gettags(obj)
+        for tag in tags:
+            if eval(tag)>0 and eval(tag)<50:
+                coordinate.append(eval(tag))
+
+
 def player_place_settlement(player_index):
     """Asks player to click hex point on board to place settlement. Returns
     tuple of the placed settlement"""
+    board_canvas.tag_raise("circle")
 
-    coordinate = (0,1,2)
+    board_canvas.bind("<Button-1>", click_return_coordinate)
+
+    coordinate = []
+
+    # valid_coordinate = False
+    # while valid_coordinate==False:
+    #     print(coordinate)
+    #     if len(coordinate)==3:
+    #         valid_coordinate = True
+    #
+    # print(coordinate)
+
+    board_canvas.unbind("<Button-1>")
+
+    board_canvas.tag_lower("circle")
 
     return coordinate
 
