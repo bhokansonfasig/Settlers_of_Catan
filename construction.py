@@ -53,7 +53,7 @@ class point:
 		if((hex1==hex2) or (hex2==hex3) or (hex3==hex1)):
 			print("Enter three unique tiles.")
 			sys.exit()
-		
+
 		# sort x,y,z in increasing order.
 		x = min(hex1,hex2,hex3)
 		z = max(hex1,hex2,hex3)
@@ -62,7 +62,11 @@ class point:
 		#check if such a point exists
 		# print(neighbor_tile(x,y), neighbor_tile(y,z), neighbor_tile(x,z))
 		if(neighbor_tile(x,y) and neighbor_tile(y,z) and neighbor_tile(x,z)):
-			pass
+			if((x in hidden_tiles) and (y in hidden_tiles) and (z in hidden_tiles)): #like 40,47,48
+				print("Point lies in the sea!")
+				sys.exit()
+			else:
+				pass
 		else:
 			print("Invalid point.")
 			sys.exit()
