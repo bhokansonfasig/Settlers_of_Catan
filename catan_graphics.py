@@ -79,6 +79,7 @@ class App(Frame):
         def user_closed():
             """Closes board window nicely if user manually closes it."""
             # Later may use this to create saves
+            board_canvas.delete(ALL)
             close_board_window(self.parent,board)
 
         # def click_return_circles(event):
@@ -168,6 +169,16 @@ def close_board_window(splash,board):
     board.withdraw()
     splash.update()
     splash.deiconify()
+
+
+def close_all(splash,board):
+    """Closes all windows to quit app"""
+    print("Closing all windows")
+    try:
+        splash.destroy()
+        board.destroy()
+    except:
+        pass
 
 
 def set_players():

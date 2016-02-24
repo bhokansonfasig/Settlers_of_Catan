@@ -21,7 +21,7 @@ def new_game(splash,board):
     from catan_logic import randomize, set_tiles, claim_settlement, claim_road
     from catan_logic import set_stats, give_card, point_resources, check_winner
     from catan_logic import roll_dice, distribute_resources
-    from catan_graphics import open_board_window, close_board_window
+    from catan_graphics import open_board_window, close_board_window, close_all
     from catan_graphics import set_players, get_tiles, draw_tiles, draw_stats
     from catan_graphics import player_place_settlement, player_place_road
     from catan_graphics import computer_place_settlement, computer_place_road
@@ -117,7 +117,7 @@ def new_game(splash,board):
     winner = check_winner()
     print("*****Congratulations ",players[winner-1][1],"!*****", sep='')
 
-    close_board_window(splash,board)
+    close_all(splash,board)
 
 
 def load_game(splash,board):
