@@ -57,33 +57,33 @@ def new_game(splash,board):
     for player in players:
         if player.AI_code<0:
             settlement = player_place_settlement(player)
-            player_stats = claim_settlement(settlement,player)
+            claim_settlement(settlement,player)
             draw_settlement(settlement,player)
             road = player_place_road(player)
-            player_stats = claim_road(road,player)
+            claim_road(road,player)
             draw_road(road,player)
         else:
             settlement = computer_place_settlement(player)
-            player_stats = claim_settlement(settlement,player)
+            claim_settlement(settlement,player)
             draw_settlement(settlement,player)
             road = computer_place_road(player)
-            player_stats = claim_road(road,player)
+            claim_road(road,player)
             draw_road(road,player)
         draw_stats(players)
     for player in reversed(players):
-        if player[2]<0:
+        if player.AI_code<0:
             settlement = player_place_settlement(player)
-            player_stats = claim_settlement(settlement,player)
+            claim_settlement(settlement,player)
             draw_settlement(settlement,player)
             road = player_place_road(player)
-            player_stats = claim_road(road,player)
+            claim_road(road,player)
             draw_road(road,player)
         else:
             settlement = computer_place_settlement(player)
-            player_stats = claim_settlement(settlement,player)
+            claim_settlement(settlement,player)
             draw_settlement(settlement,player)
             road = computer_place_road(player)
-            player_stats = claim_road(road,player)
+            claim_road(road,player)
             draw_road(road,player)
         resources = point_resources(settlement)
         for resource in resources:

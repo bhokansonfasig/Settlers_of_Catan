@@ -119,20 +119,17 @@ def set_tiles(tiles):
 
 def claim_settlement(point,player):
     """Gives claim of the settlement at 'point' to player number 'index'"""
-
-    return player_stats
+    pass
 
 
 def claim_road(side,player):
     """Gives claim of the road at 'side' to player number 'index'"""
-
-    return player_stats
+    pass
 
 
 def give_resource(resource,player):
     """Gives player number 'index' a card of resource type 'resource'"""
-
-    return player_stats
+    pass
 
 
 def point_resources(point):
