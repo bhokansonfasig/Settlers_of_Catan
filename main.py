@@ -20,7 +20,7 @@ if __name__ == '__main__':
 def new_game(splash,board):
     from random import shuffle
     from tiles import Tile
-    from catan_logic import randomize, set_tiles, claim_settlement, claim_road
+    from catan_logic import set_tiles, claim_settlement, claim_road
     from catan_logic import set_stats, give_card, point_resources, check_winner
     from catan_logic import roll_dice, distribute_resources
     from catan_graphics import open_board_window, close_board_window, close_all
