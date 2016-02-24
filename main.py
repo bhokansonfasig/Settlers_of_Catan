@@ -19,9 +19,10 @@ if __name__ == '__main__':
 # Function definitions
 def new_game(splash,board):
     from random import shuffle
+    from player import Player
     from tiles import Tile
     from catan_logic import set_tiles, claim_settlement, claim_road
-    from catan_logic import set_stats, give_card, point_resources, check_winner
+    from catan_logic import give_resource, point_resources, check_winner
     from catan_logic import roll_dice, distribute_resources
     from catan_graphics import open_board_window, close_board_window, close_all
     from catan_graphics import set_players, get_tiles, draw_tiles, draw_stats
@@ -38,7 +39,7 @@ def new_game(splash,board):
     shuffle(players)
 
     # Set up the player statistics array
-    player_stats = set_stats(len(players))
+    #player_stats = set_stats(len(players))
 
     # Switch windows
     open_board_window(splash,board)
@@ -50,44 +51,44 @@ def new_game(splash,board):
 
     # Draw player stats on board window
     playnum = len(players)
-    draw_stats(playnum)
+    draw_stats(players)
 
     # Place two settlements per player for the first turn
     for player in players:
-        if player[2]<0:
-            settlement = player_place_settlement(player[0])
-            player_stats = claim_settlement(settlement,player[0],player_stats)
-            draw_settlement(settlement,player[0])
-            road = player_place_road(player[0])
-            player_stats = claim_road(road,player[0],player_stats)
-            draw_road(road,player[0])
+        if player.AI_code<0:
+            settlement = player_place_settlement(player)
+            player_stats = claim_settlement(settlement,player)
+            draw_settlement(settlement,player)
+            road = player_place_road(player)
+            player_stats = claim_road(road,player)
+            draw_road(road,player)
         else:
-            settlement = computer_place_settlement(player[0])
-            player_stats = claim_settlement(settlement,player[0],player_stats)
-            draw_settlement(settlement,player[0])
-            road = computer_place_road(player[0])
-            player_stats = claim_road(road,player[0],player_stats)
-            draw_road(road,player[0])
-        draw_stats(player_stats)
+            settlement = computer_place_settlement(player)
+            player_stats = claim_settlement(settlement,player)
+            draw_settlement(settlement,player)
+            road = computer_place_road(player)
+            player_stats = claim_road(road,player)
+            draw_road(road,player)
+        draw_stats(players)
     for player in reversed(players):
         if player[2]<0:
-            settlement = player_place_settlement(player[0])
-            player_stats = claim_settlement(settlement,player[0],player_stats)
-            draw_settlement(settlement,player[0])
-            road = player_place_road(player[0])
-            player_stats = claim_road(road,player[0],player_stats)
-            draw_road(road,player[0])
+            settlement = player_place_settlement(player)
+            player_stats = claim_settlement(settlement,player)
+            draw_settlement(settlement,player)
+            road = player_place_road(player)
+            player_stats = claim_road(road,player)
+            draw_road(road,player)
         else:
-            settlement = computer_place_settlement(player[0])
-            player_stats = claim_settlement(settlement,player[0],player_stats)
-            draw_settlement(settlement,player[0])
-            road = computer_place_road(player[0])
-            player_stats = claim_road(road,player[0],player_stats)
-            draw_road(road,player[0])
+            settlement = computer_place_settlement(player)
+            player_stats = claim_settlement(settlement,player)
+            draw_settlement(settlement,player)
+            road = computer_place_road(player)
+            player_stats = claim_road(road,player)
+            draw_road(road,player)
         resources = point_resources(settlement)
         for resource in resources:
-            give_card(resource,player[0],player_stats)
-        draw_stats(player_stats)
+            give_resource(resource,player)
+        draw_stats(players)
 
     # Loop through player turns until someone wins!
     loop_index = 0
@@ -95,7 +96,7 @@ def new_game(splash,board):
     # Additional condition that players can only win on their turn
     while check_winner()!=whose_turn:
         whose_turn = loop_index%playnum + 1
-        print(players[whose_turn-1][1],"'s turn", sep='')
+        print(players[whose_turn-1].name,"'s turn", sep='')
 
         die_1,die_2 = roll_dice()
         draw_dice(die_1,die_2)
@@ -104,20 +105,20 @@ def new_game(splash,board):
         else:
             # Robber sequence
             pass
-        draw_stats(player_stats)
+        draw_stats(players)
 
-        draw_resource_panel(whose_turn)
+        draw_resource_panel(players[whose_turn-1])
 
         # Button events should be able to handle what the player really does
         #  during their turn
 
         clear_resource_panel()
-        draw_stats(player_stats)
+        draw_stats(players)
 
         loop_index += 1
 
     winner = check_winner()
-    print("*****Congratulations ",players[winner-1][1],"!*****", sep='')
+    print("*****Congratulations ",players[winner-1].name,"!*****", sep='')
 
     close_all(splash,board)
 

@@ -1,9 +1,14 @@
 class Player:
 
-	def __init__(self,index):
+	def __init__(self,index,name,AI_code):
 		# Index of player. Set despite turn order
 		#  (i.e. player with index 1 may play third)
 		self.index = index
+
+		self.name = name
+
+		# What AI level is the player (-1 for human)
+		self.AI_code = AI_code
 
 		# Building resources limit
 		self.road_max = 15

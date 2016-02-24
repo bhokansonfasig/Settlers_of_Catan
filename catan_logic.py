@@ -96,20 +96,20 @@ def set_tiles(tiles):
     return tiles
 
 
-def set_stats(number_of_players):
-    """Doesn't do anything really. Just here to set up the player_stats array"""
-    # Player statistics array, one row for each player
-    #  0 - Owned settlements
-    #  1 - Owned cities
-    #  2 - Owned resources (cards)
-    #  3 - Owned development cards
-    #  4 - Victory points
-    global player_stats
-    player_stats = []
-    for i in range(number_of_players):
-        player_stats.append([[], [], [], [], 0])
-
-    return player_stats
+# def set_stats(number_of_players):
+#     """Doesn't do anything really. Just here to set up the player_stats array"""
+#     # Player statistics array, one row for each player
+#     #  0 - Owned settlements
+#     #  1 - Owned cities
+#     #  2 - Owned resources (cards)
+#     #  3 - Owned development cards
+#     #  4 - Victory points
+#     global player_stats
+#     player_stats = []
+#     for i in range(number_of_players):
+#         player_stats.append([[], [], [], [], 0])
+#
+#     return player_stats
 
 
 #def get_stats():
@@ -117,19 +117,19 @@ def set_stats(number_of_players):
 #    return player_stats
 
 
-def claim_settlement(point,player_index,player_stats):
+def claim_settlement(point,player):
     """Gives claim of the settlement at 'point' to player number 'index'"""
 
     return player_stats
 
 
-def claim_road(side,player_index,player_stats):
+def claim_road(side,player):
     """Gives claim of the road at 'side' to player number 'index'"""
 
     return player_stats
 
 
-def give_card(resource,player_index,player_stats):
+def give_resource(resource,player):
     """Gives player number 'index' a card of resource type 'resource'"""
 
     return player_stats

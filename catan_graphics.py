@@ -1,6 +1,7 @@
 from tkinter import *
 from main import version, new_game, load_game
 from tiles import Tile
+from player import Player
 
 
 ################################################################################
@@ -204,7 +205,8 @@ def set_players():
     #  0 - Player index (1-4)
     #  1 - Name (string)
     #  2 - AI difficulty (-1 for human player)
-    players = [[1,"nobody",0],[2,"nobody",0],[3,"nobody",0],[4,"nobody",0]]
+    # players = [[1,"nobody",0],[2,"nobody",0],[3,"nobody",0],[4,"nobody",0]]
+    players = []
     playnum = 0
     compnum = 0
 
@@ -213,35 +215,37 @@ def set_players():
         playnum = eval(input("Total number of players: "))
         compnum = eval(input("Number of computer players: "))
     if playnum==compnum:
-        players[0][1] = "Computer 1"
-        players[0][2] = eval(input("Computer 1 level: "))
+        level = eval(input("Computer 1 level: "))
+        player = Player(1,"Computer 1",level)
+        players.append(player)
     else:
-        players[0][1] = input("Player 1 name: ")
-        players[0][2] = -1
+        name = input("Player 1 name: ")
+        player = Player(1,name,-1)
+        players.append(player)
     if playnum<=compnum+1:
-        players[1][1] = "Computer 2"
-        players[1][2] = eval(input("Computer 2 level: "))
+        level = eval(input("Computer 2 level: "))
+        player = Player(2,"Computer 2",level)
+        players.append(player)
     else:
-        players[1][1] = input("Player 2 name: ")
-        players[1][2] = -1
+        name = input("Player 2 name: ")
+        player = Player(2,name,-1)
+        players.append(player)
     if playnum<=compnum+2 and playnum>=3:
-        players[2][1] = "Computer 3"
-        players[2][2] = eval(input("Computer 3 level: "))
+        level = eval(input("Computer 3 level: "))
+        player = Player(3,"Computer 3",level)
+        players.append(player)
     elif playnum>=3:
-        players[2][1] = input("Player 3 name: ")
-        players[2][2] = -1
+        name = input("Player 3 name: ")
+        player = Player(3,name,-1)
+        players.append(player)
     if playnum<=compnum+3 and playnum==4:
-        players[3][1] = "Computer 4"
-        players[3][2] = eval(input("Computer 4 level: "))
+        level = eval(input("Computer 4 level: "))
+        player = Player(4,"Computer 4",level)
+        players.append(player)
     elif playnum==4:
-        players[3][1] = input("Player 4 name: ")
-        players[3][2] = -1
-
-    # Get rid of extra players from array
-    if playnum<4:
-        players.pop(3)
-    if playnum<3:
-        players.pop(2)
+        name = input("Player 4 name: ")
+        player = Player(3,name,-1)
+        players.append(player)
 
     return players
 
@@ -301,7 +305,7 @@ def click_return_coordinate(event):
                 coordinate.append(eval(tag))
 
 
-def player_place_settlement(player_index):
+def player_place_settlement(player):
     """Asks player to click hex point on board to place settlement. Returns
     tuple of the placed settlement"""
     board_canvas.tag_raise("circle")
@@ -325,36 +329,36 @@ def player_place_settlement(player_index):
     return coordinate
 
 
-def player_place_road(player_index):
+def player_place_road(player):
     """Asks player to click two hex points on board to place road between them.
     Returns tuples of the placed road"""
 
     return ((0,1,2),(1,2,3))
 
 
-def computer_place_settlement(player_index):
+def computer_place_settlement(computer):
     """Has computer place settlement. Returns tuple of the placed settlement"""
 
     return (0,1,2)
 
 
-def computer_place_road(player_index):
+def computer_place_road(computer):
     """Has computer place road. Returns tuples of the placed road"""
 
     return ((0,1,2),(1,2,3))
 
 
-def draw_settlement(point, player_index):
+def draw_settlement(point, player):
     """Draws a settlement at 'point' owned by player number 'index'"""
     pass
 
 
-def draw_road(side, player_index):
+def draw_road(side, player):
     """Draws a road on 'side' owned by player number 'index'"""
     pass
 
 
-def draw_city(point, player_index):
+def draw_city(point, player):
     """Clears the settlement at 'point' and draws a city there owned by player
     number 'index'"""
     pass
@@ -365,7 +369,7 @@ def draw_dice(die_1,die_2):
     pass
 
 
-def draw_resource_panel(player_index):
+def draw_resource_panel(player):
     """Draws resources available to player number 'index' in the resource panel
     of the board window. Also activates buttons available to player."""
     pass
