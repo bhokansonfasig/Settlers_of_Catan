@@ -91,14 +91,17 @@ def road(hex1,hex2):
 		print("Invalid road.")
 		return False
 
-x = 17
-y = 23
-z = 24
-while(road(x,y)):
-	x = int(input("hex1: "))
-	y = int(input("hex2: "))
-	# z = int(input("hex3: "))
-	# if(neighbor_tile(x,y)):
-	# 	print("They are neighbors.\n")
-	# else:
-	# 	print("Not neighbors.\n")
+################################################################################
+# If this file is run itself, do the following
+if __name__ == '__main__':
+	x = 17
+	y = 23
+	z = 24
+	while(road(x,y)):
+		x = int(input("hex1: "))
+		y = int(input("hex2: "))
+		# z = int(input("hex3: "))
+		# if(neighbor_tile(x,y)):
+		# 	print("They are neighbors.\n")
+		# else:
+		# 	print("Not neighbors.\n")

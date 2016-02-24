@@ -18,6 +18,7 @@ def randomize(array):
 def set_tiles(tiles):
     """Takes array of tiles and sets resources and dice roll numbers to the
     appropriate game board tiles"""
+    from construction import neighbor_tile
 
     # Suggested preset:
     # tiles[1][1] = "wood"
@@ -87,36 +88,15 @@ def set_tiles(tiles):
         # Assume the placement is good
         acceptable_placement = True
         # Check each tile to be sure tiles with a 6 or 8 are not adjacent
-        # for i in active_tiles:
-        #     # Note there are two ways adjacent tiles relate, depending on the
-        #     #  offset of the row
-        #     # These can be differentiated by checking if #%7 = #%14
-        #     if (tiles[i][2]==6 or tiles[i][2]==8) and (i%7==i%14):
-        #         if tiles[i-8][2]==6 or tiles[i-8][2]==8:
-        #             acceptable_placement = False
-        #         if tiles[i-7][2]==6 or tiles[i-7][2]==8:
-        #             acceptable_placement = False
-        #         if tiles[i-1][2]==6 or tiles[i-1][2]==8:
-        #             acceptable_placement = False
-        #         if tiles[i+1][2]==6 or tiles[i+1][2]==8:
-        #             acceptable_placement = False
-        #         if tiles[i+6][2]==6 or tiles[i+6][2]==8:
-        #             acceptable_placement = False
-        #         if tiles[i+7][2]==6 or tiles[i+7][2]==8:
-        #             acceptable_placement = False
-        #     if (tiles[i][2]==6 or tiles[i][2]==8) and (i%7!=i%14):
-        #         if tiles[i-7][2]==6 or tiles[i-7][2]==8:
-        #             acceptable_placement = False
-        #         if tiles[i-6][2]==6 or tiles[i-6][2]==8:
-        #             acceptable_placement = False
-        #         if tiles[i-1][2]==6 or tiles[i-1][2]==8:
-        #             acceptable_placement = False
-        #         if tiles[i+1][2]==6 or tiles[i+1][2]==8:
-        #             acceptable_placement = False
-        #         if tiles[i+7][2]==6 or tiles[i+7][2]==8:
-        #             acceptable_placement = False
-        #         if tiles[i+8][2]==6 or tiles[i+8][2]==8:
-        #             acceptable_placement = False
+        for tile1 in tiles:
+            for tile2 in tiles:
+                # If the tiles are not both 6 or 8, just skip
+                if not((tile1.roll_number==6 or tile1.roll_number==8) and
+                    (tile2.roll_number==6 or tile2.roll_number==8)):
+                    continue
+                if neighbor_tile(tile1.index,tile2.index):
+                    acceptable_placement = False
+
 
     return tiles
 
