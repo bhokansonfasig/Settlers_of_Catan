@@ -1,7 +1,7 @@
 # Settlers of Catan
 # Created by Ben Hokanson-Fasig, Aman Abhishek, and Alex Scherer?
-# Last update 02-18-16
-version = "0.0.2"
+# Last update 02-24-16
+version = "0.0.3"
 
 
 if __name__ == '__main__':
