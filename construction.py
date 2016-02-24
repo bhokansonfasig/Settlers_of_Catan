@@ -71,12 +71,23 @@ class point:
 			print("Invalid point.")
 			sys.exit()
 		
+class road:
+
+	def __init__(self,hex1,hex2):
+		x = min(hex1,hex2)
+		y = max(hex1,hex2)
+		both_hidden = (x in hidden_tiles) and (y in hidden_tiles) #like 13 and 12 cant have a road bw them, 11 and 12 is fine
+		if(neighbor_tile(x,y) and (not both_hidden)):
+			pass
+		else:
+			print("Invalid road.")
+			sys.exit()
 
 while(True):
 	x = int(input("hex1: "))
 	y = int(input("hex2: "))
-	z = int(input("hex3: "))
-	a = point(x,y,z)
+	# z = int(input("hex3: "))
+	a = road(x,y)
 	# if(neighbor_tile(x,y)):
 	# 	print("They are neighbors.\n")
 	# else:
