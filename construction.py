@@ -14,11 +14,11 @@ def neighbor_tile(hex1,hex2): #hex1 must be smaller than hex2
 	hex2_on_edge = hex2 in edge_tiles
 
 	if(abs(hex1-hex2)>8): #tiles are too far apart to be neighbors
-		print("Too far apart")
+		# print("Too far apart")
 		return False
 	
 	elif(abs(hex1-hex2)==1):
-		print("Could be in the same row")
+		# print("Could be in the same row")
 		if(hex1_on_edge and hex2_on_edge): 
 			if(hex1%7==6):
 				return False #eg: tile 13 and 14 are not neighbors
@@ -28,14 +28,14 @@ def neighbor_tile(hex1,hex2): #hex1 must be smaller than hex2
 			return True
 
 	elif((hex1//7)%2 == 0): #odd numbered row
-		print("Odd numbered row")
+		# print("Odd numbered row")
 		if(abs(hex1-hex2)==6 or abs(hex1-hex2)==7):
 			return True
 		else:
 			return False
 
 	elif((hex1//7)%2 == 1): #even numbered row
-		print("Odd numbered row")
+		# print("Odd numbered row")
 		if(abs(hex1-hex2)==7 or abs(hex1-hex2)==8):
 			return True
 		else:
@@ -50,16 +50,30 @@ def neighbor_tile(hex1,hex2): #hex1 must be smaller than hex2
 class point:
 	
 	def __init__(self,hex1,hex2,hex3):
-		x = hex1
-		y = hex2
-		z = hex3
-	def check_existence_of_point(self):
-		pass		
+		if((hex1==hex2) or (hex2==hex3) or (hex3==hex1)):
+			print("Enter three unique tiles.")
+			sys.exit()
+		
+		# sort x,y,z in increasing order.
+		x = min(hex1,hex2,hex3)
+		z = max(hex1,hex2,hex3)
+		y = hex1+hex2+hex3-x-z
+		
+		#check if such a point exists
+		# print(neighbor_tile(x,y), neighbor_tile(y,z), neighbor_tile(x,z))
+		if(neighbor_tile(x,y) and neighbor_tile(y,z) and neighbor_tile(x,z)):
+			pass
+		else:
+			print("Invalid point.")
+			sys.exit()
+		
 
 while(True):
 	x = int(input("hex1: "))
 	y = int(input("hex2: "))
-	if(neighbor_tile(x,y)):
-		print("They are neighbors.\n")
-	else:
-		print("Not neighbors.\n")
+	z = int(input("hex3: "))
+	a = point(x,y,z)
+	# if(neighbor_tile(x,y)):
+	# 	print("They are neighbors.\n")
+	# else:
+	# 	print("Not neighbors.\n")
