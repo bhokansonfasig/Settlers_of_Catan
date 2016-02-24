@@ -1,5 +1,6 @@
 from tkinter import *
 from main import version, new_game, load_game
+from tiles import Tile
 
 
 ################################################################################
@@ -53,18 +54,13 @@ class App(Frame):
         board_canvas.pack(fill=BOTH, expand=1)
         board.withdraw()
 
-        # 49 tiles with attributes:
-        #  0 - tkinter index numbers: [hexagon, number]
-        #  1 - tile resource type
-        #  2 - tile dice roll number
-        #  3 - array of owners of settlement points (up to 6; i.e. 3 cities)
-        #  4 - array of owners of road sides (up to 6)
+        # Generate 49 tiles
         global tiles
         tiles = []
         for i in range(49):
-            tiles.append([[-1,-1], "none", -1, [], []])
+            tiles.append(Tile(i))
 
-        draw_tile_skeleton()
+        draw_tile_skeleton(tiles)
 
         # Define board bindings & protocols
         def reset_size(event):
@@ -73,7 +69,7 @@ class App(Frame):
             win_height = event.height
             aesthetics(win_width,win_height)
             board_canvas.delete(ALL)
-            draw_tile_skeleton()
+            draw_tile_skeleton(tiles)
             draw_tiles(tiles)
 
         def user_closed():
@@ -108,14 +104,8 @@ def aesthetics(width,height):
 
     win_width = width
     win_height = height
-    menu_color = "#EECC8C"
-    button_color = "#FFFFCC"
-    sand_color = "#D7B992"
-    wood_color = "#2C8236"
-    brick_color = "#8B0000"
-    sheep_color = "#A6FFA6"
-    wheat_color = "#F5B800"
-    stone_color = "#686868"
+    menu_color,button_color,sand_color,wood_color,brick_color,sheep_color, \
+        wheat_color,stone_color = set_colors()
 
     global txt_size
     if win_height<167:
@@ -155,6 +145,21 @@ def aesthetics(width,height):
     hex_y_off = int(win_height-hex_height-water_width)
 
     return width, height
+
+
+def set_colors():
+    """Returns menu, button, sand, wood, brick, sheep, wheat, and stone colors
+        in that order"""
+    # menu_color = "#EECC8C"
+    # button_color = "#FFFFCC"
+    # sand_color = "#D7B992"
+    # wood_color = "#2C8236"
+    # brick_color = "#8B0000"
+    # sheep_color = "#A6FFA6"
+    # wheat_color = "#F5B800"
+    # stone_color = "#686868"
+    return "#EECC8C","#FFFFCC","#D7B992","#2C8236","#8B0000","#A6FFA6", \
+        "#F5B800","#686868"
 
 
 def open_board_window(splash,board):
@@ -234,95 +239,36 @@ def get_tiles():
     return tiles
 
 
-def draw_tile_skeleton():
-    """Draws the outlines for the hexagon tiles."""
+def draw_tile_skeleton(tiles):
+    """Draws the outlines for the hexagon tiles"""
     # Water base
     board_canvas.create_rectangle(hex_x_off-water_width,
         hex_y_off-water_width, win_width, win_height, fill="#6680FF")
 
-    active_tiles = [9,10,11,16,17,18,19,22,23,24,25,26,30,31,32,33,37,38,39]
+    for tile in tiles:
+        tile.set_vertices(hex_width, hex_height, hex_x_off, hex_y_off)
+        if tile.visible:
+            tile.draw_skeleton(board_canvas)
+            tile.draw(board_canvas)
+            tile.draw_number(board_canvas,txt_size)
 
-    # Hexagon tiles
-    for i in active_tiles:
-        x_i = 2*(i%7)
-        y_i = 3*int(i/7)
-        if i%7==i%14:
-            vertices = [
-                int(hex_width*(x_i-3)/10)+hex_x_off,
-                int(hex_height*(y_i-2)/16)+hex_y_off,
-                int(hex_width*(x_i-3)/10)+hex_x_off,
-                int(hex_height*(y_i)/16)+hex_y_off,
-                int(hex_width*(x_i-2)/10)+hex_x_off,
-                int(hex_height*(y_i+1)/16)+hex_y_off,
-                int(hex_width*(x_i-1)/10)+hex_x_off,
-                int(hex_height*(y_i)/16)+hex_y_off,
-                int(hex_width*(x_i-1)/10)+hex_x_off,
-                int(hex_height*(y_i-2)/16)+hex_y_off,
-                int(hex_width*(x_i-2)/10)+hex_x_off,
-                int(hex_height*(y_i-3)/16)+hex_y_off,
-                int(hex_width*(x_i-3)/10)+hex_x_off,
-                int(hex_height*(y_i-2)/16)+hex_y_off]
-        if i%7!=i%14:
-            vertices = [
-                int(hex_width*(x_i-2)/10)+hex_x_off,
-                int(hex_height*(y_i-2)/16)+hex_y_off,
-                int(hex_width*(x_i-2)/10)+hex_x_off,
-                int(hex_height*(y_i)/16)+hex_y_off,
-                int(hex_width*(x_i-1)/10)+hex_x_off,
-                int(hex_height*(y_i+1)/16)+hex_y_off,
-                int(hex_width*(x_i)/10)+hex_x_off,
-                int(hex_height*(y_i)/16)+hex_y_off,
-                int(hex_width*(x_i)/10)+hex_x_off,
-                int(hex_height*(y_i-2)/16)+hex_y_off,
-                int(hex_width*(x_i-1)/10)+hex_x_off,
-                int(hex_height*(y_i-3)/16)+hex_y_off,
-                int(hex_width*(x_i-2)/10)+hex_x_off,
-                int(hex_height*(y_i-2)/16)+hex_y_off]
-        tiles[i][0][0] = board_canvas.create_polygon(vertices,
-            outline=sand_color, width=4, fill='white', tags="hex")
-
-        # Circles at hexagon vertices for settlement / road placement
-        r = int(hex_height/25)
-        for j in [0,2,4,6,8,10]:
-            board_canvas.create_oval(vertices[j]-r,vertices[j+1]-r,
-                vertices[j]+r,vertices[j+1]+r, width=3, tags=("circle",i))
-
-    board_canvas.tag_lower("circle")
+    #     # Circles at hexagon vertices for settlement / road placement
+    #     r = int(hex_height/25)
+    #     for j in [0,2,4,6,8,10]:
+    #         board_canvas.create_oval(vertices[j]-r,vertices[j+1]-r,
+    #             vertices[j]+r,vertices[j+1]+r, width=3, tags=("circle",i))
+    #
+    # board_canvas.tag_lower("circle")
 
 
 def draw_tiles(tiles):
     """Draws tiles on game board window"""
-    active_tiles = [9,10,11,16,17,18,19,22,23,24,25,26,30,31,32,33,37,38,39]
-
-    # Fill in the appropriate colors and numbers
-    for i in active_tiles:
-        # Filling colors
-        if tiles[i][1]=="wood":
-            board_canvas.itemconfig(tiles[i][0][0],fill=wood_color)
-        elif tiles[i][1]=="brick":
-            board_canvas.itemconfig(tiles[i][0][0],fill=brick_color)
-        elif tiles[i][1]=="sheep":
-            board_canvas.itemconfig(tiles[i][0][0],fill=sheep_color)
-        elif tiles[i][1]=="wheat":
-            board_canvas.itemconfig(tiles[i][0][0],fill=wheat_color)
-        elif tiles[i][1]=="stone":
-            board_canvas.itemconfig(tiles[i][0][0],fill=stone_color)
-        else:
-            board_canvas.itemconfig(tiles[i][0][0],fill=sand_color)
-
-        # Filling numbers
-        pos = board_canvas.coords(tiles[i][0][0])
-        pos_x = (pos[0]+pos[6])/2
-        pos_y = (pos[1]+pos[7])/2
-        if tiles[i][2]>0 and tiles[i][2]<6:
-            tiles[i][0][1] = board_canvas.create_text(pos_x, pos_y,
-                font=("Helvetica", txt_size), text=tiles[i][2])
-        elif tiles[i][2]==6 or tiles[i][2]==8:
-            tiles[i][0][1] = board_canvas.create_text(pos_x, pos_y,
-                font=("Helvetica", txt_size), text=tiles[i][2], fill="red")
-        elif tiles[i][2]>8:
-            tiles[i][0][1] = board_canvas.create_text(pos_x, pos_y,
-                font=("Helvetica", txt_size), text=tiles[i][2])
+    for tile in tiles:
+        tile.set_vertices(hex_width, hex_height, hex_x_off, hex_y_off)
+        if tile.visible:
+            tile.draw_skeleton(board_canvas)
+            tile.draw(board_canvas)
+            tile.draw_number(board_canvas,txt_size)
 
 
 def draw_stats(stats):
@@ -422,4 +368,5 @@ def clear_resource_panel():
 ################################################################################
 # If this file is run itself, do the following
 if __name__ == '__main__':
-    print(version)
+    aesthetics(900,600)
+    print(wood_color)
