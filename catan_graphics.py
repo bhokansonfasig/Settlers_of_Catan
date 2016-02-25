@@ -24,6 +24,7 @@ class App(Frame):
         global board
         board = 0
 
+        global splash_canvas
         splash_canvas = Canvas(self, background=menu_color)
         # Welcome text
         splash_canvas.create_text(200, 50, font=("Helvetica", 36),
@@ -64,6 +65,7 @@ class App(Frame):
             tiles.append(Tile(i))
 
         draw_tile_skeleton(tiles)
+
 
         # Define board bindings & protocols
         def reset_size(event):
@@ -267,16 +269,12 @@ def draw_tile_skeleton(tiles):
         tile.set_vertices(hex_width, hex_height, hex_x_off, hex_y_off)
         if tile.visible:
             tile.draw_skeleton(board_canvas)
-            tile.draw(board_canvas)
-            tile.draw_number(board_canvas,txt_size)
 
 
 def draw_tiles(tiles):
     """Draws tiles on game board window"""
     for tile in tiles:
-        tile.set_vertices(hex_width, hex_height, hex_x_off, hex_y_off)
         if tile.visible:
-            tile.draw_skeleton(board_canvas)
             tile.draw(board_canvas)
             tile.draw_number(board_canvas,txt_size)
 
@@ -288,45 +286,81 @@ def draw_circle(point):
     if point.valid:
         point.link_vertex(hex_width, hex_height, hex_x_off, hex_y_off)
         board_canvas.create_oval(point.vertex[0]-r,point.vertex[1]-r,
-            point.vertex[0]+r,point.vertex[1]+r, width=3, tags=("circle"))
+            point.vertex[0]+r,point.vertex[1]+r, width=3, tags="circle")
 
 
-def draw_stats(stats):
+def draw_stats(players):
     """Draws player statistics such as victory points, total resources, etc.
     to game board window"""
     pass
 
 
-def click_return_coordinate(event):
-    global coordinate
-    coordinate = []
-    objects = board_canvas.find_enclosed(event.x-35, event.y-35,
-        event.x+35, event.y+35)
-    for obj in objects:
-        tags = board_canvas.gettags(obj)
-        for tag in tags:
-            if eval(tag)>0 and eval(tag)<50:
-                coordinate.append(eval(tag))
+def click_set(event):
+    """On click event, sets the x and y coordinates of the click"""
+    click_x.set(event.x)
+    click_y.set(event.y)
+    #print(click_x.get(),click_y.get())
 
 
 def player_place_settlement(player):
     """Asks player to click hex point on board to place settlement. Returns
     tuple of the placed settlement"""
-    board_canvas.bind("<Button-1>", click_return_coordinate)
+    # Watch for click events
+    board_canvas.bind("<Button-1>", click_set)
 
-    coordinate = []
+    # Determine the places a player can legally play
     points = legal_settlement_placements(player)
 
+    global click_x,click_y
+    click_x = IntVar()  # Tkinter variable that can be watched
+    click_y = IntVar()  # Tkinter variable that can be watched
+
+    click_x.set(0)
+    click_y.set(0)
+
+    # Player must click before circles are drawn
+    #  (a necessary evil to avoid no circles being drawn at all!)
+    board_canvas.wait_variable(click_x)
+
+    # Draw the circles for the valid plays
     for pt in points:
         draw_circle(pt)
 
-    input("Type anything to continue...")
+    valid_position = False
 
+    # Wait for the player to click a valid vertex
+    while(not(valid_position)):
+        coordinate = []
+        print("Click on a valid vertex (circled)")
+        # Get the hexagons with vertices near the point clicked
+        for tile in tiles:
+            for i in range(0,12,2):
+                if click_x.get()>tile.vertices[i]-10 and \
+                    click_x.get()<tile.vertices[i]+10 and \
+                    click_y.get()>tile.vertices[i+1]-10 and \
+                    click_y.get()<tile.vertices[i+1]+10:
+                    coordinate.append(tile.index)
+                    break
+        # Check that the vertex is a legal one
+        if len(coordinate)==3:
+            coordinate.sort()
+            for match in points:
+                if coordinate[0]==match.x and coordinate[1]==match.y and \
+                    coordinate[2]==match.z:
+                    valid_position = True
+        # If the point clicked is not a legal vertex, try again
+        if not(valid_position):
+            board_canvas.wait_variable(click_x)
+
+    print("Chose point",coordinate[0],coordinate[1],coordinate[2])
+
+    # Stop watching for click events
     board_canvas.unbind("<Button-1>")
 
+    # Get rid of all circles
     board_canvas.delete("circle")
 
-    return coordinate
+    return Point(coordinate[0],coordinate[1],coordinate[2])
 
 
 def player_place_road(player):
