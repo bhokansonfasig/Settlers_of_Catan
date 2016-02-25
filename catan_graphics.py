@@ -314,23 +314,19 @@ def player_place_settlement(player):
     global click_x,click_y
     click_x = IntVar()  # Tkinter variable that can be watched
     click_y = IntVar()  # Tkinter variable that can be watched
-
     click_x.set(0)
     click_y.set(0)
-
-    # Player must click before circles are drawn
-    #  (a necessary evil to avoid no circles being drawn at all!)
-    board_canvas.wait_variable(click_x)
-
-    # Draw the circles for the valid plays
-    for pt in points:
-        draw_circle(pt)
 
     valid_position = False
 
     # Wait for the player to click a valid vertex
     while(not(valid_position)):
         coordinate = []
+        # Draw the circles for the valid plays
+        #  (after clearing any existing circles)
+        board_canvas.delete("circle")
+        for pt in points:
+            draw_circle(pt)
         print("Click on a valid vertex (circled)")
         # Get the hexagons with vertices near the point clicked
         for tile in tiles:
