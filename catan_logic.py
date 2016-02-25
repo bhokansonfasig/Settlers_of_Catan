@@ -1,5 +1,6 @@
 from random import choice
 from point import Point
+from road import Road
 
 
 ################################################################################
@@ -98,6 +99,16 @@ def legal_settlement_placements(player):
         Point(17,18,24),Point(39,40,47)]
 
     return points
+
+
+def legal_road_placements(player):
+    """Returns an array of roads where the player can place a new road"""
+
+    roads = [Road(Point(9,16,17),Point(9,10,17)),
+        Road(Point(16,17,23),Point(17,23,24)),
+        Road(Point(17,18,24),Point(18,24,25))]
+
+    return roads
 
 
 def claim_settlement(point,player):
