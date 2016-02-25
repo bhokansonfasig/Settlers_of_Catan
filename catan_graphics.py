@@ -1,7 +1,9 @@
 from tkinter import *
 from main import version, new_game, load_game
-from tiles import Tile
+from catan_logic import legal_settlement_placements
 from player import Player
+from tiles import Tile
+from point import Point
 
 
 ################################################################################
@@ -268,14 +270,6 @@ def draw_tile_skeleton(tiles):
             tile.draw(board_canvas)
             tile.draw_number(board_canvas,txt_size)
 
-    #     # Circles at hexagon vertices for settlement / road placement
-    #     r = int(hex_height/25)
-    #     for j in [0,2,4,6,8,10]:
-    #         board_canvas.create_oval(vertices[j]-r,vertices[j+1]-r,
-    #             vertices[j]+r,vertices[j+1]+r, width=3, tags=("circle",i))
-    #
-    # board_canvas.tag_lower("circle")
-
 
 def draw_tiles(tiles):
     """Draws tiles on game board window"""
@@ -285,6 +279,16 @@ def draw_tiles(tiles):
             tile.draw_skeleton(board_canvas)
             tile.draw(board_canvas)
             tile.draw_number(board_canvas,txt_size)
+
+
+def draw_circle(point):
+    """Draws a circle around the vertex at point, as long as the point is
+        valid"""
+    r = int(hex_height/25)
+    if point.valid:
+        point.link_vertex(hex_width, hex_height, hex_x_off, hex_y_off)
+        board_canvas.create_oval(point.vertex[0]-r,point.vertex[1]-r,
+            point.vertex[0]+r,point.vertex[1]+r, width=3, tags=("circle"))
 
 
 def draw_stats(stats):
@@ -308,23 +312,19 @@ def click_return_coordinate(event):
 def player_place_settlement(player):
     """Asks player to click hex point on board to place settlement. Returns
     tuple of the placed settlement"""
-    board_canvas.tag_raise("circle")
-
     board_canvas.bind("<Button-1>", click_return_coordinate)
 
     coordinate = []
+    points = legal_settlement_placements(player)
 
-    # valid_coordinate = False
-    # while valid_coordinate==False:
-    #     print(coordinate)
-    #     if len(coordinate)==3:
-    #         valid_coordinate = True
-    #
-    # print(coordinate)
+    for pt in points:
+        draw_circle(pt)
+
+    input("Type anything to continue...")
 
     board_canvas.unbind("<Button-1>")
 
-    board_canvas.tag_lower("circle")
+    board_canvas.delete("circle")
 
     return coordinate
 

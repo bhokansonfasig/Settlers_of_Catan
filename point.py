@@ -25,3 +25,25 @@ class Point:
         else:
     		#print("Invalid point.")
             self.valid = False
+
+    def link_vertex(self, hex_width, hex_height, hex_x_off, hex_y_off):
+        # Vertex at top of lone-row hexagon (e.g. point 9,10,17)
+        if self.y-self.x==1:
+            x_i = 2*(self.z%7)
+            y_i = 3*int(self.z/7)
+            if self.z%7==self.z%14:
+                self.vertex = [int(hex_width*(x_i-2)/10)+hex_x_off,
+                    int(hex_height*(y_i-3)/16)+hex_y_off]
+            else:
+                self.vertex = [int(hex_width*(x_i-1)/10)+hex_x_off,
+                    int(hex_height*(y_i-3)/16)+hex_y_off]
+        # Vertex at bottom of lone hexagon (e.g. point 2,8,9)
+        elif self.z-self.y==1:
+            x_i = 2*(self.x%7)
+            y_i = 3*int(self.x/7)
+            if self.x%7!=self.x%14:
+                self.vertex = [int(hex_width*(x_i-1)/10)+hex_x_off,
+                    int(hex_height*(y_i+1)/16)+hex_y_off]
+            else:
+                self.vertex = [int(hex_width*(x_i-2)/10)+hex_x_off,
+                    int(hex_height*(y_i+1)/16)+hex_y_off]
