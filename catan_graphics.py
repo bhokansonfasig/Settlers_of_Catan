@@ -83,17 +83,8 @@ class App(Frame):
             board_canvas.delete(ALL)
             close_board_window(self.parent,board)
 
-        # def click_return_circles(event):
-        #     """Returns tags of circles near clicked pixel."""
-        #     objects = board_canvas.find_enclosed(event.x-35, event.y-35,
-        #         event.x+35, event.y+35)
-        #     for obj in objects:
-        #         print(board_canvas.gettags(obj))
-
-
         # Set board bindings & protocols
         board_canvas.bind("<Configure>", reset_size)
-        #board_canvas.bind("<Button-1>", click_return_circles)
         board.protocol("WM_DELETE_WINDOW", user_closed)
 
 
@@ -262,7 +253,7 @@ def set_players():
         players.append(player)
     elif playnum==4:
         name = input("Player 4 name: ")
-        player = Player(3,name,-1)
+        player = Player(4,name,-1)
         players.append(player)
 
     return players
@@ -301,12 +292,6 @@ def draw_circle(point):
         point.link_vertex(hex_width, hex_height, hex_x_off, hex_y_off)
         board_canvas.create_oval(point.vertex[0]-r,point.vertex[1]-r,
             point.vertex[0]+r,point.vertex[1]+r, width=3, tags="circle")
-
-
-def draw_stats(players):
-    """Draws player statistics such as victory points, total resources, etc.
-    to game board window"""
-    pass
 
 
 def click_set(event):
@@ -458,9 +443,15 @@ def computer_place_road(computer,players):
 
 def draw_settlement(point, player):
     """Draws a settlement at 'point' owned by player"""
-    # Make sure the player actually owns the point
-    #if player.settlements[-1].coordinate!=point.coordinate:
-    #    return
+    # Get the index of the point in the player's settlements array that
+    #  corresponds to this point
+    matching_point = -1
+    for i in range(len(player.settlements)):
+        if player.settlements[i].coordinate==point.coordinate:
+            matching_point = i
+    # If there isn't one, the player must not own this point!
+    if matching_point==-1:
+        return
 
     point.link_vertex(hex_width, hex_height, hex_x_off, hex_y_off)
     x = point.vertex[0]
@@ -468,16 +459,22 @@ def draw_settlement(point, player):
 
     size = int(hex_height/50)
 
-    board_canvas.create_polygon([x+size,y-size, x+size,y+size, x-size,y+size,
-        x-size,y-size, x,y-int(1.8*size)], fill=player.color, outline="black",
-        tags=("settlement",player.index))
+    player.settlements[i].tk_index = board_canvas.create_polygon([x+size,y-size,
+        x+size,y+size, x-size,y+size, x-size,y-size, x,y-int(1.8*size)],
+        fill=player.color, outline="black", tags=("settlement",player.index))
 
 
 def draw_road(road, player):
     """Draws a road owned by player"""
-    # Make sure the player actually owns the road
-    #if player.roads[-1].coordinates!=road.coordinates:
-    #    return
+    # Get the index of the road in the player's roads array that
+    #  corresponds to this road
+    matching_road = -1
+    for i in range(len(player.roads)):
+        if player.roads[i].coordinates==road.coordinates:
+            matching_road = i
+    # If there isn't one, the player must not own this road!
+    if matching_road==-1:
+        return
 
     road.point1.link_vertex(hex_width, hex_height, hex_x_off, hex_y_off)
     road.point2.link_vertex(hex_width, hex_height, hex_x_off, hex_y_off)
@@ -488,19 +485,31 @@ def draw_road(road, player):
 
     offset = int(hex_height/50)
 
-    board_canvas.create_line(x_1,y_1, x_2,y_2, width=7, fill=player.color,
-        tags=("road",player.index))
+    player.roads[i].tk_index = board_canvas.create_line(x_1,y_1, x_2,y_2,
+        width=7, fill=player.color, tags=("road",player.index))
 
     board_canvas.tag_raise("settlement")
     board_canvas.tag_raise("city")
 
 
 def draw_city(point, player):
-    """Clears the settlement at 'point' and draws a city there owned by player
-    number 'index'"""
-    # Make sure the player actually owns the point
-    #if player.cities[-1].coordinate!=point.coordinate:
-    #    return
+    """Clears settlement at 'point' and draws a city there owned by player"""
+    # Get the index of the point in the player's cities array that
+    #  corresponds to this point
+    matching_city = -1
+    for i in range(len(player.cities)):
+        if player.cities[i].coordinate==point.coordinate:
+            matching_city = i
+    # If there isn't one, the player must not own this point!
+    if matching_city==-1:
+        return
+
+    # Undraw the settlement from that point
+    for settlement in player.settlements:
+        if settlement.coordinate==point.coordinate:
+            board_canvas.delete(settlement.tk_index)
+
+    board_canvas.tag_raise("settlement")
 
     point.link_vertex(hex_width, hex_height, hex_x_off, hex_y_off)
     x = point.vertex[0]
@@ -508,14 +517,21 @@ def draw_city(point, player):
 
     size = int(hex_height/50)
 
-    board_canvas.create_polygon([x+2*size,y-int(1.8*size), x+2*size,y+size,
-        x-2*size,y+size, x-2*size,y-size, x-size,y-int(1.8*size), x,y-size,
-        x,y-int(1.8*size), x+size,y-int(3*size)], fill=player.color,
-        outline="black", tags=("settlement",player.index))
+    player.cities[i].tk_index = board_canvas.create_polygon([
+        x+2*size,y-int(1.8*size), x+2*size,y+size, x-2*size,y+size,
+        x-2*size,y-size, x-size,y-int(1.8*size), x,y-size, x,y-int(1.8*size),
+        x+size,y-int(3*size)], fill=player.color, outline="black",
+        tags=("city",player.index))
 
 
 def draw_dice(die_1,die_2):
     """Draws dice of values 'die_1' and 'die_2'."""
+    pass
+
+
+def draw_stats(players):
+    """Draws player statistics such as victory points, total resources, etc.
+    to game board window"""
     pass
 
 

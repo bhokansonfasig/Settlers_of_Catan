@@ -53,9 +53,11 @@ def new_game(splash,board):
     # Place two settlements per player for the first turn
     for player in players:
         if player.AI_code<0:
+            print(player.name,"place first settlement")
             settlement = player_place_settlement(player,players)
             player.settlements.append(settlement)
             draw_settlement(settlement,player)
+            print(player.name,"place first road")
             road = player_place_road(player,players)
             player.roads.append(road)
             draw_road(road,player)
@@ -69,9 +71,11 @@ def new_game(splash,board):
         draw_stats(players)
     for player in reversed(players):
         if player.AI_code<0:
+            print(player.name,"place second settlement")
             settlement = player_place_settlement(player,players)
             player.settlements.append(settlement)
             draw_settlement(settlement,player)
+            print(player.name,"place second road")
             road = player_place_road(player,players)
             player.roads.append(road)
             draw_road(road,player)
