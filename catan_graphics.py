@@ -434,13 +434,13 @@ def player_place_road(player,players):
 def computer_place_settlement(computer,players):
     """Has computer place settlement. Returns tuple of the placed settlement"""
 
-    return False
+    return Point(0,1,7)
 
 
 def computer_place_road(computer,players):
     """Has computer place road. Returns tuples of the placed road"""
 
-    return False
+    return Road(Point(0,1,7),Point(1,7,8))
 
 
 def draw_settlement(point, player):
@@ -461,7 +461,7 @@ def draw_settlement(point, player):
 
 
 def draw_road(road, player):
-    """Draws a road on 'side' owned by player"""
+    """Draws a road owned by player"""
     # Make sure the player actually owns the road
     #if player.roads[-1].coordinates!=road.coordinates:
     #    return
@@ -485,7 +485,19 @@ def draw_road(road, player):
 def draw_city(point, player):
     """Clears the settlement at 'point' and draws a city there owned by player
     number 'index'"""
-    pass
+    # Make sure the player actually owns the point
+    #if player.cities[-1].coordinate!=point.coordinate:
+    #    return
+
+    point.link_vertex(hex_width, hex_height, hex_x_off, hex_y_off)
+    x = point.vertex[0]
+    y = point.vertex[1]
+
+    size = int(hex_height/50)
+
+    board_canvas.create_polygon([x,y-size, x+size,y+size, x-size,y+size,
+        x-size,y-size, x,y-int(1.8*size)], fill=player.color, outline="black",
+        tags=("settlement",player.index))
 
 
 def draw_dice(die_1,die_2):
