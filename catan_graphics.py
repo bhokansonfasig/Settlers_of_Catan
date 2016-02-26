@@ -411,8 +411,7 @@ def player_place_road(player,players):
             road = Road(road_coordinates[0],road_coordinates[1])
             if road.valid:
                 for match in available_roads:
-                    if road.point1.coordinate==match.point1.coordinate and \
-                        road.point2.coordinate==match.point2.coordinate:
+                    if road==match:
                         valid_road = True
             # If the road is not legal after all, try two new vertices
             if not(valid_road):
@@ -447,7 +446,7 @@ def draw_settlement(point, player):
     #  corresponds to this point
     matching_point = -1
     for i in range(len(player.settlements)):
-        if player.settlements[i].coordinate==point.coordinate:
+        if player.settlements[i]==point:
             matching_point = i
     # If there isn't one, the player must not own this point!
     if matching_point==-1:
@@ -470,7 +469,7 @@ def draw_road(road, player):
     #  corresponds to this road
     matching_road = -1
     for i in range(len(player.roads)):
-        if player.roads[i].coordinates==road.coordinates:
+        if player.roads[i]==road:
             matching_road = i
     # If there isn't one, the player must not own this road!
     if matching_road==-1:
@@ -498,7 +497,7 @@ def draw_city(point, player):
     #  corresponds to this point
     matching_city = -1
     for i in range(len(player.cities)):
-        if player.cities[i].coordinate==point.coordinate:
+        if player.cities[i]==point:
             matching_city = i
     # If there isn't one, the player must not own this point!
     if matching_city==-1:
