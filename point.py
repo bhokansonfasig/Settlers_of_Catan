@@ -30,6 +30,9 @@ class Point:
     		#print("Invalid point.")
             self.valid = False
 
+    def __eq__(self,other):
+        return (self.x == other.x and self.y == other.y and self.z == other.z) 
+
     def link_vertex(self, hex_width, hex_height, hex_x_off, hex_y_off):
         # Vertex at top of lone-row hexagon (e.g. point 9,10,17)
         if self.y-self.x==1:
@@ -51,3 +54,30 @@ class Point:
             else:
                 self.vertex = [int(hex_width*(x_i-2)/10)+hex_x_off,
                     int(hex_height*(y_i+1)/16)+hex_y_off]
+
+
+if __name__ == '__main__':
+    x = 17
+    y = 23
+    z = 24
+    while(True):
+        x2 = int(input("hex1: "))
+        y2 = int(input("hex2: "))
+        z2 = int(input("hex3: "))
+
+        x1 = int(input("hex1: "))
+        y1 = int(input("hex2: "))
+        z1 = int(input("hex3: "))
+        
+        p1 = Point(x1,y1,z1)
+        p2 = Point(x2,y2,z2)
+
+        if(p1==p2):
+            print("same point")
+        else:
+            print("distinct points")
+        # z = int(input("hex3: "))
+        # if(neighbor_tile(x,y)):
+        #   print("They are neighbors.\n")
+        # else:
+        #   print("Not neighbors.\n")
