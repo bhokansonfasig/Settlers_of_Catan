@@ -303,15 +303,8 @@ def click_set(event):
     #print(click_x.get(),click_y.get())
 
 
-def player_place_settlement(player):
-    """Asks player to click hex point on board to place settlement. Returns
-    tuple of the placed settlement"""
-    # Watch for click events
-    board_canvas.bind("<Button-1>", click_set)
-
-    # Determine the places a player can legally play
-    available_points = legal_settlement_placements(player)
-
+def placement_loop(available_points):
+    """Loops until player chooses a valid vertex, then returns its coordinate"""
     global click_x,click_y
     click_x = IntVar()  # Tkinter variable that can be watched
     click_y = IntVar()  # Tkinter variable that can be watched
@@ -348,6 +341,20 @@ def player_place_settlement(player):
         if not(valid_position):
             board_canvas.wait_variable(click_x)
 
+    return coordinate
+
+
+def player_place_settlement(player):
+    """Asks player to click hex point on board to place settlement. Returns
+    tuple of the placed settlement"""
+    # Watch for click events
+    board_canvas.bind("<Button-1>", click_set)
+
+    # Determine the places a player can legally play
+    available_points = legal_settlement_placements(player)
+
+    coordinate = placement_loop(available_points)
+
     print("Chose point",coordinate)
 
     # Stop watching for click events
@@ -381,38 +388,12 @@ def player_place_road(player):
 
     road_coordinates = []
     valid_road = False
-    valid_position = False
 
     # Loop until player picks a valid road pair
     while(not(valid_road)):
         print("Choose two vertices to place a road (circled)")
         # Wait for the player to click a valid vertex
-        while(not(valid_position)):
-            coordinate = []
-            # Draw the circles for the valid plays
-            #  (after clearing any existing circles)
-            board_canvas.delete("circle")
-            for pt in available_points:
-                draw_circle(pt)
-            print("\tClick on a valid vertex (circled)")
-            # Get the hexagons with vertices near the point clicked
-            for tile in tiles:
-                for i in range(0,12,2):
-                    if click_x.get()>tile.vertices[i]-10 and \
-                        click_x.get()<tile.vertices[i]+10 and \
-                        click_y.get()>tile.vertices[i+1]-10 and \
-                        click_y.get()<tile.vertices[i+1]+10:
-                        coordinate.append(tile.index)
-                        break
-            # Check that the vertex is a legal one
-            if len(coordinate)==3:
-                coordinate.sort()
-                for match in available_points:
-                    if coordinate==match.coordinate:
-                        valid_position = True
-            # If the point clicked is not a legal vertex, try again
-            if not(valid_position):
-                board_canvas.wait_variable(click_x)
+        coordinate = placement_loop(available_points)
 
         # Add selected vertex to the road coordinates
         road_coordinates.append(Point(coordinate[0],coordinate[1],

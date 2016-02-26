@@ -50,6 +50,10 @@ def new_game(splash,board):
     playnum = len(players)
     draw_stats(players)
 
+    built_settlements = []
+    built_roads = []
+    built_cities = []
+
     # Place two settlements per player for the first turn
     for player in players:
         if player.AI_code<0:
