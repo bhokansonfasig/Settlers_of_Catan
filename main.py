@@ -34,6 +34,7 @@ def new_game(splash,board):
     print("New game started")
 
     # Set the number of players, their names, and levels of AI
+    global players
     players = set_players()
     # Randomize player order
     shuffle(players)

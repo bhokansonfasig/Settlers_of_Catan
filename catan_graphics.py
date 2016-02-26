@@ -74,9 +74,8 @@ class App(Frame):
             win_width = event.width
             win_height = event.height
             aesthetics(win_width,win_height)
-            board_canvas.delete(ALL)
-            draw_tile_skeleton(tiles)
-            draw_tiles(tiles)
+            redraw_board()
+
 
         def user_closed():
             """Closes board window nicely if user manually closes it."""
@@ -178,6 +177,20 @@ def set_color(element):
         return "#F5B800"
     if element.lower()=="stone":
         return "#686868"
+
+
+def redraw_board():
+    from main import players
+    board_canvas.delete(ALL)
+    draw_tile_skeleton(tiles)
+    draw_tiles(tiles)
+    for player in players:
+        for road in player.roads:
+            draw_road(road,player)
+        for settlement in player.settlements:
+            draw_settlement(settlement,player)
+        for city in player.cities:
+            draw_city(city,player)
 
 
 def open_board_window(splash,board):
