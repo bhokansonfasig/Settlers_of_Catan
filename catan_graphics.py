@@ -495,9 +495,10 @@ def draw_city(point, player):
 
     size = int(hex_height/50)
 
-    board_canvas.create_polygon([x,y-size, x+size,y+size, x-size,y+size,
-        x-size,y-size, x,y-int(1.8*size)], fill=player.color, outline="black",
-        tags=("settlement",player.index))
+    board_canvas.create_polygon([x+2*size,y-int(1.8*size), x+2*size,y+size,
+        x-2*size,y+size, x-2*size,y-size, x-size,y-int(1.8*size), x,y-size,
+        x,y-int(1.8*size), x+size,y-int(3*size)], fill=player.color,
+        outline="black", tags=("settlement",player.index))
 
 
 def draw_dice(die_1,die_2):
