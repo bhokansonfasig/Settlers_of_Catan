@@ -111,16 +111,6 @@ def legal_road_placements(player,players):
     return roads
 
 
-def claim_settlement(point,player):
-    """Gives claim of the settlement at 'point' to player"""
-    pass
-
-
-def claim_road(side,player):
-    """Gives claim of the road at 'side' to player"""
-    pass
-
-
 def give_resource(resource,player):
     """Gives player a card of resource type 'resource'"""
     pass
