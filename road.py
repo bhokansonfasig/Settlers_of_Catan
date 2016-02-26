@@ -7,6 +7,8 @@ class Road:
         self.point2 = Point(self.coordinates[1][0],self.coordinates[1][1],
                             self.coordinates[1][2])
 
+        self.tk_index = None  # Tkinter index of road
+
         #self.owner = 0  # Owner of road
 
         # Check whether road is valid on board

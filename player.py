@@ -8,6 +8,16 @@ class Player:
 		#  (i.e. player with index 1 may play third)
 		self.index = index
 
+		# Color of player's pieces
+		if self.index==1:
+			self.color = "red"
+		elif self.index==2:
+			self.color = "blue"
+		elif self.index==3:
+			self.color = "green"
+		elif self.index==4:
+			self.color = "white"
+
 		self.name = name
 
 		# What AI level is the player (-1 for human)

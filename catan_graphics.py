@@ -444,13 +444,42 @@ def computer_place_road(computer,players):
 
 
 def draw_settlement(point, player):
-    """Draws a settlement at 'point' owned by player number 'index'"""
-    pass
+    """Draws a settlement at 'point' owned by player"""
+    # Make sure the player actually owns the point
+    #if player.settlements[-1].coordinate!=point.coordinate:
+    #    return
+
+    point.link_vertex(hex_width, hex_height, hex_x_off, hex_y_off)
+    x = point.vertex[0]
+    y = point.vertex[1]
+
+    size = int(hex_height/50)
+
+    board_canvas.create_polygon([x+size,y-size, x+size,y+size, x-size,y+size,
+        x-size,y-size, x,y-int(1.8*size)], fill=player.color, outline="black",
+        tags=("settlement",player.index))
 
 
-def draw_road(side, player):
-    """Draws a road on 'side' owned by player number 'index'"""
-    pass
+def draw_road(road, player):
+    """Draws a road on 'side' owned by player"""
+    # Make sure the player actually owns the road
+    #if player.roads[-1].coordinates!=road.coordinates:
+    #    return
+
+    road.point1.link_vertex(hex_width, hex_height, hex_x_off, hex_y_off)
+    road.point2.link_vertex(hex_width, hex_height, hex_x_off, hex_y_off)
+    x_1 = road.point1.vertex[0]
+    y_1 = road.point1.vertex[1]
+    x_2 = road.point2.vertex[0]
+    y_2 = road.point2.vertex[1]
+
+    offset = int(hex_height/50)
+
+    board_canvas.create_line(x_1,y_1, x_2,y_2, width=7, fill=player.color,
+        tags=("road",player.index))
+
+    board_canvas.tag_raise("settlement")
+    board_canvas.tag_raise("city")
 
 
 def draw_city(point, player):
