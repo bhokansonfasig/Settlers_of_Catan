@@ -5,6 +5,10 @@ class Point:
         self.y = self.coordinate[1]
         self.z = self.coordinate[2]
 
+        self.vertex = False
+
+        self.tk_index = None  # Tkinter index of settlement or city
+
         #self.settlement_owner = 0  # Owner of settlement on point
         #self.city_owner = 0  # Owner of city on point
 

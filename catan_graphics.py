@@ -444,12 +444,24 @@ def computer_place_road(computer,players):
 
 
 def draw_settlement(point, player):
-    """Draws a settlement at 'point' owned by player number 'index'"""
-    pass
+    """Draws a settlement at 'point' owned by player"""
+    # Make sure the player actually owns the point
+    #if player.settlements[-1].coordinate!=point.coordinate:
+    #    return
+
+    point.link_vertex(hex_width, hex_height, hex_x_off, hex_y_off)
+    x = point.vertex[0]
+    y = point.vertex[1]
+
+    size = int(hex_height/50)
+
+    board_canvas.create_polygon([x+size,y-size, x+size,y+size, x-size,y+size,
+        x-size,y-size, x,y-int(1.8*size)], fill=player.color,
+        tags=("settlement",player.index))
 
 
 def draw_road(side, player):
-    """Draws a road on 'side' owned by player number 'index'"""
+    """Draws a road on 'side' owned by player"""
     pass
 
 
