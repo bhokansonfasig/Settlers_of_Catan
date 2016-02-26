@@ -92,7 +92,7 @@ def set_tiles(tiles):
     return tiles
 
 
-def legal_settlement_placements(player):
+def legal_settlement_placements(player,players):
     """Returns an array of points where the player can place a settlement"""
 
     points = [Point(9,16,17),Point(9,10,17),Point(16,17,23),Point(17,23,24),
@@ -101,7 +101,7 @@ def legal_settlement_placements(player):
     return points
 
 
-def legal_road_placements(player):
+def legal_road_placements(player,players):
     """Returns an array of roads where the player can place a new road"""
 
     roads = [Road(Point(9,16,17),Point(9,10,17)),

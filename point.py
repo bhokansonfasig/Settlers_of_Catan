@@ -5,8 +5,8 @@ class Point:
         self.y = self.coordinate[1]
         self.z = self.coordinate[2]
 
-        self.settlement_owner = 0  # Owner of settlement on point
-        self.city_owner = 0  # Owner of city on point
+        #self.settlement_owner = 0  # Owner of settlement on point
+        #self.city_owner = 0  # Owner of city on point
 
         # Check whether point is valid on board
         from construction import neighbor_tile

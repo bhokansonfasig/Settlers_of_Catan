@@ -344,14 +344,14 @@ def placement_loop(available_points):
     return coordinate
 
 
-def player_place_settlement(player):
+def player_place_settlement(player,players):
     """Asks player to click hex point on board to place settlement. Returns
     tuple of the placed settlement"""
     # Watch for click events
     board_canvas.bind("<Button-1>", click_set)
 
     # Determine the places a player can legally play
-    available_points = legal_settlement_placements(player)
+    available_points = legal_settlement_placements(player,players)
 
     print("Choose a vertex to place a settlement")
 
@@ -368,7 +368,7 @@ def player_place_settlement(player):
     return Point(coordinate[0],coordinate[1],coordinate[2])
 
 
-def player_place_road(player):
+def player_place_road(player,players):
     """Asks player to click two hex points on board to place road between them.
     Returns tuples of the placed road"""
 
@@ -376,7 +376,7 @@ def player_place_road(player):
     board_canvas.bind("<Button-1>", click_set)
 
     # Determine the places a player can legally play
-    available_roads = legal_road_placements(player)
+    available_roads = legal_road_placements(player,players)
     available_points = []
     for road in available_roads:
         available_points.append(road.point1)
@@ -391,9 +391,10 @@ def player_place_road(player):
     road_coordinates = []
     valid_road = False
 
+    print("Choose two vertices to place a road")
+
     # Loop until player picks a valid road pair
     while(not(valid_road)):
-        print("Choose two vertices to place a road (circled)")
         print(len(road_coordinates),"vertices chosen so far")
         # Wait for the player to click a valid vertex
         coordinate = placement_loop(available_points)
@@ -430,16 +431,16 @@ def player_place_road(player):
     return road
 
 
-def computer_place_settlement(computer):
+def computer_place_settlement(computer,players):
     """Has computer place settlement. Returns tuple of the placed settlement"""
 
-    return (0,1,2)
+    return False
 
 
-def computer_place_road(computer):
+def computer_place_road(computer,players):
     """Has computer place road. Returns tuples of the placed road"""
 
-    return ((0,1,2),(1,2,3))
+    return False
 
 
 def draw_settlement(point, player):

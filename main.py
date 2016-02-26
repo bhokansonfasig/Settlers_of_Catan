@@ -50,40 +50,36 @@ def new_game(splash,board):
     playnum = len(players)
     draw_stats(players)
 
-    built_settlements = []
-    built_roads = []
-    built_cities = []
-
     # Place two settlements per player for the first turn
     for player in players:
         if player.AI_code<0:
-            settlement = player_place_settlement(player)
+            settlement = player_place_settlement(player,players)
             claim_settlement(settlement,player)
             draw_settlement(settlement,player)
-            road = player_place_road(player)
+            road = player_place_road(player,players)
             claim_road(road,player)
             draw_road(road,player)
         else:
-            settlement = computer_place_settlement(player)
+            settlement = computer_place_settlement(player,players)
             claim_settlement(settlement,player)
             draw_settlement(settlement,player)
-            road = computer_place_road(player)
+            road = computer_place_road(player,players)
             claim_road(road,player)
             draw_road(road,player)
         draw_stats(players)
     for player in reversed(players):
         if player.AI_code<0:
-            settlement = player_place_settlement(player)
+            settlement = player_place_settlement(player,players)
             claim_settlement(settlement,player)
             draw_settlement(settlement,player)
-            road = player_place_road(player)
+            road = player_place_road(player,players)
             claim_road(road,player)
             draw_road(road,player)
         else:
-            settlement = computer_place_settlement(player)
+            settlement = computer_place_settlement(player,players)
             claim_settlement(settlement,player)
             draw_settlement(settlement,player)
-            road = computer_place_road(player)
+            road = computer_place_road(player,players)
             claim_road(road,player)
             draw_road(road,player)
         resources = point_resources(settlement)
