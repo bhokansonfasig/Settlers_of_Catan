@@ -321,7 +321,7 @@ def placement_loop(available_points):
         board_canvas.delete("circle")
         for pt in available_points:
             draw_circle(pt)
-        print("Click on a valid vertex to place a settlement (circled)")
+        print("\tClick on a valid vertex (circled)")
         # Get the hexagons with vertices near the point clicked
         for tile in tiles:
             for i in range(0,12,2):
@@ -352,6 +352,8 @@ def player_place_settlement(player):
 
     # Determine the places a player can legally play
     available_points = legal_settlement_placements(player)
+
+    print("Choose a vertex to place a settlement")
 
     coordinate = placement_loop(available_points)
 
@@ -392,6 +394,7 @@ def player_place_road(player):
     # Loop until player picks a valid road pair
     while(not(valid_road)):
         print("Choose two vertices to place a road (circled)")
+        print(len(road_coordinates),"vertices chosen so far")
         # Wait for the player to click a valid vertex
         coordinate = placement_loop(available_points)
 
