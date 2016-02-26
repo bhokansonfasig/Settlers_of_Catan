@@ -1,3 +1,6 @@
+from point import Point
+from road import Road
+
 class Player:
 
 	def __init__(self,index,name,AI_code):
