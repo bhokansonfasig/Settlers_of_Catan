@@ -1,3 +1,14 @@
+#checks if two points are adjacent
+def adjacent_points(point1,point2):
+    if(not(point1.valid and point2.valid)):
+        print ("non valid points were given to check for adjacency!")
+        return False
+    common = list(set(point1.coordinate).intersection(point2.coordinate))
+    if(len(common) == 2):
+        return True
+    else:
+        return False
+
 class Point:
     def __init__(self, hex1, hex2, hex3):
         self.coordinate = sorted([hex1,hex2,hex3])
@@ -72,10 +83,10 @@ if __name__ == '__main__':
         p1 = Point(x1,y1,z1)
         p2 = Point(x2,y2,z2)
 
-        if(p1==p2):
-            print("same point")
+        if(adjacent_points(p1,p2)):
+            print("adjacent")
         else:
-            print("distinct points")
+            print("non adjacent")
         # z = int(input("hex3: "))
         # if(neighbor_tile(x,y)):
         #   print("They are neighbors.\n")
