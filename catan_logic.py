@@ -13,7 +13,7 @@ all_roads = []
 
 #generates all the points on the grid and stores them in all_points list
 def generate_points_and_roads():
-    
+
     for s in seed_points: #generate points
         i = 0
         while(i<6):
@@ -126,7 +126,7 @@ def add_point(point,player):
 def legal_settlement_placements(player,players):
     """Returns an array of points where the player can place a settlement"""
     points = []
-    
+
     for p in player.points:
         if (p.building != 0):
             continue
@@ -144,7 +144,7 @@ def legal_settlement_placements(player,players):
 
 def legal_road_placements(player,players):
     road_options = []
-    for road in all_roads:        
+    for road in all_roads:
         #road has to be connected to some structure (road/city/settlement), ie "acccess points"
         connected = (road.point1 in player.points) or (road.point2 in player.points)
         #check all the roads to see if the road is not replacing any other road
@@ -156,11 +156,12 @@ def legal_road_placements(player,players):
 
         if (new_road and (connected or len(player.roads)==0)): #let the player build it anywhere if he has no roads in the begining
             road_options.append(road)
-    
+
     return road_options
 
 def give_resource(resource,player):
     """Gives player a card of resource type 'resource'"""
+    # Probably better to add this to the player class actually
     pass
 
 
@@ -197,7 +198,7 @@ def distribute_resources(dice_value):
 #updates the player obj with the buidling info
 def player_building_update(point,build_type,player):
     point.building = build_type
-    
+
     found = False
     for p in player.points:
         if(point == p):

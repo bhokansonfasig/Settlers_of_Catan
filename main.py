@@ -22,7 +22,8 @@ def new_game(splash,board):
     from player import Player
     from tiles import Tile
     from catan_logic import set_tiles, roll_dice, check_winner
-    from catan_logic import give_resource, point_resources, distribute_resources, player_building_update
+    from catan_logic import give_resource, point_resources, distribute_resources
+    from catan_logic import player_building_update
     from catan_graphics import open_board_window, close_board_window, close_all
     from catan_graphics import set_players, get_tiles, draw_tiles, draw_stats
     from catan_graphics import player_place_settlement, player_place_road
