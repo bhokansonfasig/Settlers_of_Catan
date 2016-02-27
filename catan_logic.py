@@ -3,6 +3,9 @@ from road import Road
 from point import Point
 from player import Player
 
+#the leftmost points on the grid, which are used to generate the rest
+seed_points = [[0,1,7],[1,7,8],[7,8,15],[7,14,15],[14,15,21],[15,21,22],[21,28,29],[21,22,29],[28,29,35],[29,35,36],[35,42,43],[35,36,43]]
+all_points = []
 
 players = [Player(0,"Aman",-1),Player(1,"Ben",-1)] #for testing
 ################################################################################
@@ -90,6 +93,17 @@ def set_tiles(tiles):
 
     return tiles
 
+#generates all the points on the grid and stores them in all_points list
+def generate_points():
+    for s in seed_points:
+        i = 0
+        while(i<6):
+            p = Point(s[0]+i,s[1]+i,s[2]+i)
+            if(p.valid):
+                all_points.append(p)
+            i += 1
+
+
 #adds the point to the list of points that a player _already_ has access to via built roads
 def add_point(point,player):
     if(point not in player.points):
@@ -97,24 +111,24 @@ def add_point(point,player):
 
 #this function, apart from making a legal road will also return True or False depending on whether it succeeded or not
 def legal_road_placements(player,players):
-    x1 = int(input("x1:"))
-    y1 = int(input("y1:"))
-    z1 = int(input("z1:"))
+    # x1 = int(input("x1:"))
+    # y1 = int(input("y1:"))
+    # z1 = int(input("z1:"))
 
-    x2 = int(input("x2:"))
-    y2 = int(input("y2:"))
-    z2 = int(input("z2:"))
+    # x2 = int(input("x2:"))
+    # y2 = int(input("y2:"))
+    # z2 = int(input("z2:"))
 
     p1 = Point(x1,y1,z1)
     p2 = Point(x2,y2,z2)
     r = Road(p1,p2)
     
     if(r.valid):
-        #road have to be connected to some structure (road/city/settlement), ie "acccess points"
+        #road has to be connected to some structure (road/city/settlement), ie "acccess points"
         connected = (p1 in player.points) or (p2 in player.points)
         #check all the roads to see if the road is not replacing any other road
         new_road = True
-        for x in [0,len(players)-1]:
+        for x in range(0,len(players)-1):
             new_road = new_road and (r not in players[x].roads)
             if(not new_road):
                 break
@@ -134,6 +148,13 @@ def legal_road_placements(player,players):
     else:
         print("Invalid road.")
         return False
+
+
+def legal_building_placements(player,players):
+    x = int(input("x:"))
+    y = int(input("y:"))
+    z = int(input("z:"))
+    p = Point(x,y,z)
 
 
 
@@ -176,12 +197,8 @@ def distribute_resources(dice_value):
 ################################################################################
 # If this file is run itself, do the following
 if __name__ == '__main__':
-    i=0
-    while(True):
-        print("Turn: ",i+1,"\n")
-        legal_road_placements(players[i%2],players)
-        for k in [0,len(players)-1]:
-            print(players[k].name," has ",len(players[k].roads)," roads and ",len(players[k].points),"access points.")
-            # for l in [0,len(players[k].roads)-1]:
-            #     print(players[k].name,"\n",players[k].roads[l].coordinates,"\n")
-        i += 1
+    generate_points()
+    print(len(all_points))
+    for x in range(0,len(all_points)-1):
+        # print(x)
+        print(all_points[x].coordinate)
