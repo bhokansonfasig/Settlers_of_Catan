@@ -1,16 +1,5 @@
 from tiles import Tile
 
-#checks if two points are adjacent
-def adjacent_points(point1,point2):
-    if(not(point1.valid and point2.valid)):
-        print ("non valid points were given to check for adjacency!")
-        return False
-    common = list(set(point1.coordinate).intersection(point2.coordinate))
-    if(len(common) == 2):
-        return True
-    else:
-        return False
-
 class Point:
     def __init__(self, hex1, hex2, hex3):
         self.coordinate = sorted([hex1,hex2,hex3])
@@ -43,6 +32,17 @@ class Point:
     def __eq__(self,other):
         return (self.x == other.x and self.y == other.y and self.z == other.z)
 
+    #checks if two points are adjacent
+    def adjacent_point(self,other):
+        if(not(self.valid and other.valid)):
+            print ("non valid points were given to check for adjacency!")
+            return False
+        common = list(set(self.coordinate).intersection(other.coordinate))
+        if(len(common) == 2):
+            return True
+        else:
+            return False
+
     def link_vertex(self, hex_width, hex_height, hex_x_off, hex_y_off):
         # Vertex at top of lone-row hexagon (e.g. point 9,10,17)
         if self.y-self.x==1:
@@ -71,9 +71,9 @@ if __name__ == '__main__':
     y = 23
     z = 24
     while(True):
-        # x2 = int(input("hex1: "))
-        # y2 = int(input("hex2: "))
-        # z2 = int(input("hex3: "))
+        x2 = int(input("hex1: "))
+        y2 = int(input("hex2: "))
+        z2 = int(input("hex3: "))
 
         x1 = int(input("hex1: "))
         y1 = int(input("hex2: "))
@@ -82,7 +82,7 @@ if __name__ == '__main__':
         p1 = Point(x1,y1,z1)
         # p2 = Point(x2,y2,z2)
 
-        print(p1.valid)
+        print(p1.adjacent_point(Point(x2,y2,z2)))
 
         # if(adjacent_points(p1,p2)):
         #     print("adjacent")
