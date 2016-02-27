@@ -2,8 +2,6 @@ class Road:
     def __init__(self, point1, point2):
         from point import Point
         self.coordinates = sorted([point1.coordinate,point2.coordinate])
-        # print(self.coordinates)
-        print("this ran")
 
         self.point1 = Point(self.coordinates[0][0],self.coordinates[0][1],
                             self.coordinates[0][2])

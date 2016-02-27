@@ -1,8 +1,10 @@
 from random import choice
-from point import Point
 from road import Road
+from point import Point
+from player import Player
 
 
+players = [Player(0,"Aman",-1),Player(1,"Ben",-1)] #for testing
 ################################################################################
 # Function definitions
 
@@ -101,14 +103,36 @@ def legal_settlement_placements(player,players):
     return points
 
 
-def legal_road_placements(player,players):
-    """Returns an array of roads where the player can place a new road"""
+#this function, apart from making a legal road will also return True or False depending on whether it succeeded or not
+def legal_settlement_placements(player,players):
+    x1 = int(input("x1:"))
+    y1 = int(input("y1:"))
+    z1 = int(input("z1:"))
 
-    roads = [Road(Point(9,16,17),Point(9,10,17)),
-        Road(Point(16,17,23),Point(17,23,24)),
-        Road(Point(17,18,24),Point(18,24,25))]
+    x2 = int(input("x2:"))
+    y2 = int(input("y2:"))
+    z2 = int(input("z2:"))
 
-    return roads
+    r = Road(Point(x1,y1,z1),Point(x2,y2,z2))
+    if(r.valid):
+        #check all the roads to see if the road is not replacing any other road
+        new_road = True
+        for x in [0,len(players)-1]:
+            new_road = new_road and (r not in players[x].roads)
+            if(not new_road):
+                break
+        
+        if (new_road):
+            player.roads.append(r)
+            print(player.name,"'s", "road list appended.")
+            return True
+        else:
+            print("That edge already has a road!")
+            return False
+    else:
+        print("Invalid road.")
+        return False
+
 
 
 def give_resource(resource,player):
@@ -150,4 +174,12 @@ def distribute_resources(dice_value):
 ################################################################################
 # If this file is run itself, do the following
 if __name__ == '__main__':
-    print(version)
+    i=0
+    while(True):
+        print("Turn: ",i+1,"\n")
+        legal_settlement_placements(players[i%2],players)
+        for k in [0,len(players)-1]:
+            print(players[k].name," has ",len(players[k].roads)," roads.")
+            # for l in [0,len(players[k].roads)-1]:
+            #     print(players[k].name,"\n",players[k].roads[l].coordinates,"\n")
+        i += 1
