@@ -26,7 +26,7 @@ class Point:
         # Check whether point is valid on board
         from construction import neighbor_tile
         hidden_tiles = [0,1,2,3,4,5,6,13,20,27,34,41,48,47,46,45,44,43,42,35,
-            28,21,14,7,8,12,13,29,36,40]
+            28,21,14,7,8,12,15,29,36,40]
 
         if (neighbor_tile(self.x,self.y) and neighbor_tile(self.y,self.z) and
             neighbor_tile(self.x,self.z)):
