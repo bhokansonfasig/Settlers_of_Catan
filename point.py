@@ -10,6 +10,7 @@ class Point:
         self.vertex = False
 
         self.building = 0 #empty = 0, settlement = 1, city == 2
+        self.building_ownership = 0 #set this equal to the player.index
 
         self.tk_index = None  # Tkinter index of settlement or city
 
