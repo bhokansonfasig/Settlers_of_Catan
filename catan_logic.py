@@ -90,6 +90,10 @@ def set_tiles(tiles):
 
     return tiles
 
+#adds the point to the list of points that a player _already_ has access to via built roads
+def add_point(point,player):
+    if(point not in player.points):
+        player.points.append(point)
 
 #this function, apart from making a legal road will also return True or False depending on whether it succeeded or not
 def legal_settlement_placements(player,players):
@@ -101,7 +105,10 @@ def legal_settlement_placements(player,players):
     y2 = int(input("y2:"))
     z2 = int(input("z2:"))
 
-    r = Road(Point(x1,y1,z1),Point(x2,y2,z2))
+    p1 = Point(x1,y1,z1)
+    p2 = Point(x2,y2,z2)
+    r = Road(p1,p2)
+    
     if(r.valid):
         #check all the roads to see if the road is not replacing any other road
         new_road = True
@@ -113,6 +120,8 @@ def legal_settlement_placements(player,players):
         if (new_road):
             player.roads.append(r)
             print(player.name,"'s", "road list appended.")
+            add_point(p1,player)
+            add_point(p2,player)
             return True
         else:
             print("That edge already has a road!")
@@ -167,7 +176,7 @@ if __name__ == '__main__':
         print("Turn: ",i+1,"\n")
         legal_settlement_placements(players[i%2],players)
         for k in [0,len(players)-1]:
-            print(players[k].name," has ",len(players[k].roads)," roads.")
+            print(players[k].name," has ",len(players[k].roads)," roads and ",len(players[k].points),"access points.")
             # for l in [0,len(players[k].roads)-1]:
             #     print(players[k].name,"\n",players[k].roads[l].coordinates,"\n")
         i += 1

@@ -33,6 +33,9 @@ class Player:
 		self.settlements = []
 		self.cities = []
 
+		#Access to points: useful for implementing building of new roads
+		self.points = []
+
 		# Acquired resources
 		self.wood = 0
 		self.brick = 0
