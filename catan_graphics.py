@@ -372,13 +372,6 @@ def player_place_road(player,players):
     # # Watch for click events
     # board_canvas.bind("<Button-1>", click_set)
 
-    # Determine the places a player can legally play
-    available_roads = legal_road_placements(player,players)
-    available_points = []
-    for road in available_roads:
-        available_points.append(road.point1)
-        available_points.append(road.point2)
-
     # global click_x,click_y
     # click_x = IntVar()  # Tkinter variable that can be watched
     # click_y = IntVar()  # Tkinter variable that can be watched
@@ -393,6 +386,31 @@ def player_place_road(player,players):
     # Loop until player picks a valid road pair
     while(not(valid_road)):
         print(len(road_coordinates),"vertices chosen so far")
+
+        # Determine the places a player can legally play
+        available_roads = legal_road_placements(player,players)
+        available_points = []
+        for road in available_roads:
+            available_points.append(road.point1)
+            available_points.append(road.point2)
+
+        # Just draw points where player can connect to first point in the second
+        #  loop. Let player click on the initial point to cancel
+        if len(road_coordinates)==1:
+            points_to_remove = []
+            for point in available_points:
+                if road_coordinates[0].adjacent_point(point) or \
+                    road_coordinates[0]==point:
+                    #print("Point",road_coordinates[0].x,road_coordinates[0].y,
+                    #    road_coordinates[0].z,"adjacent to",point.x,point.y,point.z)
+                    continue
+                else:
+                    #print("Removing point",point.x,point.y,point.z)
+                    points_to_remove.append(point)
+            for point in points_to_remove:
+                while point in available_points:
+                    available_points.remove(point)
+
         # Wait for the player to click a valid vertex
         coordinate = placement_loop(available_points)
 
