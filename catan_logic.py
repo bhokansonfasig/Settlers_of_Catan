@@ -117,6 +117,71 @@ def set_tiles(tiles):
     return tiles
 
 
+def build_settlement(player,players):
+    from catan_graphics import player_choose_settlement, draw_settlement
+    from catan_AI import computer_choose_settlement
+    # Unless it's the first round of placements, take resources away
+    if len(player.roads)>1:
+        player.wood -= 1
+        player.brick -= 1
+        player.wheat -= 1
+        player.sheep -= 1
+    # Get the point for the settlement to be built
+    if player.AI_code<0:
+        settlement = player_choose_settlement(player,players)
+    else:
+        settlement = computer_choose_settlement(player,players)
+    # Update the player's building list
+    player_building_update(settlement,1,player)
+    # Draw the settlement on the board
+    draw_settlement(settlement,player)
+    # Recalculate the player's score
+    player.calculate_score()
+
+    return settlement
+
+
+def build_road(player,players):
+    from catan_graphics import player_choose_road, draw_road
+    from catan_AI import computer_choose_road
+    # Unless it's the first round of placements, take resources away
+    if len(player.roads)>1:
+        player.wood -= 1
+        player.brick -= 1
+    # Get the points for the road to be built
+    if player.AI_code<0:
+        road = player_choose_road(player,players)
+    else:
+        road = computer_choose_road(player,players)
+    # Update the player's road and point lists
+    player.roads.append(road)
+    player.points.append(road.point1)
+    player.points.append(road.point2)
+    # Draw the road on the board
+    draw_road(road,player)
+    # Recalculate the player's score
+    player.calculate_score()
+
+
+def build_city(player,players):
+    from catan_graphics import player_choose_city, draw_city
+    from catan_AI import computer_choose_city
+    # Take resources away
+    player.stone -= 3
+    player.wheat -= 2
+    # Get the point for the city to be built
+    if player.AI_code<0:
+        city = player_choose_city(player,players)
+    else:
+        city = computer_choose_city(player,players)
+    # Update the player's building list
+    player_building_update(city,2,player)
+    # Draw the city on the board
+    draw_city(city,player)
+    # Recalculate the player's score
+    player.calculate_score()
+
+
 #adds the point to the list of points that a player _already_ has access to via built roads
 def add_point(point,player):
     if(point not in player.points):
@@ -158,11 +223,6 @@ def legal_road_placements(player,players):
             road_options.append(road)
 
     return road_options
-
-def give_resource(resource,player):
-    """Gives player a card of resource type 'resource'"""
-    # Probably better to add this to the player class actually
-    pass
 
 
 def point_resources(point):

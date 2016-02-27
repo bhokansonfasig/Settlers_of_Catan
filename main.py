@@ -22,13 +22,12 @@ def new_game(splash,board):
     from player import Player
     from tiles import Tile
     from catan_logic import set_tiles, roll_dice, check_winner
-    from catan_logic import give_resource, point_resources, distribute_resources
+    from catan_logic import point_resources, distribute_resources
+    from catan_logic import build_settlement, build_road, build_city
     from catan_logic import player_building_update
     from catan_graphics import open_board_window, close_board_window, close_all
     from catan_graphics import set_players, get_tiles, draw_tiles, draw_stats
-    from catan_graphics import player_place_settlement, player_place_road
-    from catan_graphics import computer_place_settlement, computer_place_road
-    from catan_graphics import draw_settlement, draw_city, draw_road, draw_dice
+    from catan_graphics import draw_road, draw_dice
     from catan_graphics import draw_resource_panel, clear_resource_panel
     from catan_graphics import draw_intermediate_screen
 
@@ -54,52 +53,20 @@ def new_game(splash,board):
 
     # Place two settlements per player for the first turn
     for player in players:
-        if player.AI_code<0:
-            print(player.name,"place first settlement")
-            settlement = player_place_settlement(player,players)
-            player_building_update(settlement,1,player)
-            draw_settlement(settlement,player)
-            print(player.name,"place first road")
-            road = player_place_road(player,players)
-            player.roads.append(road)
-            player.points.append(road.point1)
-            player.points.append(road.point2)
-            draw_road(road,player)
-        else:
-            settlement = computer_place_settlement(player,players)
-            player_building_update(settlement,1,player)
-            draw_settlement(settlement,player)
-            road = computer_place_road(player,players)
-            player.roads.append(road)
-            player.points.append(road.point1)
-            player.points.append(road.point2)
-            draw_road(road,player)
+        print(player.name,"build first settlement")
+        build_settlement(player,players)
+        print(player.name,"build first road")
+        build_road(player,players)
         draw_stats(players)
     for player in reversed(players):
-        if player.AI_code<0:
-            print(player.name,"place second settlement")
-            settlement = player_place_settlement(player,players)
-            player_building_update(settlement,1,player)
-            draw_settlement(settlement,player)
-            first_round = False
-            print(player.name,"place second road")
-            road = player_place_road(player,players)
-            player.roads.append(road)
-            player.points.append(road.point1)
-            player.points.append(road.point2)
-            draw_road(road,player)
-        else:
-            settlement = computer_place_settlement(player,players)
-            player_building_update(settlement,1,player)
-            draw_settlement(settlement,player)
-            road = computer_place_road(player,players)
-            player.roads.append(road)
-            player.points.append(road.point1)
-            player.points.append(road.point2)
-            draw_road(road,player)
-        resources = point_resources(settlement)
+        first_round = False
+        print(player.name,"build second settlement")
+        point = build_settlement(player,players)
+        print(player.name,"build second road")
+        build_road(player,players)
+        resources = point_resources(point)
         for resource in resources:
-            give_resource(resource,player)
+            player.give_resource(resource)
         draw_stats(players)
 
     # Loop through player turns until someone wins!

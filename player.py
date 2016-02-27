@@ -46,8 +46,13 @@ class Player:
 		#Development cards: lets leave these for now
 
 		# Score keeping
-		self.road_length = 0 #we better deal with this from early on
 		self.score = 0
+		self.road_length = 0 #we better deal with this from early on
+		self.has_longest_road = False
+		self.has_largest_army = False # For once we do development cards
+
+	def __eq__(self,other):
+		return((self.index == other.index) and (self.name == other.name))
 
 	def resource_count(self):
 		return self.wood + self.brick + self.wheat + self.sheep + self.stone
@@ -59,5 +64,27 @@ class Player:
 		else:
 			return False
 
-	def __eq__(self,other):
-		return((self.index == other.index) and (self.name == other.name))
+	def calculate_score(self):
+		self.score = 0
+		# One point for each settlement
+		self.score += len(self.settlements)
+		# Two points for each city
+		self.score += 2*len(self.cities)
+		# Two points for longest road
+		if self.has_longest_road:
+			self.score += 2
+		# Two points for largest army
+		if self.has_largest_army:
+			self.score += 2
+
+	def give_resource(self,resource):
+		if resource=="wood":
+			self.wood += 1
+		elif resource=="brick":
+			self.brick += 1
+		elif resource=="wheat":
+			self.wheat += 1
+		elif resource=="sheep":
+			self.sheep += 1
+		elif resource=="stone":
+			self.stone += 1

@@ -343,9 +343,9 @@ def placement_loop(available_points):
     return coordinate
 
 
-def player_place_settlement(player,players):
-    """Asks player to click hex point on board to place settlement. Returns
-    tuple of the placed settlement"""
+def player_choose_settlement(player,players):
+    """Asks player to click hex point on board to place settlement.
+    Returns tuple of the placed settlement"""
     # # Watch for click events
     # board_canvas.bind("<Button-1>", click_set)
 
@@ -367,7 +367,7 @@ def player_place_settlement(player,players):
     return Point(coordinate[0],coordinate[1],coordinate[2])
 
 
-def player_place_road(player,players):
+def player_choose_road(player,players):
     """Asks player to click two hex points on board to place road between them.
     Returns tuples of the placed road"""
 
@@ -447,16 +447,28 @@ def player_place_road(player,players):
     return road
 
 
-def computer_place_settlement(computer,players):
-    """Has computer place settlement. Returns tuple of the placed settlement"""
+def player_choose_city(player,players):
+    """Asks player to click hex point on board to place city.
+    Returns tuple of the placed settlement"""
+    # # Watch for click events
+    # board_canvas.bind("<Button-1>", click_set)
 
-    return Point(0,1,7)
+    # Determine the places a player can legally play
+    available_points = legal_settlement_placements(player,players)
 
+    print("Choose a vertex to place a settlement")
 
-def computer_place_road(computer,players):
-    """Has computer place road. Returns tuples of the placed road"""
+    coordinate = placement_loop(available_points)
 
-    return Road(Point(0,1,7),Point(1,7,8))
+    print("Chose point",coordinate)
+
+    # # Stop watching for click events
+    # board_canvas.unbind("<Button-1>")
+
+    # Get rid of all circles
+    board_canvas.delete("circle")
+
+    return Point(coordinate[0],coordinate[1],coordinate[2])
 
 
 def draw_settlement(point, player):
