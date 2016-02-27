@@ -309,6 +309,8 @@ def draw_circle(point):
 def placement_loop(available_points):
     """Loops until player chooses a valid vertex, then returns its coordinate"""
     valid_position = False
+    click_x.set(0)
+    click_y.set(0)
 
     # Wait for the player to click a valid vertex
     while(not(valid_position)):
