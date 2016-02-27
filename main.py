@@ -29,6 +29,7 @@ def new_game(splash,board):
     from catan_graphics import computer_place_settlement, computer_place_road
     from catan_graphics import draw_settlement, draw_city, draw_road, draw_dice
     from catan_graphics import draw_resource_panel, clear_resource_panel
+    from catan_graphics import draw_intermediate_screen
 
     print("New game started")
 
@@ -98,6 +99,7 @@ def new_game(splash,board):
     while check_winner()!=whose_turn:
         whose_turn = loop_index%playnum + 1
         print(players[whose_turn-1].name,"'s turn", sep='')
+        draw_intermediate_screen(players[whose_turn-1].name)
 
         die_1,die_2 = roll_dice()
         draw_dice(die_1,die_2)
