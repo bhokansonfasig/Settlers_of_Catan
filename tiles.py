@@ -158,6 +158,9 @@ class Tile:
             else:
                 return False
 
+        else:
+            return False
+
 
 
 
