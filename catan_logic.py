@@ -96,7 +96,7 @@ def add_point(point,player):
         player.points.append(point)
 
 #this function, apart from making a legal road will also return True or False depending on whether it succeeded or not
-def legal_settlement_placements(player,players):
+def legal_road_placements(player,players):
     x1 = int(input("x1:"))
     y1 = int(input("y1:"))
     z1 = int(input("z1:"))
@@ -179,7 +179,7 @@ if __name__ == '__main__':
     i=0
     while(True):
         print("Turn: ",i+1,"\n")
-        legal_settlement_placements(players[i%2],players)
+        legal_road_placements(players[i%2],players)
         for k in [0,len(players)-1]:
             print(players[k].name," has ",len(players[k].roads)," roads and ",len(players[k].points),"access points.")
             # for l in [0,len(players[k].roads)-1]:
