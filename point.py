@@ -9,7 +9,7 @@ class Point:
 
         self.vertex = False
 
-        self.building = 0 """empty = 0, settlement = 1, city == 2 """
+        self.building = 0 #empty = 0, settlement = 1, city == 2
 
         self.tk_index = None  # Tkinter index of settlement or city
 
