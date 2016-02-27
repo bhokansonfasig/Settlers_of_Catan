@@ -572,8 +572,18 @@ def draw_stats(players):
     for i in range(len(players)):
         player = players[i]
         board_canvas.create_text(hex_x_off-water_width+int((i+.5)*portion),
-            int((hex_y_off-water_width)/3), font=("Helvetica", txt_size),
-            text=player.name, fill=player.color, tags="stats")
+            int((hex_y_off-water_width)/4), text=player.name, fill=player.color,
+            font=("Helvetica", txt_size), tags="stats")
+        vp_string = "Victory points: "+str(player.score)
+        board_canvas.create_text(hex_x_off-water_width+int((i+.5)*portion),
+            int(2*(hex_y_off-water_width)/4), text=vp_string, fill=player.color,
+            font=("Helvetica", int(.8*txt_size)), tags="stats")
+        resource_string = "Resources: "+str(player.wood+player.brick+ \
+            player.wheat+player.sheep+player.stone)
+        board_canvas.create_text(hex_x_off-water_width+int((i+.5)*portion),
+            int(3*(hex_y_off-water_width)/4), text=resource_string,
+            fill=player.color, font=("Helvetica", int(.8*txt_size)),
+            tags="stats")
 
 
 def draw_resource_panel(player):
