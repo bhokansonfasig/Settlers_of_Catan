@@ -110,6 +110,8 @@ def legal_settlement_placements(player,players):
     r = Road(p1,p2)
     
     if(r.valid):
+        #road have to be connected to some structure (road/city/settlement), ie "acccess points"
+        connected = (p1 in player.points) or (p2 in player.points)
         #check all the roads to see if the road is not replacing any other road
         new_road = True
         for x in [0,len(players)-1]:
@@ -117,14 +119,17 @@ def legal_settlement_placements(player,players):
             if(not new_road):
                 break
         
-        if (new_road):
+        if (new_road and (connected or len(player.roads)==0)): #let the player build it anywhere if he has no roads in the begining
             player.roads.append(r)
             print(player.name,"'s", "road list appended.")
             add_point(p1,player)
             add_point(p2,player)
             return True
+        elif (not new_road):
+            print("That edge already has a road.")
+            return False
         else:
-            print("That edge already has a road!")
+            print("Can't build a disconnected road.")
             return False
     else:
         print("Invalid road.")
