@@ -9,6 +9,8 @@ class Point:
 
         self.vertex = False
 
+        self.building = 0 """empty = 0, settlement = 1, city == 2 """
+
         self.tk_index = None  # Tkinter index of settlement or city
 
         #self.settlement_owner = 0  # Owner of settlement on point
