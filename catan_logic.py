@@ -11,8 +11,6 @@ players = [Player(0,"Aman",-1),Player(1,"Ben",-1)] #for testing
 def set_tiles(tiles):
     """Takes array of tiles and sets resources and dice roll numbers to the
     appropriate game board tiles"""
-    from construction import neighbor_tile
-
     # Suggested preset:
     # tiles[1][1] = "wood"
     # tiles[1][2] = 11
@@ -87,9 +85,8 @@ def set_tiles(tiles):
                 if not((tile1.roll_number==6 or tile1.roll_number==8) and
                     (tile2.roll_number==6 or tile2.roll_number==8)):
                     continue
-                if neighbor_tile(tile1.index,tile2.index):
+                if tile1.has_neighbor(tile2):
                     acceptable_placement = False
-
 
     return tiles
 

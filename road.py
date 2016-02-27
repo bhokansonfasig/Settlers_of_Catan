@@ -46,11 +46,11 @@ if __name__ == '__main__':
         x1 = int(input("hex1: "))
         y1 = int(input("hex2: "))
         z1 = int(input("hex3: "))
-        
+
         p1 = Point(x1,y1,z1)
         p2 = Point(x2,y2,z2)
 
-        
+
         r1 = Road(p1,p2)
         print("r1 initialized.\n")
 
@@ -61,7 +61,7 @@ if __name__ == '__main__':
         x1 = int(input("hex1: "))
         y1 = int(input("hex2: "))
         z1 = int(input("hex3: "))
-        
+
         p3 = Point(x1,y1,z1)
         p4 = Point(x2,y2,z2)
 
