@@ -68,14 +68,25 @@ class App(Frame):
         draw_tile_skeleton(tiles)
 
 
+        global click_x,click_y
+        click_x = IntVar()  # Tkinter variable that can be watched
+        click_y = IntVar()  # Tkinter variable that can be watched
+        click_x.set(0)
+        click_y.set(0)
+
         # Define board bindings & protocols
+        def click_set(event):
+            """On click event, sets the x and y coordinates of the click"""
+            click_x.set(event.x)
+            click_y.set(event.y)
+            #print(click_x.get(),click_y.get())
+
         def reset_size(event):
             """Resizes board elements when the window size is changed."""
             win_width = event.width
             win_height = event.height
             aesthetics(win_width,win_height)
             redraw_board()
-
 
         def user_closed():
             """Closes board window nicely if user manually closes it."""
@@ -84,6 +95,7 @@ class App(Frame):
             close_board_window(self.parent,board)
 
         # Set board bindings & protocols
+        board_canvas.bind("<Button-1>", click_set)
         board_canvas.bind("<Configure>", reset_size)
         board.protocol("WM_DELETE_WINDOW", user_closed)
 
@@ -294,21 +306,8 @@ def draw_circle(point):
             point.vertex[0]+r,point.vertex[1]+r, width=3, tags="circle")
 
 
-def click_set(event):
-    """On click event, sets the x and y coordinates of the click"""
-    click_x.set(event.x)
-    click_y.set(event.y)
-    #print(click_x.get(),click_y.get())
-
-
 def placement_loop(available_points):
     """Loops until player chooses a valid vertex, then returns its coordinate"""
-    global click_x,click_y
-    click_x = IntVar()  # Tkinter variable that can be watched
-    click_y = IntVar()  # Tkinter variable that can be watched
-    click_x.set(0)
-    click_y.set(0)
-
     valid_position = False
 
     # Wait for the player to click a valid vertex
@@ -345,8 +344,8 @@ def placement_loop(available_points):
 def player_place_settlement(player,players):
     """Asks player to click hex point on board to place settlement. Returns
     tuple of the placed settlement"""
-    # Watch for click events
-    board_canvas.bind("<Button-1>", click_set)
+    # # Watch for click events
+    # board_canvas.bind("<Button-1>", click_set)
 
     # Determine the places a player can legally play
     available_points = legal_settlement_placements(player,players)
@@ -357,8 +356,8 @@ def player_place_settlement(player,players):
 
     print("Chose point",coordinate)
 
-    # Stop watching for click events
-    board_canvas.unbind("<Button-1>")
+    # # Stop watching for click events
+    # board_canvas.unbind("<Button-1>")
 
     # Get rid of all circles
     board_canvas.delete("circle")
@@ -370,8 +369,8 @@ def player_place_road(player,players):
     """Asks player to click two hex points on board to place road between them.
     Returns tuples of the placed road"""
 
-    # Watch for click events
-    board_canvas.bind("<Button-1>", click_set)
+    # # Watch for click events
+    # board_canvas.bind("<Button-1>", click_set)
 
     # Determine the places a player can legally play
     available_roads = legal_road_placements(player,players)
@@ -380,11 +379,11 @@ def player_place_road(player,players):
         available_points.append(road.point1)
         available_points.append(road.point2)
 
-    global click_x,click_y
-    click_x = IntVar()  # Tkinter variable that can be watched
-    click_y = IntVar()  # Tkinter variable that can be watched
-    click_x.set(0)
-    click_y.set(0)
+    # global click_x,click_y
+    # click_x = IntVar()  # Tkinter variable that can be watched
+    # click_y = IntVar()  # Tkinter variable that can be watched
+    # click_x.set(0)
+    # click_y.set(0)
 
     road_coordinates = []
     valid_road = False
@@ -419,8 +418,8 @@ def player_place_road(player,players):
 
     print("Chose road",road.point1.coordinate,road.point2.coordinate)
 
-    # Stop watching for click events
-    board_canvas.unbind("<Button-1>")
+    # # Stop watching for click events
+    # board_canvas.unbind("<Button-1>")
 
     # Get rid of all circles
     board_canvas.delete("circle")
@@ -524,14 +523,37 @@ def draw_city(point, player):
 
 
 def draw_dice(die_1,die_2):
-    """Draws dice of values 'die_1' and 'die_2'."""
+    """Draws dice of values 'die_1' and 'die_2'"""
     pass
+
+
+def draw_intermediate_screen(name):
+    """Draws a screen with player name between turns"""
+    text_string = name+"'s turn!"
+    intermediate_text_1 = board_canvas.create_text(
+        int((win_width-hex_width-2*water_width)/2),int(win_height/2),
+        text=text_string, width=int(.9*(win_width-hex_width-2*water_width)),
+        font=("Helvetica",2*txt_size))
+    intermediate_text_2 = board_canvas.create_text(
+        int((win_width-hex_width-2*water_width)/2),int(win_height/2)+2*txt_size,
+        text="Click to continue", font=("Helvetica",txt_size),
+        width=int(.9*(win_width-hex_width-2*water_width)))
+    board_canvas.wait_variable(click_x)
+    board_canvas.delete(intermediate_text_1)
+    board_canvas.delete(intermediate_text_2)
 
 
 def draw_stats(players):
     """Draws player statistics such as victory points, total resources, etc.
     to game board window"""
-    pass
+    board_canvas.delete("stats")
+
+    portion = (win_width-hex_x_off)/len(players)
+    for i in range(len(players)):
+        player = players[i]
+        board_canvas.create_text(hex_x_off-water_width+int((i+.5)*portion),
+            int((hex_y_off-water_width)/3), font=("Helvetica", txt_size),
+            text=player.name, fill=player.color, tags="stats")
 
 
 def draw_resource_panel(player):

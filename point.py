@@ -1,3 +1,5 @@
+from tiles import Tile
+
 #checks if two points are adjacent
 def adjacent_points(point1,point2):
     if(not(point1.valid and point2.valid)):
@@ -24,25 +26,22 @@ class Point:
         #self.city_owner = 0  # Owner of city on point
 
         # Check whether point is valid on board
-        from construction import neighbor_tile
-        hidden_tiles = [0,1,2,3,4,5,6,13,20,27,34,41,48,47,46,45,44,43,42,35,
-            28,21,14,7,8,12,15,29,36,40]
-
-        if (neighbor_tile(self.x,self.y) and neighbor_tile(self.y,self.z) and
-            neighbor_tile(self.x,self.z)):
-            if ((self.x in hidden_tiles) and (self.y in hidden_tiles) and
-                (self.z in hidden_tiles)):
-                #like 40,47,48
-                #print("Point lies in the sea!")
+        tile_1 = Tile(self.x)
+        tile_2 = Tile(self.y)
+        tile_3 = Tile(self.z)
+        if tile_1.has_neighbor(tile_2) and tile_2.has_neighbor(tile_3) and \
+            tile_3.has_neighbor(tile_1):
+            if not(tile_1.visible) and not(tile_2.visible) and \
+                not(tile_3.visible):
                 self.valid = False
             else:
                 self.valid = True
         else:
-    		#print("Invalid point.")
             self.valid = False
 
+
     def __eq__(self,other):
-        return (self.x == other.x and self.y == other.y and self.z == other.z) 
+        return (self.x == other.x and self.y == other.y and self.z == other.z)
 
     def link_vertex(self, hex_width, hex_height, hex_x_off, hex_y_off):
         # Vertex at top of lone-row hexagon (e.g. point 9,10,17)
@@ -72,21 +71,23 @@ if __name__ == '__main__':
     y = 23
     z = 24
     while(True):
-        x2 = int(input("hex1: "))
-        y2 = int(input("hex2: "))
-        z2 = int(input("hex3: "))
+        # x2 = int(input("hex1: "))
+        # y2 = int(input("hex2: "))
+        # z2 = int(input("hex3: "))
 
         x1 = int(input("hex1: "))
         y1 = int(input("hex2: "))
         z1 = int(input("hex3: "))
-        
-        p1 = Point(x1,y1,z1)
-        p2 = Point(x2,y2,z2)
 
-        if(adjacent_points(p1,p2)):
-            print("adjacent")
-        else:
-            print("non adjacent")
+        p1 = Point(x1,y1,z1)
+        # p2 = Point(x2,y2,z2)
+
+        print(p1.valid)
+
+        # if(adjacent_points(p1,p2)):
+        #     print("adjacent")
+        # else:
+        #     print("non adjacent")
         # z = int(input("hex3: "))
         # if(neighbor_tile(x,y)):
         #   print("They are neighbors.\n")

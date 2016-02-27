@@ -109,6 +109,16 @@ def add_point(point,player):
     if(point not in player.points):
         player.points.append(point)
 
+
+def legal_settlement_placements(player,players):
+    """Returns an array of points where the player can place a settlement"""
+    
+    points = [Point(9,16,17),Point(9,10,17),Point(16,17,23),Point(17,23,24),
+        Point(17,18,24),Point(39,40,47)]
+
+    return points
+
+
 #this function, apart from making a legal road will also return True or False depending on whether it succeeded or not
 def legal_road_placements(player,players):
     # x1 = int(input("x1:"))
@@ -122,7 +132,7 @@ def legal_road_placements(player,players):
     p1 = Point(x1,y1,z1)
     p2 = Point(x2,y2,z2)
     r = Road(p1,p2)
-    
+
     if(r.valid):
         #road has to be connected to some structure (road/city/settlement), ie "acccess points"
         connected = (p1 in player.points) or (p2 in player.points)
@@ -132,7 +142,7 @@ def legal_road_placements(player,players):
             new_road = new_road and (r not in players[x].roads)
             if(not new_road):
                 break
-        
+
         if (new_road and (connected or len(player.roads)==0)): #let the player build it anywhere if he has no roads in the begining
             player.roads.append(r)
             print(player.name,"'s", "road list appended.")
