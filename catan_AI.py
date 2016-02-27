@@ -1,4 +1,6 @@
 from random import choice
+from point import Point
+from road import Road
 
 def computer_choose_settlement(computer,players):
     """Has computer place settlement. Returns tuple of the placed settlement"""
