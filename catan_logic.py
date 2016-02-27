@@ -91,15 +91,6 @@ def set_tiles(tiles):
     return tiles
 
 
-def legal_settlement_placements(player,players):
-    """Returns an array of points where the player can place a settlement"""
-
-    points = [Point(9,16,17),Point(9,10,17),Point(16,17,23),Point(17,23,24),
-        Point(17,18,24),Point(39,40,47)]
-
-    return points
-
-
 #this function, apart from making a legal road will also return True or False depending on whether it succeeded or not
 def legal_settlement_placements(player,players):
     x1 = int(input("x1:"))
