@@ -3,6 +3,9 @@ from road import Road
 from point import Point
 from player import Player
 
+global first_round
+first_round = True
+
 #the leftmost points on the grid, which are used to generate the rest
 seed_points = [[0,1,7],[1,7,8],[7,8,15],[7,14,15],[14,15,21],[15,21,22],[21,28,29],[21,22,29],[28,29,35],[29,35,36],[35,42,43],[35,36,43]]
 all_points = []
@@ -129,15 +132,11 @@ def legal_settlement_placements(player,players):
             continue
         for enemy in players:
             for p2 in enemy.points:
-                if(p.adjacent_point(p2)):
+                if(p.adjacent_point(p2) and (p2.building != 0)):
                     continue
                 else:
                     points.append(p)
-    # checking if no options came up because there is nothing on the board yet
-    first_round = (len(player.points) == 0)
-    for guy in players:
-        first_round = first_round and (len(guy.points) == 0)
-    if((len(player.points) == 0)): #the game just started
+    if(first_round): #the game just started
         return all_points
     else:
         return points
@@ -195,6 +194,26 @@ def distribute_resources(dice_value):
 
     pass
 
+#updates the player obj with the buidling info
+def player_building_update(point,build_type,player):
+    point.building = build_type
+    
+    found = False
+    for p in player.points:
+        if(point == p):
+            p.building = build_type
+            found = True
+            if(build_type == 1):
+                player.settlements.append(p)
+            else:
+                player.cities.append(p)
+            break
+    if not found:
+        player.points.append(point)
+        if(build_type == 1):
+            player.settlements.append(point)
+        else:
+            player.cities.append(point)
 
 ################################################################################
 # If this file is run itself, do the following

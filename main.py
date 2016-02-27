@@ -22,7 +22,7 @@ def new_game(splash,board):
     from player import Player
     from tiles import Tile
     from catan_logic import set_tiles, roll_dice, check_winner
-    from catan_logic import give_resource, point_resources, distribute_resources
+    from catan_logic import give_resource, point_resources, distribute_resources, player_building_update
     from catan_graphics import open_board_window, close_board_window, close_all
     from catan_graphics import set_players, get_tiles, draw_tiles, draw_stats
     from catan_graphics import player_place_settlement, player_place_road
@@ -56,7 +56,7 @@ def new_game(splash,board):
         if player.AI_code<0:
             print(player.name,"place first settlement")
             settlement = player_place_settlement(player,players)
-            player.settlements.append(settlement)
+            player_building_update(settlement,1,player)
             draw_settlement(settlement,player)
             print(player.name,"place first road")
             road = player_place_road(player,players)
@@ -66,7 +66,7 @@ def new_game(splash,board):
             draw_road(road,player)
         else:
             settlement = computer_place_settlement(player,players)
-            player.settlements.append(settlement)
+            player_building_update(settlement,1,player)
             draw_settlement(settlement,player)
             road = computer_place_road(player,players)
             player.roads.append(road)
@@ -78,8 +78,9 @@ def new_game(splash,board):
         if player.AI_code<0:
             print(player.name,"place second settlement")
             settlement = player_place_settlement(player,players)
-            player.settlements.append(settlement)
+            player_building_update(settlement,1,player)
             draw_settlement(settlement,player)
+            first_round = False
             print(player.name,"place second road")
             road = player_place_road(player,players)
             player.roads.append(road)
@@ -88,7 +89,7 @@ def new_game(splash,board):
             draw_road(road,player)
         else:
             settlement = computer_place_settlement(player,players)
-            player.settlements.append(settlement)
+            player_building_update(settlement,1,player)
             draw_settlement(settlement,player)
             road = computer_place_road(player,players)
             player.roads.append(road)
