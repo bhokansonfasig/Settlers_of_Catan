@@ -58,3 +58,6 @@ class Player:
 			return True
 		else:
 			return False
+
+	def __eq__(self,other):
+		return((self.index == other.index) and (self.name == other.name))
