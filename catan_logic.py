@@ -122,11 +122,25 @@ def add_point(point,player):
 
 def legal_settlement_placements(player,players):
     """Returns an array of points where the player can place a settlement"""
+    points = []
     
-    points = [Point(9,16,17),Point(9,10,17),Point(16,17,23),Point(17,23,24),
-        Point(17,18,24),Point(39,40,47)]
-
-    return points
+    for p in player.points:
+        if (p.building != 0):
+            continue
+        for enemy in players:
+            for p2 in enemy.points:
+                if(p.adjacent_point(p2)):
+                    continue
+                else:
+                    points.append(p)
+    # checking if no options came up because there is nothing on the board yet
+    first_round = (len(player.points) == 0)
+    for guy in players:
+        first_round = first_round and (len(guy.points) == 0)
+    if((len(player.points) == 0)): #the game just started
+        return all_points
+    else:
+        return points
 
 
 def legal_road_placements(player,players):
@@ -145,15 +159,6 @@ def legal_road_placements(player,players):
             road_options.append(road)
     
     return road_options
-
-
-def legal_building_placements(player,players):
-    x = int(input("x:"))
-    y = int(input("y:"))
-    z = int(input("z:"))
-    p = Point(x,y,z)
-
-
 
 def give_resource(resource,player):
     """Gives player a card of resource type 'resource'"""
