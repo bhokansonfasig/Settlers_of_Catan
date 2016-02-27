@@ -101,6 +101,7 @@ def new_game(splash,board):
         print(players[whose_turn-1].name,"'s turn", sep='')
         draw_intermediate_screen(players[whose_turn-1].name)
 
+
         die_1,die_2 = roll_dice()
         draw_dice(die_1,die_2)
         if die_1+die_2!=7:
