@@ -61,6 +61,8 @@ def new_game(splash,board):
             print(player.name,"place first road")
             road = player_place_road(player,players)
             player.roads.append(road)
+            player.points.append(road.point1)
+            player.points.append(road.point2)
             draw_road(road,player)
         else:
             settlement = computer_place_settlement(player,players)
@@ -68,6 +70,8 @@ def new_game(splash,board):
             draw_settlement(settlement,player)
             road = computer_place_road(player,players)
             player.roads.append(road)
+            player.points.append(road.point1)
+            player.points.append(road.point2)
             draw_road(road,player)
         draw_stats(players)
     for player in reversed(players):
@@ -79,6 +83,8 @@ def new_game(splash,board):
             print(player.name,"place second road")
             road = player_place_road(player,players)
             player.roads.append(road)
+            player.points.append(road.point1)
+            player.points.append(road.point2)
             draw_road(road,player)
         else:
             settlement = computer_place_settlement(player,players)
@@ -86,6 +92,8 @@ def new_game(splash,board):
             draw_settlement(settlement,player)
             road = computer_place_road(player,players)
             player.roads.append(road)
+            player.points.append(road.point1)
+            player.points.append(road.point2)
             draw_road(road,player)
         resources = point_resources(settlement)
         for resource in resources:
