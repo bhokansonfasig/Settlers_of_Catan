@@ -55,6 +55,76 @@ class App(Frame):
         quit_button.configure(width=10, activebackground = button_color)
         quit_button.pack(pady=10)
 
+        # Create player selection window
+        global player_window
+        player_window = Toplevel(background=menu_color)
+        player_window.geometry("470x350+300+100")
+        player_window.title("Settlers of Catan - Select Players")
+
+        global player_1_type,player_1_name, player_2_type,player_2_name
+        global player_3_type,player_3_name, player_4_type,player_4_name
+        player_1_label = Label(player_window, text="Player 1:",
+            font=("Helvetica", 22), background=menu_color)
+        player_1_label.grid(row=0,column=0,padx=20,pady=10)
+        player_1_type = StringVar()
+        player_1_type.set("Human")
+        player_1_type_menu = OptionMenu(player_window, player_1_type,
+            "Human", "Computer", "None")
+        player_1_type_menu.grid(row=1,column=0,padx=20,pady=10)
+        player_1_name = StringVar()
+        player_1_name.set("Player 1")
+        player_1_name_entry = Entry(player_window, textvariable=player_1_name)
+        player_1_name_entry.grid(row=2,column=0,padx=20,pady=5)
+        player_2_label = Label(player_window, text="Player 2:",
+            font=("Helvetica", 22), background=menu_color)
+        player_2_label.grid(row=0,column=1,padx=20,pady=10)
+        player_2_type = StringVar()
+        player_2_type.set("Human")
+        player_2_type_menu = OptionMenu(player_window, player_2_type,
+            "Human", "Computer", "None")
+        player_2_type_menu.grid(row=1,column=1,padx=20,pady=10)
+        player_2_name = StringVar()
+        player_2_name.set("Player 2")
+        player_2_name_entry = Entry(player_window, textvariable=player_2_name)
+        player_2_name_entry.grid(row=2,column=1,padx=20,pady=5)
+        player_3_label = Label(player_window, text="Player 3:",
+            font=("Helvetica", 22), background=menu_color)
+        player_3_label.grid(row=3,column=0,padx=20,pady=10)
+        player_3_type = StringVar()
+        player_3_type.set("Human")
+        player_3_type_menu = OptionMenu(player_window, player_3_type,
+            "Human", "Computer", "None")
+        player_3_type_menu.grid(row=4,column=0,padx=20,pady=10)
+        player_3_name = StringVar()
+        player_3_name.set("Player 3")
+        player_3_name_entry = Entry(player_window, textvariable=player_3_name)
+        player_3_name_entry.grid(row=5,column=0,padx=20,pady=5)
+        player_4_label = Label(player_window, text="Player 4:",
+            font=("Helvetica", 22), background=menu_color)
+        player_4_label.grid(row=3,column=1,padx=20,pady=10)
+        player_4_type = StringVar()
+        player_4_type.set("Human")
+        player_4_type_menu = OptionMenu(player_window, player_4_type,
+            "Human", "Computer", "None")
+        player_4_type_menu.grid(row=4,column=1,padx=20,pady=10)
+        player_4_name = StringVar()
+        player_4_name.set("Player 4")
+        player_4_name_entry = Entry(player_window, textvariable=player_4_name)
+        player_4_name_entry.grid(row=5,column=1,padx=20,pady=5)
+
+        global button_chosen
+        button_chosen = IntVar()
+        button_chosen.set(-1)
+
+        ready_button = Button(player_window, font=("Helvetica", 16),
+            text="Okay", command=lambda : set_button_chosen(1))
+        ready_button.configure(width=10, activebackground = button_color)
+        ready_button.grid(row=6,pady=30,columnspan=2)
+
+        # Hide player selection window
+        player_window.withdraw()
+
+
         # Create board window's canvas and items
         global board_canvas
         board_canvas = Canvas(self.parent)
@@ -205,9 +275,9 @@ def redraw_board():
         draw_resource_panel(players[whose_turn-1],players)
 
 
-def open_board_window(splash,board):
+def open_board_window(other,board):
     """Hides splash window and reveals board window"""
-    splash.withdraw()
+    other.withdraw()
     board.update()
     board.deiconify()
 
@@ -229,53 +299,75 @@ def close_all(splash,board):
         pass
 
 
-def set_players():
-    """Gets the number and type of players and returns an array of this info"""
-    # Players array, one row for each player
-    #  0 - Player index (1-4)
-    #  1 - Name (string)
-    #  2 - AI difficulty (-1 for human player)
-    # players = [[1,"nobody",0],[2,"nobody",0],[3,"nobody",0],[4,"nobody",0]]
+def set_players(board):
+    """Gets the number and type of players and returns an array of player
+        objects"""
     players = []
-    playnum = 0
-    compnum = 0
 
-    # Command line implementation; pretty broken honestly...
-    while (playnum<=1 or playnum>=5) or (compnum<=-1 or compnum>=5):
-        playnum = eval(input("Total number of players: "))
-        compnum = eval(input("Number of computer players: "))
-    if playnum==compnum:
-        level = eval(input("Computer 1 level: "))
-        player = Player(1,"Computer 1",level)
-        players.append(player)
-    else:
-        name = input("Player 1 name: ")
-        player = Player(1,name,-1)
-        players.append(player)
-    if playnum<=compnum+1:
-        level = eval(input("Computer 2 level: "))
-        player = Player(2,"Computer 2",level)
-        players.append(player)
-    else:
-        name = input("Player 2 name: ")
-        player = Player(2,name,-1)
-        players.append(player)
-    if playnum<=compnum+2 and playnum>=3:
-        level = eval(input("Computer 3 level: "))
-        player = Player(3,"Computer 3",level)
-        players.append(player)
-    elif playnum>=3:
-        name = input("Player 3 name: ")
-        player = Player(3,name,-1)
-        players.append(player)
-    if playnum<=compnum+3 and playnum==4:
-        level = eval(input("Computer 4 level: "))
-        player = Player(4,"Computer 4",level)
-        players.append(player)
-    elif playnum==4:
-        name = input("Player 4 name: ")
-        player = Player(4,name,-1)
-        players.append(player)
+    # # Command line implementation; pretty broken honestly...
+    # playnum = 0
+    # compnum = 0
+    # while (playnum<=1 or playnum>=5) or (compnum<=-1 or compnum>=5):
+    #     playnum = eval(input("Total number of players: "))
+    #     compnum = eval(input("Number of computer players: "))
+    # if playnum==compnum:
+    #     level = eval(input("Computer 1 level: "))
+    #     player = Player(1,"Computer 1",level)
+    #     players.append(player)
+    # else:
+    #     name = input("Player 1 name: ")
+    #     player = Player(1,name,-1)
+    #     players.append(player)
+    # if playnum<=compnum+1:
+    #     level = eval(input("Computer 2 level: "))
+    #     player = Player(2,"Computer 2",level)
+    #     players.append(player)
+    # else:
+    #     name = input("Player 2 name: ")
+    #     player = Player(2,name,-1)
+    #     players.append(player)
+    # if playnum<=compnum+2 and playnum>=3:
+    #     level = eval(input("Computer 3 level: "))
+    #     player = Player(3,"Computer 3",level)
+    #     players.append(player)
+    # elif playnum>=3:
+    #     name = input("Player 3 name: ")
+    #     player = Player(3,name,-1)
+    #     players.append(player)
+    # if playnum<=compnum+3 and playnum==4:
+    #     level = eval(input("Computer 4 level: "))
+    #     player = Player(4,"Computer 4",level)
+    #     players.append(player)
+    # elif playnum==4:
+    #     name = input("Player 4 name: ")
+    #     player = Player(4,name,-1)
+    #     players.append(player)
+
+    splash.withdraw()
+    player_window.update()
+    player_window.deiconify()
+
+    while len(players)<2:
+        player_window.wait_variable(button_chosen)
+
+        if player_1_type.get()=="Human":
+            players.append(Player(1,player_1_name.get(),-1))
+        elif player_1_type.get()=="Computer":
+            players.append(Player(1,"Computer 1",eval(player_1_name.get())))
+        if player_2_type.get()=="Human":
+            players.append(Player(2,player_2_name.get(),-1))
+        elif player_2_type.get()=="Computer":
+            players.append(Player(2,"Computer 2",eval(player_2_name.get())))
+        if player_3_type.get()=="Human":
+            players.append(Player(3,player_3_name.get(),-1))
+        elif player_3_type.get()=="Computer":
+            players.append(Player(3,"Computer 3",eval(player_3_name.get())))
+        if player_4_type.get()=="Human":
+            players.append(Player(4,player_4_name.get(),-1))
+        elif player_4_type.get()=="Computer":
+            players.append(Player(4,"Computer 4",eval(player_4_name.get())))
+
+    open_board_window(player_window,board)
 
     return players
 
@@ -783,8 +875,6 @@ def clear_resource_panel():
 
 
 def turn_loop(player,players):
-    global button_chosen
-    button_chosen = IntVar()
     button_chosen.set(-1)
     while button_chosen.get()!=0:
         draw_stats(players)

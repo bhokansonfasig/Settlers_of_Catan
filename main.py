@@ -37,12 +37,9 @@ def new_game(splash,board):
 
     # Set the number of players, their names, and levels of AI
     global players
-    players = set_players()
+    players = set_players(board)
     # Randomize player order
     shuffle(players)
-
-    # Switch windows
-    open_board_window(splash,board)
 
     # Get the arrangement of tiles, then draw them to the board window
     tiles = get_tiles()
