@@ -161,7 +161,12 @@ class App(Frame):
         def user_closed():
             """Closes board window nicely if user manually closes it."""
             # Later may use this to create saves
+            # Get out of any waiting that was happening
+            set_button_chosen(-1)
+            click_set(Point(0,0,0))  # Just needs to have .x and .y attributes
+            # Clear board
             board_canvas.delete(ALL)
+            # Close all windows
             close_all(splash,self.parent)
 
         # Set board bindings & protocols
@@ -294,9 +299,10 @@ def close_all(splash,board):
     print("Closing all windows")
     try:
         splash.destroy()
-        board.destroy()
         player_window.destroy()
+        board.destroy()
     except:
+        print("Couldn't close windows")
         pass
 
 
