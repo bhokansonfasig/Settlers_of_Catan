@@ -275,8 +275,11 @@ def check_winner():
 
 def roll_dice():
     """Rolls two six sided dice and returns their values."""
-
-    return 3,3
+    die_values = [1,2,3,4,5,6]
+    die_1 = choice(die_values)
+    die_2 = choice(die_values)
+    print("Rolled",die_1,"+",die_2,"=",die_1+die_2)
+    return die_1, die_2
 
 
 def distribute_resources(dice_value,tiles,players):
