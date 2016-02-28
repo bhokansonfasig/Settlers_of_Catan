@@ -26,7 +26,7 @@ def new_game(splash,board):
     from catan_logic import player_building_update
     from catan_graphics import open_board_window, close_board_window, close_all
     from catan_graphics import set_players, get_tiles, draw_tiles, draw_stats
-    from catan_graphics import draw_road, draw_dice
+    from catan_graphics import draw_road, draw_dice, turn_loop
     from catan_graphics import draw_resource_panel, clear_resource_panel
     from catan_graphics import draw_intermediate_screen
 
@@ -89,8 +89,7 @@ def new_game(splash,board):
 
         draw_resource_panel(players[whose_turn-1],players)
 
-        # Button events should be able to handle what the player really does
-        #  during their turn
+        turn_loop(players[whose_turn-1],players)
 
         clear_resource_panel()
         draw_stats(players)
