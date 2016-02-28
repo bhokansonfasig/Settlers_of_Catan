@@ -228,6 +228,13 @@ def legal_settlement_placements(player,players):
 
 def legal_road_placements(player,players):
     road_options = []
+    
+    if(len(player.roads)==1):#force the second road with the second settlement when the game starts
+        for road in all_roads:
+            if(road.point1 == player.settlements[1] or road.point2 == player.settlements[1]):
+                road_options.append(road)
+        return road_options
+
     for road in all_roads:
         #road has to be connected to some structure (road/city/settlement), ie "acccess points"
         connected = (road.point1 in player.points) or (road.point2 in player.points)
