@@ -648,11 +648,36 @@ def undraw_buttons():
     build_city_button.destroy()
 
 
+def draw_resources(player):
+    """Undraws any current resources shown and draws resources of player"""
+    board_canvas.delete("resources")
+
+    wood_text = "Wood: "+str(player.wood)
+    brick_text = "Brick: "+str(player.brick)
+    sheep_text = "Sheep: "+str(player.sheep)
+    wheat_text = "Wheat: "+str(player.wheat)
+    stone_text = "Stone: "+str(player.stone)
+
+    board_canvas.create_text(100,250, text=wood_text,
+        font=("Helvetica", int(.7*txt_size)), tags="resources")
+    board_canvas.create_text(100,275, text=brick_text,
+        font=("Helvetica", int(.7*txt_size)), tags="resources")
+    board_canvas.create_text(100,300, text=sheep_text,
+        font=("Helvetica", int(.7*txt_size)), tags="resources")
+    board_canvas.create_text(100,325, text=wheat_text,
+        font=("Helvetica", int(.7*txt_size)), tags="resources")
+    board_canvas.create_text(100,350, text=stone_text,
+        font=("Helvetica", int(.7*txt_size)), tags="resources")
+
+
+
 def draw_resource_panel(player,players):
     """Draws resources available to player number 'index' in the resource panel
     of the board window. Also activates buttons available to player."""
 
     draw_buttons(player,players)
+
+    draw_resources(player)
 
     # # Temporary terminal actions for player
     # action = input("What would you like to do? ")
@@ -680,6 +705,7 @@ def clear_resource_panel():
     Also dims all button states."""
 
     undraw_buttons()
+    board_canvas.delete("resources")
 
 
 def turn_loop(player,players):
@@ -688,6 +714,7 @@ def turn_loop(player,players):
     button_chosen.set(-1)
     while button_chosen.get()!=0:
         draw_stats(players)
+        draw_resources(player)
         board_canvas.wait_variable(button_chosen)
         if button_chosen.get()==1:
             build_settlement(player,players)

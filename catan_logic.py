@@ -276,7 +276,7 @@ def check_winner():
 def roll_dice():
     """Rolls two six sided dice and returns their values."""
 
-    return 1,2
+    return 3,3
 
 
 def distribute_resources(dice_value,tiles,players):
