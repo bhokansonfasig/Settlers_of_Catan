@@ -60,11 +60,11 @@ class App(Frame):
         board_canvas.pack(fill=BOTH, expand=1)
 
         # Create buttons on board window
-        # quit_button = Button(board_canvas, font=("Helvetica", 16),
-        #     text="Quit game", command=self.quit)
-        # quit_button.configure(width=10, activebackground = button_color)
-        # quit_button_window = board_canvas.create_window(200, 250,
-        #     window=quit_button)
+        quit_button = Button(board_canvas, font=("Helvetica", 16),
+            text="Quit game", command=self.quit)
+        quit_button.configure(width=10, activebackground = button_color)
+        quit_button_window = board_canvas.create_window(200, 250,
+            window=quit_button)
 
         # Generate 49 tiles
         global tiles
@@ -203,6 +203,7 @@ def redraw_board():
             draw_settlement(settlement,player)
         for city in player.cities:
             draw_city(city,player)
+    draw_stats(players)
 
 
 def open_board_window(splash,board):
@@ -631,8 +632,6 @@ def draw_resource_panel(player,players):
             print("Nowhere to legally build a new city!")
     else:
         pass
-
-
 
 
 def clear_resource_panel():
