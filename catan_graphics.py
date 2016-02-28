@@ -329,7 +329,6 @@ def placement_loop(available_points):
         board_canvas.delete("circle")
         for pt in available_points:
             draw_circle(pt)
-        print("\tClick on a valid vertex (circled)")
         # Get the hexagons with vertices near the point clicked
         for tile in tiles:
             for i in range(0,12,2):
@@ -396,8 +395,6 @@ def player_choose_road(player,players):
 
     # Loop until player picks a valid road pair
     while(not(valid_road)):
-        print(len(road_coordinates),"vertices chosen so far")
-
         # Determine the places a player can legally play
         available_roads = legal_road_placements(player,players)
         available_points = []
@@ -746,7 +743,6 @@ def draw_resources(player):
         font=("Helvetica", int(.7*txt_size)), tags="resources")
     board_canvas.create_text(100,350, text=stone_text,
         font=("Helvetica", int(.7*txt_size)), tags="resources")
-
 
 
 def draw_resource_panel(player,players):
