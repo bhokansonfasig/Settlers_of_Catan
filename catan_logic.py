@@ -263,14 +263,21 @@ def point_resources(point,tiles):
     return output
 
 
-def check_winner():
-    """Checks winning condition for all players. Returns player index if someone
-    has won, -1 otherwise."""
+def check_winner(players):
+    """Checks winning condition for all players. Returns list of player indices
+        of players who have won, empty list otherwise."""
 
-    # Temporary way of breaking out of loop
-    winner = eval(input("Who won? "))
+    # # Temporary way of breaking out of loop
+    # winner = eval(input("Who won? "))
 
-    return winner
+    winners = []
+
+    for player in players:
+        player.calculate_score()
+        if player.score>=10:
+            winners.append(player.index)
+
+    return winners
 
 
 def roll_dice():

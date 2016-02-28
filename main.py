@@ -72,7 +72,7 @@ def new_game(splash,board):
     whose_turn = 0
     global die_1,die_2
     # Additional condition that players can only win on their turn
-    while check_winner()!=whose_turn:
+    while not(whose_turn in check_winner(players)):
         if loop_index>=0:
             clear_resource_panel()
         draw_stats(players)
@@ -100,7 +100,7 @@ def new_game(splash,board):
 
         turn_loop(players[whose_turn-1],players)
 
-    winner = check_winner()
+    winner = whose_turn
     print("*****Congratulations ",players[winner-1].name,"!*****", sep='')
 
     close_all(splash,board)
