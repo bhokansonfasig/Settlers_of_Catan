@@ -190,34 +190,24 @@ def legal_settlement_placements(player,players):
     """Returns an array of points where the player can place a settlement"""
     points = []
     occupied_points = occupied_points_on_board(players)
-    print(len(occupied_points),"points are unavailiable.")
+    # print(len(occupied_points),"points are unavailiable.")
 
-    if(len(player.roads)==0 and len(player.settlements)==0 and len(points)==0): #first turn 
-        print("First turn.")
+    if(len(player.roads)<2 and len(player.settlements)<2): #first turn 
+        # print("First turn.")
         for p in all_points:
             if(not p.locate_point(occupied_points)):
                 points.append(p)
-            else:
-                print(p.coordinate,"is occupied.")
-                print (p in points)
+            # else:
+            #     # print(p.coordinate,"is occupied.")
+            #     print (p in points)
         
         
         if(len(points) == 0):#first guy to place something on the board, there are no occupied points so points.append(p) never happens
-            print("first round, cant find points!")
             return all_points
         else:
             return points
-
-    #incomplete!
-    elif(len(player.roads)==1 and len(player.settlements)==1): #second turn (reverse order)
-        print("Second turn.")
-        for guy in players:
-            print(guy.name,"has",len(guy.settlements),"settlements so far.")
-            for p in all_points:
-                if(p not in guy.settlements):
-                    points.append(p)
-
     
+    #incomplete!
     else:
         for p in player.points:
             if (p.building != 0):
@@ -231,8 +221,6 @@ def legal_settlement_placements(player,players):
                     else:
                         points.append(p)
 
-    if(len(points) == 0):
-        print("Did not find a place to build settlement.")
     
     # return points
 
