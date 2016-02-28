@@ -19,7 +19,7 @@ def computer_choose_road(computer,players):
     from catan_logic import legal_road_placements
     if computer.AI_code==1:
         # Randomly place road
-        available_roads = legal_road_placements(player,players)
+        available_roads = legal_road_placements(computer,players)
         return choice(available_roads)
     else:
         # Place road in the ocean
