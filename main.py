@@ -81,7 +81,7 @@ def new_game(splash,board):
         die_1,die_2 = roll_dice()
         draw_dice(die_1,die_2)
         if die_1+die_2!=7:
-            distribute_resources(die_1+die_2)
+            distribute_resources(die_1+die_2,tiles,players)
         else:
             # Robber sequence
             pass

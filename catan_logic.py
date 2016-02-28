@@ -276,7 +276,7 @@ def distribute_resources(dice_value,tiles,players):
     for tile in hexes:
         for player in players:
             #resource from settlement
-            for settlement in player.settlement:
+            for settlement in player.settlements:
                 if (tile.index in settlement.coordinate):
                     player.give_resource(tile.resource)
             #resources from city
