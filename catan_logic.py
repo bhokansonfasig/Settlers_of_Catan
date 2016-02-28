@@ -118,6 +118,12 @@ def set_tiles(tiles):
 def build_settlement(player,players):
     from catan_graphics import player_choose_settlement, draw_settlement
     from catan_AI import computer_choose_settlement
+    # If the player can't build a settlement, exit without building anything
+    available_points = legal_settlement_placements(player,players)
+    if len(available_points)==0:
+        print("Nowhere to build a new settlement!")
+        return
+
     # Unless it's the first round of placements, take resources away
     if len(player.roads)>1:
         player.wood -= 1
@@ -142,6 +148,12 @@ def build_settlement(player,players):
 def build_road(player,players):
     from catan_graphics import player_choose_road, draw_road
     from catan_AI import computer_choose_road
+    # If the player can't build a road, exit without building anything
+    available_roads = legal_road_placements(player,players)
+    if len(available_roads)==0:
+        print("Nowhere to build a new road!")
+        return
+
     # Unless it's the first round of placements, take resources away
     if len(player.roads)>1:
         player.wood -= 1
@@ -164,6 +176,11 @@ def build_road(player,players):
 def build_city(player,players):
     from catan_graphics import player_choose_city, draw_city
     from catan_AI import computer_choose_city
+    # If the player can't build a city, exit without building anything
+    available_points = player.settlements
+    if len(available_points)==0:
+        print("Nowhere to build a new city!")
+        return
     # Take resources away
     player.stone -= 3
     player.wheat -= 2
@@ -191,16 +208,16 @@ def legal_settlement_placements(player,players):
     points = []
     occupied_points = occupied_points_on_board(players)
 
-    if(len(player.roads)<2 and len(player.settlements)<2): #first turn 
+    if(len(player.roads)<2 and len(player.settlements)<2): #first turn
         for p in all_points:
             if((not p.locate_point(occupied_points)) and (not p.adjacent_point_list(occupied_points))):
                 points.append(p)
-        
+
         if(len(points) == 0):#first guy to place something on the board, there are no occupied points so points.append(p) never happens
             return all_points
         else:
             return points
-    
+
     else:
         for p in player.points:
             if (p.locate_point(occupied_points) or p.adjacent_point_list(occupied_points)):
@@ -209,11 +226,11 @@ def legal_settlement_placements(player,players):
                 points.append(p)
         return points
 
-    
+
 
 def legal_road_placements(player,players):
     road_options = []
-    
+
     if(len(player.roads)==1):#force the second road with the second settlement when the game starts
         for road in all_roads:
             if(road.point1 == player.settlements[1] or road.point2 == player.settlements[1]):
@@ -267,7 +284,7 @@ def distribute_resources(dice_value,tiles,players):
     hexagons with number 'dice_value'"""
 
     hexes = []
-    
+
     for tile in tiles:
         if(dice_value == tile.roll_number):
             hexes.append(tile)
@@ -286,7 +303,7 @@ def distribute_resources(dice_value,tiles,players):
                     player.give_resource(tile.resource)
 
 
-    
+
 def find_vertices(tile):
     vertices = []
     for p in all_points:
@@ -294,7 +311,7 @@ def find_vertices(tile):
             vertices.append(p)
     return vertices
 
-    
+
 
 #updates the player obj with the buidling info
 def player_building_update(point,build_type,player):
