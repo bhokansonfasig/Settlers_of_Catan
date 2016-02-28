@@ -262,13 +262,39 @@ def roll_dice():
     return 1,2
 
 
-def distribute_resources(dice_value):
+def distribute_resources(dice_value,tiles,players):
     """Distributes the appropriate resources to players with settlements on
     hexagons with number 'dice_value'"""
 
-    # Probably want to call give_resource in here
+    hexes = []
+    
+    for tile in tiles:
+        if(dice_value == tile.roll_number):
+            hexes.append(tile)
 
-    pass
+
+    for tile in hexes:
+        for player in players:
+            #resource from settlement
+            for settlement in player.settlement:
+                if (tile.index in settlement.coordinate):
+                    player.give_resource(tile.resource)
+            #resources from city
+            for city in player.cities:
+                if(tile.index in city.coordinate):
+                    player.give_resource(tile.resource)
+                    player.give_resource(tile.resource)
+
+
+    
+def find_vertices(tile):
+    vertices = []
+    for p in all_points:
+        if(tile.index in p.coordinate):
+            vertices.append(p)
+    return vertices
+
+    
 
 #updates the player obj with the buidling info
 def player_building_update(point,build_type,player):
@@ -305,12 +331,12 @@ def occupied_points_on_board(players):
 # If this file is run itself, do the following
 if __name__ == '__main__':
     # i=0
-    # while(True):
-    #     print("Turn: ",i+1,"\n")
-    #     legal_road_placements(players[i%2],players)
-    #     for k in range[0,len(players)-1]:
-    #         print(players[k].name," has ",len(players[k].roads)," roads.")
-    #         # for l in [0,len(players[k].roads)-1]:
-    #         #     print(players[k].name,"\n",players[k].roads[l].coordinates,"\n")
-    #     i += 1
+    while(True):
+        print("Turn: ",i+1,"\n")
+        legal_road_placements(players[i%2],players)
+        for k in range[0,len(players)-1]:
+            print(players[k].name," has ",len(players[k].roads)," roads.")
+            # for l in [0,len(players[k].roads)-1]:
+            #     print(players[k].name,"\n",players[k].roads[l].coordinates,"\n")
+        i += 1
     print(len(all_roads))

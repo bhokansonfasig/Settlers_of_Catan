@@ -64,7 +64,7 @@ def new_game(splash,board):
         point = build_settlement(player,players)
         print(player.name,"build second road")
         build_road(player,players)
-        resources = point_resources(point)
+        resources = point_resources(point,tiles)
         for resource in resources:
             player.give_resource(resource)
         draw_stats(players)
