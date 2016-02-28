@@ -174,6 +174,9 @@ class App(Frame):
         board_canvas.bind("<Configure>", reset_size)
         self.parent.protocol("WM_DELETE_WINDOW", user_closed)
 
+        # Prevent manual closing of player window
+        player_window.protocol("WM_DELETE_WINDOW", user_closed)
+
         # Hide board window
         self.parent.withdraw()
 
