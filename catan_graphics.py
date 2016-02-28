@@ -463,9 +463,11 @@ def player_choose_city(player,players):
     # board_canvas.bind("<Button-1>", click_set)
 
     # Determine the places a player can legally play
-    available_points = legal_settlement_placements(player,players)
+    available_points = []
+    for point in player.settlements:
+        available_points.append(point)
 
-    print("Choose a vertex to place a settlement")
+    print("Choose a vertex to place a city")
 
     coordinate = placement_loop(available_points)
 
