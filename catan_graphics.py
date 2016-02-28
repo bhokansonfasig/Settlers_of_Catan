@@ -302,8 +302,6 @@ def close_all(splash,board):
 def set_players(board):
     """Gets the number and type of players and returns an array of player
         objects"""
-    players = []
-
     # # Command line implementation; pretty broken honestly...
     # playnum = 0
     # compnum = 0
@@ -347,7 +345,10 @@ def set_players(board):
     player_window.update()
     player_window.deiconify()
 
+    players = []
     while len(players)<2:
+        players = []
+
         player_window.wait_variable(button_chosen)
 
         if player_1_type.get()=="Human":
