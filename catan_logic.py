@@ -236,10 +236,14 @@ def legal_road_placements(player,players):
     return road_options
 
 
-def point_resources(point):
+def point_resources(point,tiles):
     """Gets resources on hexagons connected to 'point'"""
-
-    return ["sheep","wheat","stone"]
+    output = []
+    for hexagon in point.coordinate:
+        for tile in tiles:
+            if(hexagon == tile.index):
+                output.append(tile.resource)
+    return output
 
 
 def check_winner():
