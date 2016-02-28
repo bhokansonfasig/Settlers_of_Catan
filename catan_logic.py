@@ -190,41 +190,28 @@ def legal_settlement_placements(player,players):
     """Returns an array of points where the player can place a settlement"""
     points = []
     occupied_points = occupied_points_on_board(players)
-    # print(len(occupied_points),"points are unavailiable.")
 
     if(len(player.roads)<2 and len(player.settlements)<2): #first turn 
-        # print("First turn.")
         for p in all_points:
             if((not p.locate_point(occupied_points)) and (not p.adjacent_point_list(occupied_points))):
                 points.append(p)
-            # else:
-            #     # print(p.coordinate,"is occupied.")
-            #     print (p in points)
-        
         
         if(len(points) == 0):#first guy to place something on the board, there are no occupied points so points.append(p) never happens
             return all_points
         else:
             return points
     
-    #incomplete!
     else:
         for p in player.points:
-            if (p.building != 0):
+            if (p.locate_point(occupied_points) or p.adjacent_point_list(occupied_points)):
                 continue
-            for enemy in players:
-                if(player == enemy):
-                    continue
-                for p2 in enemy.points:
-                    if(p.adjacent_point(p2) and (p2.building != 0)):
-                        continue
-                    else:
-                        points.append(p)
+            else:
+                points.append(p)
+        if(len(points)==0):
+            print("No place avaiable to place a new settlement.")
+        return points
 
     
-    # return points
-
-
 
 def legal_road_placements(player,players):
     road_options = []
