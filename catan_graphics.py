@@ -295,6 +295,7 @@ def close_all(splash,board):
     try:
         splash.destroy()
         board.destroy()
+        player_window.destroy()
     except:
         pass
 
