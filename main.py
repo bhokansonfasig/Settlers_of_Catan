@@ -88,7 +88,7 @@ def new_game(splash,board):
             pass
         draw_stats(players)
 
-        draw_resource_panel(players[whose_turn-1])
+        draw_resource_panel(players[whose_turn-1],players)
 
         # Button events should be able to handle what the player really does
         #  during their turn
