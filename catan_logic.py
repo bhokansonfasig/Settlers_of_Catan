@@ -3,8 +3,6 @@ from road import Road
 from point import Point
 from player import Player
 
-global first_round
-first_round = True
 
 #the leftmost points on the grid, which are used to generate the rest
 seed_points = [[0,1,7],[1,7,8],[7,8,15],[7,14,15],[14,15,21],[15,21,22],[21,28,29],[21,22,29],[28,29,35],[29,35,36],[35,42,43],[35,36,43]]
@@ -30,7 +28,7 @@ def generate_points_and_roads():
 
 generate_points_and_roads()
 
-players = [Player(0,"Aman",-1),Player(1,"Ben",-1)] #for testing
+
 ################################################################################
 # Function definitions
 
@@ -191,18 +189,17 @@ def add_point(point,player):
 def legal_settlement_placements(player,players):
     """Returns an array of points where the player can place a settlement"""
     points = []
+    occupied_points = occupied_points_on_board(players)
+    print(len(occupied_points),"points are unavailiable.")
 
     if(len(player.roads)==0 and len(player.settlements)==0 and len(points)==0): #first turn 
         print("First turn.")
-        occupied_points = occupied_points_on_board(players)
-        print(len(occupied_points),"points are unavailiable.")
         for p in all_points:
-            for occupied_point in occupied_points:
-                if(not (p == occupied_point)): #this has to be done because the building attribute makes the points different objects
-                    points.append(p)
-                else:
-                    print(p.coordinate,"is occupied.")
-                    print (p in points)
+            if(not p.locate_point(occupied_points)):
+                points.append(p)
+            else:
+                print(p.coordinate,"is occupied.")
+                print (p in points)
         
         
         if(len(points) == 0):#first guy to place something on the board, there are no occupied points so points.append(p) never happens
