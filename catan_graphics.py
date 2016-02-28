@@ -1,6 +1,7 @@
 from tkinter import *
 from main import version, new_game, load_game
 from catan_logic import legal_settlement_placements, legal_road_placements
+from catan_logic import build_settlement, build_road, build_city
 from player import Player
 from tiles import Tile
 from point import Point
@@ -50,14 +51,20 @@ class App(Frame):
         quit_button_window = splash_canvas.create_window(200, 250,
             window=quit_button)
 
-        # Create and hide board window
+        # Create board window
         board = Toplevel()
         board.geometry(board_geometry)
         board.title("Settlers of Catan - Play")
         global board_canvas
         board_canvas = Canvas(board)
         board_canvas.pack(fill=BOTH, expand=1)
-        board.withdraw()
+
+        # Create buttons on board window
+        # quit_button = Button(board_canvas, font=("Helvetica", 16),
+        #     text="Quit game", command=self.quit)
+        # quit_button.configure(width=10, activebackground = button_color)
+        # quit_button_window = board_canvas.create_window(200, 250,
+        #     window=quit_button)
 
         # Generate 49 tiles
         global tiles
@@ -66,7 +73,6 @@ class App(Frame):
             tiles.append(Tile(i))
 
         draw_tile_skeleton(tiles)
-
 
         global click_x,click_y
         click_x = IntVar()  # Tkinter variable that can be watched
@@ -98,6 +104,9 @@ class App(Frame):
         board_canvas.bind("<Button-1>", click_set)
         board_canvas.bind("<Configure>", reset_size)
         board.protocol("WM_DELETE_WINDOW", user_closed)
+
+        # Hide board window
+        board.withdraw()
 
 
 ################################################################################
@@ -598,10 +607,21 @@ def draw_stats(players):
             tags="stats")
 
 
-def draw_resource_panel(player):
+def draw_resource_panel(player,players):
     """Draws resources available to player number 'index' in the resource panel
     of the board window. Also activates buttons available to player."""
-    pass
+    # Temporary terminal actions for player
+    action = input("What would you like to do? ")
+    if action=="build settlement" or action=="bs":
+        build_settlement(player,players)
+    elif action=="build road" or action=="br":
+        build_road(player,players)
+    elif action=="build city" or action=="bc":
+        build_city(player,players)
+    else:
+        pass
+
+
 
 
 def clear_resource_panel():
