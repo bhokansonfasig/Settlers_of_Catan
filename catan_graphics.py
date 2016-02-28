@@ -561,8 +561,73 @@ def draw_city(point, player):
 
 
 def draw_dice(die_1,die_2):
-    """Draws dice of values 'die_1' and 'die_2'"""
-    pass
+    """Undraws previous dice and draws dice of values 'die_1' and 'die_2'"""
+    board_canvas.delete("dice")
+
+    die_width = 50
+    die_height = die_width
+    die_x_off = 10
+    die_y_off = 10
+    board_canvas.create_rectangle(die_x_off,die_y_off,
+        die_x_off+die_width,die_y_off+die_height,
+        fill="red", tags="dice")
+    board_canvas.create_rectangle(die_x_off+die_width+20,die_y_off,
+        die_x_off+die_width+20+die_width,die_y_off+die_height,
+        fill="yellow", tags="dice")
+
+    die=[die_1,die_2]
+    dot_r = 5
+    for i in range(2):
+        # Top left and bottom right dots
+        if die[i]!=1:
+            board_canvas.create_oval(
+                die_x_off+i*(die_x_off+die_width+10)+int(die_width/4)-dot_r,
+                die_y_off+int(die_width/4)-dot_r,
+                die_x_off+i*(die_x_off+die_width+10)+int(die_width/4)+dot_r,
+                die_y_off+int(die_width/4)+dot_r,
+                fill="black", tags="dice")
+            board_canvas.create_oval(
+                die_x_off+i*(die_x_off+die_width+10)+int(3*die_width/4)-dot_r,
+                die_y_off+int(3*die_width/4)-dot_r,
+                die_x_off+i*(die_x_off+die_width+10)+int(3*die_width/4)+dot_r,
+                die_y_off+int(3*die_width/4)+dot_r,
+                fill="black", tags="dice")
+        # Center left and right dots
+        if die[i]==6:
+            board_canvas.create_oval(
+                die_x_off+i*(die_x_off+die_width+10)+int(die_width/4)-dot_r,
+                die_y_off+int(2*die_width/4)-dot_r,
+                die_x_off+i*(die_x_off+die_width+10)+int(die_width/4)+dot_r,
+                die_y_off+int(2*die_width/4)+dot_r,
+                fill="black", tags="dice")
+            board_canvas.create_oval(
+                die_x_off+i*(die_x_off+die_width+10)+int(3*die_width/4)-dot_r,
+                die_y_off+int(2*die_width/4)-dot_r,
+                die_x_off+i*(die_x_off+die_width+10)+int(3*die_width/4)+dot_r,
+                die_y_off+int(2*die_width/4)+dot_r,
+                fill="black", tags="dice")
+        # Bottom left and top right dots
+        if die[i]>=4:
+            board_canvas.create_oval(
+                die_x_off+i*(die_x_off+die_width+10)+int(die_width/4)-dot_r,
+                die_y_off+int(3*die_width/4)-dot_r,
+                die_x_off+i*(die_x_off+die_width+10)+int(die_width/4)+dot_r,
+                die_y_off+int(3*die_width/4)+dot_r,
+                fill="black", tags="dice")
+            board_canvas.create_oval(
+                die_x_off+i*(die_x_off+die_width+10)+int(3*die_width/4)-dot_r,
+                die_y_off+int(die_width/4)-dot_r,
+                die_x_off+i*(die_x_off+die_width+10)+int(3*die_width/4)+dot_r,
+                die_y_off+int(die_width/4)+dot_r,
+                fill="black", tags="dice")
+        # Center dot
+        if die[i]%2==1:
+            board_canvas.create_oval(
+                die_x_off+i*(die_x_off+die_width+10)+int(2*die_width/4)-dot_r,
+                die_y_off+int(2*die_width/4)-dot_r,
+                die_x_off+i*(die_x_off+die_width+10)+int(2*die_width/4)+dot_r,
+                die_y_off+int(2*die_width/4)+dot_r,
+                fill="black", tags="dice")
 
 
 def draw_intermediate_screen(name):
