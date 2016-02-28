@@ -72,7 +72,7 @@ def new_game(splash,board):
         draw_stats(players)
 
     # Loop through player turns until someone wins!
-    whose_turn = 1
+    whose_turn = 0
     global die_1,die_2
     # Additional condition that players can only win on their turn
     while check_winner()!=whose_turn:
