@@ -613,11 +613,20 @@ def draw_resource_panel(player,players):
     # Temporary terminal actions for player
     action = input("What would you like to do? ")
     if action=="build settlement" or action=="bs":
-        build_settlement(player,players)
+        if legal_settlement_placements(player,players):
+            build_settlement(player,players)
+        else:
+            print("Nowhere to legally build a new settlement!")
     elif action=="build road" or action=="br":
-        build_road(player,players)
+        if legal_road_placements(player,players):
+            build_road(player,players)
+        else:
+            print("Nowhere to legally build a new road!")
     elif action=="build city" or action=="bc":
-        build_city(player,players)
+        if len(player.settlements)>0:
+            build_city(player,players)
+        else:
+            print("Nowhere to legally build a new city!")
     else:
         pass
 
