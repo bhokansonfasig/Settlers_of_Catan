@@ -207,8 +207,6 @@ def legal_settlement_placements(player,players):
                 continue
             else:
                 points.append(p)
-        if(len(points)==0):
-            print("No place avaiable to place a new settlement.")
         return points
 
     
