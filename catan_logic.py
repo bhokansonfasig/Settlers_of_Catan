@@ -192,19 +192,53 @@ def legal_settlement_placements(player,players):
     """Returns an array of points where the player can place a settlement"""
     points = []
 
-    for p in player.points:
-        if (p.building != 0):
-            continue
-        for enemy in players:
-            for p2 in enemy.points:
-                if(p.adjacent_point(p2) and (p2.building != 0)):
-                    continue
-                else:
+    if(len(player.roads)==0 and len(player.settlements)==0 and len(points)==0): #first turn 
+        print("First turn.")
+        occupied_points = occupied_points_on_board(players)
+        print(len(occupied_points),"points are unavailiable.")
+        for p in all_points:
+            for occupied_point in occupied_points:
+                if(not (p == occupied_point)): #this has to be done because the building attribute makes the points different objects
                     points.append(p)
-    if(first_round): #the game just started
-        return all_points
+                else:
+                    print(p.coordinate,"is occupied.")
+                    print (p in points)
+        
+        
+        if(len(points) == 0):#first guy to place something on the board, there are no occupied points so points.append(p) never happens
+            print("first round, cant find points!")
+            return all_points
+        else:
+            return points
+
+    #incomplete!
+    elif(len(player.roads)==1 and len(player.settlements)==1): #second turn (reverse order)
+        print("Second turn.")
+        for guy in players:
+            print(guy.name,"has",len(guy.settlements),"settlements so far.")
+            for p in all_points:
+                if(p not in guy.settlements):
+                    points.append(p)
+
+    
     else:
-        return points
+        for p in player.points:
+            if (p.building != 0):
+                continue
+            for enemy in players:
+                if(player == enemy):
+                    continue
+                for p2 in enemy.points:
+                    if(p.adjacent_point(p2) and (p2.building != 0)):
+                        continue
+                    else:
+                        points.append(p)
+
+    if(len(points) == 0):
+        print("Did not find a place to build settlement.")
+    
+    # return points
+
 
 
 def legal_road_placements(player,players):
@@ -219,7 +253,7 @@ def legal_road_placements(player,players):
             if(not new_road):
                 break
 
-        if (new_road and (connected or len(player.roads)==0)): #let the player build it anywhere if he has no roads in the begining
+        if (new_road and connected): #its assumed that the first object the player puts on the board is a settlement
             road_options.append(road)
 
     return road_options
@@ -275,6 +309,16 @@ def player_building_update(point,build_type,player):
             player.settlements.append(point)
         else:
             player.cities.append(point)
+
+def occupied_points_on_board(players):
+    points = []
+    for player in players:
+        for settlement in player.settlements:
+            points.append(settlement)
+        for city in player.cities:
+            points.append(city)
+    return points
+
 
 ################################################################################
 # If this file is run itself, do the following
