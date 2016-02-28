@@ -20,51 +20,52 @@ class App(Frame):
         self.initUI()
 
     def initUI(self):
-        self.parent.title("Settlers of Catan - Welcome")
-        self.pack(fill=BOTH, expand=1)
+        self.parent.title("Settlers of Catan - Play")
+        self.parent.geometry(board_geometry)
+        # self.pack(fill=BOTH, expand=1)
 
-        global board
-        board = 0
+        # global board
+        # board = 0
 
+        # Create splash window
+        global splash
+        splash = Toplevel(background=menu_color)
+        splash.geometry("400x300+100+100")
+        splash.title("Settlers of Catan - Welcome")
         global splash_canvas
-        splash_canvas = Canvas(self, background=menu_color)
+        # splash_canvas = Canvas(splash, background=menu_color)
         # Welcome text
-        splash_canvas.create_text(200, 50, font=("Helvetica", 36),
-            text="Settlers of Catan")
-        splash_canvas.create_text(200, 100, font=("Helvetica", 18),
-            text="Version "+version)
-        splash_canvas.pack(fill=BOTH, expand=1)
+        game_label = Label(splash, text="Settlers of Catan",
+            font=("Helvetica", 36), background=menu_color)
+        game_label.pack()
+        version_label = Label(splash, text="Version "+version,
+            font=("Helvetica", 18), background=menu_color)
+        version_label.pack()
         # Buttons
-        play_button = Button(splash_canvas, font=("Helvetica", 16),
-            text="New Game", command=lambda : new_game(self.parent, board))
+        play_button = Button(splash, font=("Helvetica", 16), text="New Game",
+            command=lambda : new_game(splash, self.parent))
         play_button.configure(width=10, activebackground = button_color)
-        play_button_window = splash_canvas.create_window(100, 200,
-            window=play_button)
-        load_button = Button(splash_canvas, font=("Helvetica", 16),
-            text="Load Game", command=lambda : load_game(self.parent, board))
+        play_button.pack()
+        load_button = Button(splash, font=("Helvetica", 16), text="Load Game",
+            command=lambda : load_game(splash, self.parent))
         load_button.configure(width=10, activebackground = button_color)
-        load_button_window = splash_canvas.create_window(300, 200,
-            window=load_button)
-        quit_button = Button(splash_canvas, font=("Helvetica", 16),
-            text="Quit", command=self.quit)
+        load_button.pack()
+        quit_button = Button(splash, font=("Helvetica", 16), text="Quit",
+            command=self.quit)
         quit_button.configure(width=10, activebackground = button_color)
-        quit_button_window = splash_canvas.create_window(200, 250,
-            window=quit_button)
+        quit_button.pack()
 
-        # Create board window
-        board = Toplevel()
-        board.geometry(board_geometry)
-        board.title("Settlers of Catan - Play")
+        # Create board window's canvas and items
         global board_canvas
-        board_canvas = Canvas(board)
+        board_canvas = Canvas(self.parent)
         board_canvas.pack(fill=BOTH, expand=1)
 
         # Create buttons on board window
-        quit_button = Button(board_canvas, font=("Helvetica", 16),
-            text="Quit game", command=self.quit)
-        quit_button.configure(width=10, activebackground = button_color)
-        quit_button_window = board_canvas.create_window(200, 250,
-            window=quit_button)
+        # quit_button = Button(board_canvas, font=("Helvetica", 16),
+        #     text="Quit game", command=self.quit)
+        # quit_button.configure(width=10, activebackground = button_color)
+        # quit_button_window = board_canvas.create_window(200, 250,
+        #     window=quit_button)
 
         # Generate 49 tiles
         global tiles
@@ -98,15 +99,15 @@ class App(Frame):
             """Closes board window nicely if user manually closes it."""
             # Later may use this to create saves
             board_canvas.delete(ALL)
-            close_board_window(self.parent,board)
+            close_all(splash,self.parent)
 
         # Set board bindings & protocols
         board_canvas.bind("<Button-1>", click_set)
         board_canvas.bind("<Configure>", reset_size)
-        board.protocol("WM_DELETE_WINDOW", user_closed)
+        self.parent.protocol("WM_DELETE_WINDOW", user_closed)
 
         # Hide board window
-        board.withdraw()
+        self.parent.withdraw()
 
 
 ################################################################################

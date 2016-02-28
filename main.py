@@ -11,8 +11,7 @@ if __name__ == '__main__':
     aesthetics(900,600)
     root = Tk()
     app = App(root)
-    # Draw splash window and run app
-    root.geometry("400x300+100+100")
+    # Draw window and run app
     root.mainloop()
 
 ################################################################################
