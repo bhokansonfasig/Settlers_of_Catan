@@ -4,6 +4,7 @@ from road import Road
 
 def computer_choose_settlement(computer,players):
     """Has computer place settlement. Returns tuple of the placed settlement"""
+    from catan_logic import legal_settlement_placements
     if computer.AI_code==1:
         # Randomly place settlement
         available_points = legal_settlement_placements(computer,players)
@@ -15,6 +16,7 @@ def computer_choose_settlement(computer,players):
 
 def computer_choose_road(computer,players):
     """Has computer place road. Returns tuples of the placed road"""
+    from catan_logic import legal_road_placements
     if computer.AI_code==1:
         # Randomly place road
         available_roads = legal_road_placements(player,players)
