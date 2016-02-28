@@ -68,6 +68,12 @@ class Point:
                 self.vertex = [int(hex_width*(x_i-2)/10)+hex_x_off,
                     int(hex_height*(y_i+1)/16)+hex_y_off]
 
+    def locate_point(self,point_array):
+        for item in point_array:
+            if(item == self):
+                return True
+        else:
+            return False
 
 if __name__ == '__main__':
     x = 17
