@@ -195,7 +195,7 @@ def legal_settlement_placements(player,players):
     if(len(player.roads)<2 and len(player.settlements)<2): #first turn 
         # print("First turn.")
         for p in all_points:
-            if(not p.locate_point(occupied_points)):
+            if((not p.locate_point(occupied_points)) and (not p.adjacent_point_list(occupied_points))):
                 points.append(p)
             # else:
             #     # print(p.coordinate,"is occupied.")

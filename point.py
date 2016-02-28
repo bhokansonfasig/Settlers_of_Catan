@@ -75,6 +75,14 @@ class Point:
         else:
             return False
 
+    #checks if the point is adjacent to any point in a list, useful for building proximity rule
+    def adjacent_point_list(self,points):
+        for point in points:
+            if (self.adjacent_point(point)):
+                return True
+        else:
+            return False
+
 if __name__ == '__main__':
     x = 17
     y = 23
