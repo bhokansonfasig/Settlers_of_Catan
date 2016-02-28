@@ -265,7 +265,7 @@ def point_resources(point,tiles):
 
 def check_winner():
     """Checks winning condition for all players. Returns player index if someone
-    has won, False otherwise."""
+    has won, -1 otherwise."""
 
     # Temporary way of breaking out of loop
     winner = eval(input("Who won? "))
