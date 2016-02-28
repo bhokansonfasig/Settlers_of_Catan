@@ -32,6 +32,9 @@ def new_game(splash,board):
 
     print("New game started")
 
+    global loop_index
+    loop_index = -1
+
     # Set the number of players, their names, and levels of AI
     global players
     players = set_players()
@@ -69,14 +72,17 @@ def new_game(splash,board):
         draw_stats(players)
 
     # Loop through player turns until someone wins!
-    loop_index = 0
     whose_turn = 1
+    global die_1,die_2
     # Additional condition that players can only win on their turn
     while check_winner()!=whose_turn:
+        if loop_index>=0:
+            clear_resource_panel()
+        draw_stats(players)
+        print(players[whose_turn%playnum].name,"'s turn", sep='')
+        draw_intermediate_screen(players[whose_turn%playnum].name)
+        loop_index += 1
         whose_turn = loop_index%playnum + 1
-        print(players[whose_turn-1].name,"'s turn", sep='')
-        draw_intermediate_screen(players[whose_turn-1].name)
-
 
         die_1,die_2 = roll_dice()
         draw_dice(die_1,die_2)
@@ -90,11 +96,6 @@ def new_game(splash,board):
         draw_resource_panel(players[whose_turn-1],players)
 
         turn_loop(players[whose_turn-1],players)
-
-        clear_resource_panel()
-        draw_stats(players)
-
-        loop_index += 1
 
     winner = check_winner()
     print("*****Congratulations ",players[winner-1].name,"!*****", sep='')

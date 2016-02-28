@@ -186,7 +186,7 @@ def set_color(element):
 
 
 def redraw_board():
-    from main import players
+    from main import players, loop_index
     board_canvas.delete(ALL)
     draw_tile_skeleton(tiles)
     draw_tiles(tiles)
@@ -198,6 +198,11 @@ def redraw_board():
         for city in player.cities:
             draw_city(city,player)
     draw_stats(players)
+    if loop_index>=0:
+        from main import die_1, die_2
+        draw_dice(die_1,die_2)
+        whose_turn = loop_index%len(players) + 1
+        draw_resource_panel(players[whose_turn-1],players)
 
 
 def open_board_window(splash,board):
