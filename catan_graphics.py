@@ -541,13 +541,21 @@ def draw_city(point, player):
         return
 
     # Undraw the settlement from that point
-    for settlement in player.settlements:
-        if settlement.coordinate==point.coordinate:
-            board_canvas.delete(settlement.tk_index)
+    all_settlements = board_canvas.find_withtag("settlement")
+    owned_settlements = []
+    for settlement in all_settlements:
+        if str(player.index) in board_canvas.gettags(settlement):
+            owned_settlements.append(settlement)
+    point.link_vertex(hex_width, hex_height, hex_x_off, hex_y_off)
+    size = int(hex_height/50)
+    for match in owned_settlements:
+        if point.vertex[0]+size in board_canvas.coords(match) and \
+            point.vertex[1]+size in board_canvas.coords(match):
+            board_canvas.delete(match)
 
     board_canvas.tag_raise("settlement")
 
-    point.link_vertex(hex_width, hex_height, hex_x_off, hex_y_off)
+    #point.link_vertex(hex_width, hex_height, hex_x_off, hex_y_off)
     x = point.vertex[0]
     y = point.vertex[1]
 

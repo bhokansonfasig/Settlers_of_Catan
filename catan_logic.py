@@ -329,6 +329,7 @@ def player_building_update(point,build_type,player):
                 player.settlements.append(p)
             else:
                 player.cities.append(p)
+                player.settlements.remove(p)
             break
     if not found:
         player.points.append(point)
@@ -336,6 +337,7 @@ def player_building_update(point,build_type,player):
             player.settlements.append(point)
         else:
             player.cities.append(point)
+            player.settlements.remove(point)
 
 def occupied_points_on_board(players):
     points = []
