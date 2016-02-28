@@ -20,51 +20,45 @@ class App(Frame):
         self.initUI()
 
     def initUI(self):
-        self.parent.title("Settlers of Catan - Welcome")
-        self.pack(fill=BOTH, expand=1)
+        self.parent.title("Settlers of Catan - Play")
+        self.parent.geometry(board_geometry)
+        # self.pack(fill=BOTH, expand=1)
 
-        global board
-        board = 0
+        # global board
+        # board = 0
 
+        # Create splash window
+        global splash
+        splash = Toplevel(background=menu_color)
+        splash.geometry("400x300+100+100")
+        splash.title("Settlers of Catan - Welcome")
         global splash_canvas
-        splash_canvas = Canvas(self, background=menu_color)
+        # splash_canvas = Canvas(splash, background=menu_color)
         # Welcome text
-        splash_canvas.create_text(200, 50, font=("Helvetica", 36),
-            text="Settlers of Catan")
-        splash_canvas.create_text(200, 100, font=("Helvetica", 18),
-            text="Version "+version)
-        splash_canvas.pack(fill=BOTH, expand=1)
+        game_label = Label(splash, text="Settlers of Catan",
+            font=("Helvetica", 36), background=menu_color)
+        game_label.pack()
+        version_label = Label(splash, text="Version "+version,
+            font=("Helvetica", 18), background=menu_color)
+        version_label.pack(pady=30)
         # Buttons
-        play_button = Button(splash_canvas, font=("Helvetica", 16),
-            text="New Game", command=lambda : new_game(self.parent, board))
+        play_button = Button(splash, font=("Helvetica", 16), text="New Game",
+            command=lambda : new_game(splash, self.parent))
         play_button.configure(width=10, activebackground = button_color)
-        play_button_window = splash_canvas.create_window(100, 200,
-            window=play_button)
-        load_button = Button(splash_canvas, font=("Helvetica", 16),
-            text="Load Game", command=lambda : load_game(self.parent, board))
+        play_button.pack(pady=10)
+        load_button = Button(splash, font=("Helvetica", 16), text="Load Game",
+            command=lambda : load_game(splash, self.parent))
         load_button.configure(width=10, activebackground = button_color)
-        load_button_window = splash_canvas.create_window(300, 200,
-            window=load_button)
-        quit_button = Button(splash_canvas, font=("Helvetica", 16),
-            text="Quit", command=self.quit)
+        load_button.pack(pady=10)
+        quit_button = Button(splash, font=("Helvetica", 16), text="Quit",
+            command=self.quit)
         quit_button.configure(width=10, activebackground = button_color)
-        quit_button_window = splash_canvas.create_window(200, 250,
-            window=quit_button)
+        quit_button.pack(pady=10)
 
-        # Create board window
-        board = Toplevel()
-        board.geometry(board_geometry)
-        board.title("Settlers of Catan - Play")
+        # Create board window's canvas and items
         global board_canvas
-        board_canvas = Canvas(board)
+        board_canvas = Canvas(self.parent)
         board_canvas.pack(fill=BOTH, expand=1)
-
-        # Create buttons on board window
-        quit_button = Button(board_canvas, font=("Helvetica", 16),
-            text="Quit game", command=self.quit)
-        quit_button.configure(width=10, activebackground = button_color)
-        quit_button_window = board_canvas.create_window(200, 250,
-            window=quit_button)
 
         # Generate 49 tiles
         global tiles
@@ -98,15 +92,15 @@ class App(Frame):
             """Closes board window nicely if user manually closes it."""
             # Later may use this to create saves
             board_canvas.delete(ALL)
-            close_board_window(self.parent,board)
+            close_all(splash,self.parent)
 
         # Set board bindings & protocols
         board_canvas.bind("<Button-1>", click_set)
         board_canvas.bind("<Configure>", reset_size)
-        board.protocol("WM_DELETE_WINDOW", user_closed)
+        self.parent.protocol("WM_DELETE_WINDOW", user_closed)
 
         # Hide board window
-        board.withdraw()
+        self.parent.withdraw()
 
 
 ################################################################################
@@ -597,47 +591,110 @@ def draw_stats(players):
         player = players[i]
         board_canvas.create_text(hex_x_off-water_width+int((i+.5)*portion),
             int((hex_y_off-water_width)/4), text=player.name, fill=player.color,
-            font=("Helvetica", txt_size), tags="stats")
+            font=("Helvetica", int(.9*txt_size)), tags="stats")
         vp_string = "Victory points: "+str(player.score)
         board_canvas.create_text(hex_x_off-water_width+int((i+.5)*portion),
             int(2*(hex_y_off-water_width)/4), text=vp_string, fill=player.color,
-            font=("Helvetica", int(.8*txt_size)), tags="stats")
+            font=("Helvetica", int(.7*txt_size)), tags="stats")
         resource_string = "Resources: "+str(player.wood+player.brick+ \
             player.wheat+player.sheep+player.stone)
         board_canvas.create_text(hex_x_off-water_width+int((i+.5)*portion),
             int(3*(hex_y_off-water_width)/4), text=resource_string,
-            fill=player.color, font=("Helvetica", int(.8*txt_size)),
+            fill=player.color, font=("Helvetica", int(.7*txt_size)),
             tags="stats")
+
+
+def draw_buttons(player,players):
+    """Draws buttons for player actions on the board window"""
+    global build_settlement_button, build_road_button, build_city_button
+
+    # Create buttons on board window
+    build_settlement_button = Button(board_canvas,
+        font=("Helvetica", int(.5*txt_size)), text="Build Settlement",
+        command=lambda : set_button_chosen(1))
+    build_settlement_button.configure(width=15, activebackground = button_color)
+    build_settlement_button_window = board_canvas.create_window(100, 100,
+        window=build_settlement_button, tags="button")
+    build_road_button = Button(board_canvas,
+        font=("Helvetica", int(.5*txt_size)), text="Build Road",
+        command=lambda : set_button_chosen(2))
+    build_road_button.configure(width=15, activebackground = button_color)
+    build_road_button_window = board_canvas.create_window(100, 125,
+        window=build_road_button, tags="button")
+    build_city_button = Button(board_canvas,
+        font=("Helvetica", int(.5*txt_size)), text="Build City",
+        command=lambda : set_button_chosen(3))
+    build_city_button.configure(width=15, activebackground = button_color)
+    build_city_button_window = board_canvas.create_window(100, 150,
+        window=build_city_button, tags="button")
+    end_turn_button = Button(board_canvas,
+        font=("Helvetica", int(.5*txt_size)), text="End Turn",
+        command=lambda : set_button_chosen(0))
+    end_turn_button.configure(width=15, activebackground = button_color)
+    end_turn_button_window = board_canvas.create_window(100, 175,
+        window=end_turn_button, tags="button")
+
+
+def set_button_chosen(integer):
+    """Sets the button_chosen variable to value 'integer'"""
+    button_chosen.set(integer)
+
+
+def undraw_buttons():
+    """Undraws and deletes all player action buttons from window"""
+    board_canvas.delete("button")
+    build_settlement_button.destroy()
+    build_road_button.destroy()
+    build_city_button.destroy()
 
 
 def draw_resource_panel(player,players):
     """Draws resources available to player number 'index' in the resource panel
     of the board window. Also activates buttons available to player."""
-    # Temporary terminal actions for player
-    action = input("What would you like to do? ")
-    if action=="build settlement" or action=="bs":
-        if legal_settlement_placements(player,players):
-            build_settlement(player,players)
-        else:
-            print("Nowhere to legally build a new settlement!")
-    elif action=="build road" or action=="br":
-        if legal_road_placements(player,players):
-            build_road(player,players)
-        else:
-            print("Nowhere to legally build a new road!")
-    elif action=="build city" or action=="bc":
-        if len(player.settlements)>0:
-            build_city(player,players)
-        else:
-            print("Nowhere to legally build a new city!")
-    else:
-        pass
+
+    draw_buttons(player,players)
+
+    # # Temporary terminal actions for player
+    # action = input("What would you like to do? ")
+    # if action=="build settlement" or action=="bs":
+    #     if legal_settlement_placements(player,players):
+    #         build_settlement(player,players)
+    #     else:
+    #         print("Nowhere to legally build a new settlement!")
+    # elif action=="build road" or action=="br":
+    #     if legal_road_placements(player,players):
+    #         build_road(player,players)
+    #     else:
+    #         print("Nowhere to legally build a new road!")
+    # elif action=="build city" or action=="bc":
+    #     if len(player.settlements)>0:
+    #         build_city(player,players)
+    #     else:
+    #         print("Nowhere to legally build a new city!")
+    # else:
+    #     pass
 
 
 def clear_resource_panel():
     """Clears out all resources from the resource panel of the board window.
     Also dims all button states."""
-    pass
+
+    undraw_buttons()
+
+
+def turn_loop(player,players):
+    global button_chosen
+    button_chosen = IntVar()
+    button_chosen.set(-1)
+    while button_chosen.get()!=0:
+        draw_stats(players)
+        board_canvas.wait_variable(button_chosen)
+        if button_chosen.get()==1:
+            build_settlement(player,players)
+        elif button_chosen.get()==2:
+            build_road(player,players)
+        elif button_chosen.get()==3:
+            build_city(player,players)
 
 
 ################################################################################
