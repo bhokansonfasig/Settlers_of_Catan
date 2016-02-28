@@ -353,19 +353,31 @@ def set_players(board):
         if player_1_type.get()=="Human":
             players.append(Player(1,player_1_name.get(),-1))
         elif player_1_type.get()=="Computer":
-            players.append(Player(1,"Computer 1",eval(player_1_name.get())))
+            try:
+                players.append(Player(1,"Computer 1",eval(player_1_name.get())))
+            except:
+                players.append(Player(1,"Computer 1",1))
         if player_2_type.get()=="Human":
             players.append(Player(2,player_2_name.get(),-1))
         elif player_2_type.get()=="Computer":
-            players.append(Player(2,"Computer 2",eval(player_2_name.get())))
+            try:
+                players.append(Player(2,"Computer 2",eval(player_2_name.get())))
+            except:
+                players.append(Player(2,"Computer 2",1))
         if player_3_type.get()=="Human":
             players.append(Player(3,player_3_name.get(),-1))
         elif player_3_type.get()=="Computer":
-            players.append(Player(3,"Computer 3",eval(player_3_name.get())))
+            try:
+                players.append(Player(3,"Computer 3",eval(player_3_name.get())))
+            except:
+                players.append(Player(3,"Computer 3",1))
         if player_4_type.get()=="Human":
             players.append(Player(4,player_4_name.get(),-1))
         elif player_4_type.get()=="Computer":
-            players.append(Player(4,"Computer 4",eval(player_4_name.get())))
+            try:
+                players.append(Player(4,"Computer 4",eval(player_4_name.get())))
+            except:
+                players.append(Player(4,"Computer 4",1))
 
     open_board_window(player_window,board)
 
