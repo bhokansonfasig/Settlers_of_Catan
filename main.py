@@ -89,8 +89,14 @@ def new_game(splash,board):
         if die_1+die_2!=7:
             distribute_resources(die_1+die_2,tiles,players)
         else:
-            # Robber sequence
-            pass
+            # Robber sequence. Start with the current player, and loop through
+            for player in players[whose_turn-1:]:
+                if player.robbable():
+                    print(player.name,"got robbed!")
+            for player in players[:whose_turn-1]:
+                if player.robbable():
+                    print(player.name,"got robbed!")
+
         draw_stats(players)
 
         draw_resource_panel(players[whose_turn-1],players)
