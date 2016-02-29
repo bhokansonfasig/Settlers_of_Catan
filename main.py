@@ -26,13 +26,13 @@ def new_game(splash,board):
     from catan_logic import player_building_update
     from catan_graphics import open_board_window, close_board_window, close_all
     from catan_graphics import set_players, get_tiles, draw_tiles, draw_stats
-    from catan_graphics import draw_road, draw_dice, turn_loop
+    from catan_graphics import draw_log, write_log, draw_dice, turn_loop
     from catan_graphics import draw_resource_panel, clear_resource_panel
     from catan_graphics import draw_intermediate_screen
 
     print("New game started")
 
-    global loop_index
+    global loop_index, die_1, die_2
     loop_index = -1
 
     # Set the number of players, their names, and levels of AI
@@ -41,10 +41,19 @@ def new_game(splash,board):
     # Randomize player order
     shuffle(players)
 
+    # Check to see if all players are computers
+    all_computers = True
+    for guy in players:
+        if guy.AI_code<0:
+            all_computers = False
+
     # Get the arrangement of tiles, then draw them to the board window
     tiles = get_tiles()
     tiles = set_tiles(tiles)
     draw_tiles(tiles)
+
+    # Start drawing log file to the board window
+    draw_log()
 
     # Draw player stats on board window
     playnum = len(players)
@@ -70,7 +79,6 @@ def new_game(splash,board):
 
     # Loop through player turns until someone wins!
     whose_turn = 0
-    global die_1,die_2
     # Additional condition that players can only win on their turn
     while not(players[whose_turn-1].index in check_winner(players)):
         if loop_index>=0:
@@ -79,7 +87,8 @@ def new_game(splash,board):
         loop_index += 1
         whose_turn = loop_index%playnum + 1
         print(players[whose_turn-1].name,"'s turn", sep='')
-        if players[whose_turn-1].AI_code<0:
+        # Wait screen for human players, or if all computer players
+        if players[whose_turn-1].AI_code<0 or all_computers:
             draw_intermediate_screen(players[whose_turn-1].name)
 
         die_1,die_2 = roll_dice()
