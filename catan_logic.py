@@ -123,6 +123,9 @@ def build_settlement(player,players):
     if len(available_points)==0:
         print("Nowhere to build a new settlement!")
         return
+    if len(player.settlements)>=player.settlement_max:
+        print("Already built maximum number of settlements!")
+        return
 
     # Unless it's the first round of placements, take resources away
     if len(player.roads)>1:
@@ -157,6 +160,9 @@ def build_road(player,players):
     if len(available_roads)==0:
         print("Nowhere to build a new road!")
         return
+    if len(player.roads)>=player.road_max:
+        print("Already built maximum number of roads!")
+        return
 
     # Unless it's the first round of placements, take resources away
     if len(player.roads)>1:
@@ -188,6 +194,9 @@ def build_city(player,players):
     available_points = player.settlements
     if len(available_points)==0:
         print("Nowhere to build a new city!")
+        return
+    if len(player.cities)>=player.city_max:
+        print("Already built maximum number of cities!")
         return
     if player.wheat<2 or player.stone<3:
         print("Not enough resources to build a city!")
