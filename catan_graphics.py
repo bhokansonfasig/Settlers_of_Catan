@@ -720,68 +720,69 @@ def draw_dice(die_1,die_2):
     """Undraws previous dice and draws dice of values 'die_1' and 'die_2'"""
     board_canvas.delete("dice")
 
-    die_width = 50
-    die_height = die_width
-    die_x_off = 10
-    die_y_off = 10
+    die_height = int((hex_y_off-water_width)*.9)
+    die_width = die_height
+    die_x_off = int((hex_x_off-water_width-2*die_width)*2/5)
+    die_y_off = int((hex_y_off-water_width-die_height)/2)
+    die_sep = int(die_x_off/2)
     board_canvas.create_rectangle(die_x_off,die_y_off,
         die_x_off+die_width,die_y_off+die_height,
         fill="red", tags="dice")
-    board_canvas.create_rectangle(die_x_off+die_width+20,die_y_off,
-        die_x_off+die_width+20+die_width,die_y_off+die_height,
+    board_canvas.create_rectangle(die_x_off+die_width+die_sep,die_y_off,
+        die_x_off+die_width+die_sep+die_width,die_y_off+die_height,
         fill="yellow", tags="dice")
 
     die=[die_1,die_2]
-    dot_r = 5
+    dot_r = int(die_height/10)
     for i in range(2):
         # Top left and bottom right dots
         if die[i]!=1:
             board_canvas.create_oval(
-                die_x_off+i*(die_x_off+die_width+10)+int(die_width/4)-dot_r,
+                die_x_off+i*(die_width+die_sep)+int(die_width/4)-dot_r,
                 die_y_off+int(die_width/4)-dot_r,
-                die_x_off+i*(die_x_off+die_width+10)+int(die_width/4)+dot_r,
+                die_x_off+i*(die_width+die_sep)+int(die_width/4)+dot_r,
                 die_y_off+int(die_width/4)+dot_r,
                 fill="black", tags="dice")
             board_canvas.create_oval(
-                die_x_off+i*(die_x_off+die_width+10)+int(3*die_width/4)-dot_r,
+                die_x_off+i*(die_width+die_sep)+int(3*die_width/4)-dot_r,
                 die_y_off+int(3*die_width/4)-dot_r,
-                die_x_off+i*(die_x_off+die_width+10)+int(3*die_width/4)+dot_r,
+                die_x_off+i*(die_width+die_sep)+int(3*die_width/4)+dot_r,
                 die_y_off+int(3*die_width/4)+dot_r,
                 fill="black", tags="dice")
         # Center left and right dots
         if die[i]==6:
             board_canvas.create_oval(
-                die_x_off+i*(die_x_off+die_width+10)+int(die_width/4)-dot_r,
+                die_x_off+i*(die_width+die_sep)+int(die_width/4)-dot_r,
                 die_y_off+int(2*die_width/4)-dot_r,
-                die_x_off+i*(die_x_off+die_width+10)+int(die_width/4)+dot_r,
+                die_x_off+i*(die_width+die_sep)+int(die_width/4)+dot_r,
                 die_y_off+int(2*die_width/4)+dot_r,
                 fill="black", tags="dice")
             board_canvas.create_oval(
-                die_x_off+i*(die_x_off+die_width+10)+int(3*die_width/4)-dot_r,
+                die_x_off+i*(die_width+die_sep)+int(3*die_width/4)-dot_r,
                 die_y_off+int(2*die_width/4)-dot_r,
-                die_x_off+i*(die_x_off+die_width+10)+int(3*die_width/4)+dot_r,
+                die_x_off+i*(die_width+die_sep)+int(3*die_width/4)+dot_r,
                 die_y_off+int(2*die_width/4)+dot_r,
                 fill="black", tags="dice")
         # Bottom left and top right dots
         if die[i]>=4:
             board_canvas.create_oval(
-                die_x_off+i*(die_x_off+die_width+10)+int(die_width/4)-dot_r,
+                die_x_off+i*(die_width+die_sep)+int(die_width/4)-dot_r,
                 die_y_off+int(3*die_width/4)-dot_r,
-                die_x_off+i*(die_x_off+die_width+10)+int(die_width/4)+dot_r,
+                die_x_off+i*(die_width+die_sep)+int(die_width/4)+dot_r,
                 die_y_off+int(3*die_width/4)+dot_r,
                 fill="black", tags="dice")
             board_canvas.create_oval(
-                die_x_off+i*(die_x_off+die_width+10)+int(3*die_width/4)-dot_r,
+                die_x_off+i*(die_width+die_sep)+int(3*die_width/4)-dot_r,
                 die_y_off+int(die_width/4)-dot_r,
-                die_x_off+i*(die_x_off+die_width+10)+int(3*die_width/4)+dot_r,
+                die_x_off+i*(die_width+die_sep)+int(3*die_width/4)+dot_r,
                 die_y_off+int(die_width/4)+dot_r,
                 fill="black", tags="dice")
         # Center dot
         if die[i]%2==1:
             board_canvas.create_oval(
-                die_x_off+i*(die_x_off+die_width+10)+int(2*die_width/4)-dot_r,
+                die_x_off+i*(die_width+die_sep)+int(2*die_width/4)-dot_r,
                 die_y_off+int(2*die_width/4)-dot_r,
-                die_x_off+i*(die_x_off+die_width+10)+int(2*die_width/4)+dot_r,
+                die_x_off+i*(die_width+die_sep)+int(2*die_width/4)+dot_r,
                 die_y_off+int(2*die_width/4)+dot_r,
                 fill="black", tags="dice")
 
@@ -831,28 +832,39 @@ def draw_buttons(player,players):
 
     # Create buttons on board window
     build_settlement_button = Button(board_canvas,
-        font=("Helvetica", int(.5*txt_size)), text="Build Settlement",
+        font=("Helvetica", int(.8*txt_size)), text="Build Settlement",
         command=lambda : set_button_chosen(1))
     build_settlement_button.configure(width=15, activebackground = button_color)
-    build_settlement_button_window = board_canvas.create_window(100, 100,
+    build_settlement_button_window = board_canvas.create_window(
+        int((hex_x_off-water_width)*3/10),int(win_height/2),
         window=build_settlement_button, tags="button")
     build_road_button = Button(board_canvas,
-        font=("Helvetica", int(.5*txt_size)), text="Build Road",
+        font=("Helvetica", int(.8*txt_size)), text="Build Road",
         command=lambda : set_button_chosen(2))
     build_road_button.configure(width=15, activebackground = button_color)
-    build_road_button_window = board_canvas.create_window(100, 125,
+    build_road_button_window = board_canvas.create_window(
+        int((hex_x_off-water_width)*7/10),int(win_height/2),
         window=build_road_button, tags="button")
     build_city_button = Button(board_canvas,
-        font=("Helvetica", int(.5*txt_size)), text="Build City",
+        font=("Helvetica", int(.8*txt_size)), text="Build City",
         command=lambda : set_button_chosen(3))
     build_city_button.configure(width=15, activebackground = button_color)
-    build_city_button_window = board_canvas.create_window(100, 150,
+    build_city_button_window = board_canvas.create_window(
+        int((hex_x_off-water_width)*3/10),int(win_height/2+1.5*txt_size),
         window=build_city_button, tags="button")
+    trading_post_button = Button(board_canvas,
+        font=("Helvetica", int(.8*txt_size)), text="Trade",
+        command=lambda : set_button_chosen(4))
+    trading_post_button.configure(width=15, activebackground = button_color)
+    trading_post_button_window = board_canvas.create_window(
+        int((hex_x_off-water_width)*7/10),int(win_height/2+1.5*txt_size),
+        window=trading_post_button, tags="button")
     end_turn_button = Button(board_canvas,
-        font=("Helvetica", int(.5*txt_size)), text="End Turn",
+        font=("Helvetica", int(.8*txt_size)), text="End Turn",
         command=lambda : set_button_chosen(0))
     end_turn_button.configure(width=15, activebackground = button_color)
-    end_turn_button_window = board_canvas.create_window(100, 175,
+    end_turn_button_window = board_canvas.create_window(
+        int((hex_x_off-water_width)*5/10),int(win_height/2+3*txt_size),
         window=end_turn_button, tags="button")
 
 
@@ -873,22 +885,36 @@ def draw_resources(player):
     """Undraws any current resources shown and draws resources of player"""
     board_canvas.delete("resources")
 
+    board_canvas.create_text(int((hex_x_off-water_width)/2),
+        hex_y_off-water_width+int(1.5*txt_size), text=player.name, fill=player.color,
+        font=("Helvetica", int(1.5*txt_size)), tags="resources")
+
     wood_text = "Wood: "+str(player.wood)
     brick_text = "Brick: "+str(player.brick)
     sheep_text = "Sheep: "+str(player.sheep)
     wheat_text = "Wheat: "+str(player.wheat)
     stone_text = "Stone: "+str(player.stone)
 
-    board_canvas.create_text(100,250, text=wood_text,
-        font=("Helvetica", int(.7*txt_size)), tags="resources")
-    board_canvas.create_text(100,275, text=brick_text,
-        font=("Helvetica", int(.7*txt_size)), tags="resources")
-    board_canvas.create_text(100,300, text=sheep_text,
-        font=("Helvetica", int(.7*txt_size)), tags="resources")
-    board_canvas.create_text(100,325, text=wheat_text,
-        font=("Helvetica", int(.7*txt_size)), tags="resources")
-    board_canvas.create_text(100,350, text=stone_text,
-        font=("Helvetica", int(.7*txt_size)), tags="resources")
+    board_canvas.create_text(int((hex_x_off-water_width)/2),
+        hex_y_off-water_width+int(4*txt_size), text=wood_text,# anchor=NW,
+        font=("Helvetica", int(.8*txt_size)), fill=wood_color,
+        tags="resources")
+    board_canvas.create_text(int((hex_x_off-water_width)/2),
+        hex_y_off-water_width+int(5.5*txt_size), text=brick_text,# anchor=NW,
+        font=("Helvetica", int(.8*txt_size)), fill=brick_color,
+        tags="resources")
+    board_canvas.create_text(int((hex_x_off-water_width)/2),
+        hex_y_off-water_width+int(7*txt_size), text=sheep_text,# anchor=NW,
+        font=("Helvetica", int(.8*txt_size)), fill=sheep_color,
+        tags="resources")
+    board_canvas.create_text(int((hex_x_off-water_width)/2),
+        hex_y_off-water_width+int(8.5*txt_size), text=wheat_text,# anchor=NW,
+        font=("Helvetica", int(.8*txt_size)), fill=wheat_color,
+        tags="resources")
+    board_canvas.create_text(int((hex_x_off-water_width)/2),
+        hex_y_off-water_width+int(10*txt_size), text=stone_text,# anchor=NW,
+        font=("Helvetica", int(.8*txt_size)), fill=stone_color,
+        tags="resources")
 
 
 def draw_resource_panel(player,players):
