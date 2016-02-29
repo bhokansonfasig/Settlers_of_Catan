@@ -126,6 +126,10 @@ def build_settlement(player,players):
 
     # Unless it's the first round of placements, take resources away
     if len(player.roads)>1:
+        # Make sure the player has the necessary resources first
+        if player.wood<1 or player.brick<1 or player.sheep<1 or player.wheat<1:
+            print("Not enough resources to build a settlement!")
+            return
         player.wood -= 1
         player.brick -= 1
         player.wheat -= 1
@@ -156,6 +160,10 @@ def build_road(player,players):
 
     # Unless it's the first round of placements, take resources away
     if len(player.roads)>1:
+        # Make sure the player has the necessary resources first
+        if player.wood<1 or player.brick<1:
+            print("Not enough resources to build a road!")
+            return
         player.wood -= 1
         player.brick -= 1
     # Get the points for the road to be built
@@ -181,6 +189,10 @@ def build_city(player,players):
     if len(available_points)==0:
         print("Nowhere to build a new city!")
         return
+    if player.wheat<2 or player.stone<3:
+        print("Not enough resources to build a city!")
+        return
+
     # Take resources away
     player.stone -= 3
     player.wheat -= 2

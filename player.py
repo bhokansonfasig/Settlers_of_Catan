@@ -37,11 +37,11 @@ class Player:
 		self.points = []
 
 		# Acquired resources
-		self.wood = 0
-		self.brick = 0
-		self.wheat = 0
-		self.sheep = 0
-		self.stone = 0
+		self.wood = 20
+		self.brick = 20
+		self.wheat = 20
+		self.sheep = 20
+		self.stone = 20
 
 		#Development cards: lets leave these for now
 
