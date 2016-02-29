@@ -33,6 +33,12 @@ class Road:
         # print(self.coordinates,other.coordinates)
         return(self.coordinates == other.coordinates)
 
+    def connected(self,other):
+        if((self.point1.coordinate in other.coordinates) or (self.point2.coordinate in other.coordinates)):
+            return True
+        else:
+            return False
+
 if __name__ == '__main__':
     from point import Point
     x = 17
