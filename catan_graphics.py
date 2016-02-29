@@ -533,6 +533,14 @@ def player_choose_road(player,players):
             for point in points_to_remove:
                 while point in available_points:
                     available_points.remove(point)
+            points_to_remove = []
+            for point in available_points:
+                for guy in players:
+                    if Road(road_coordinates[0],point) in guy.roads:
+                        points_to_remove.append(point)
+            for point in points_to_remove:
+                available_points.remove(point)
+
 
         # Wait for the player to click a valid vertex
         coordinate = placement_loop(available_points)
@@ -549,6 +557,10 @@ def player_choose_road(player,players):
         # If there are two road coordinates, check if they make a valid road
         if len(road_coordinates)==2:
             road = Road(road_coordinates[0],road_coordinates[1])
+            # road_unowned = True
+            # for player in players:
+            #     if road in player.roads:
+            #         road_unowned = False
             if road.valid:
                 for match in available_roads:
                     if road==match:
