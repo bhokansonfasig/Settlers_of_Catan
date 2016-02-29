@@ -25,8 +25,8 @@ def new_game(splash,board):
     from catan_logic import build_settlement, build_road, build_city
     from catan_logic import player_building_update
     from catan_graphics import open_board_window, close_board_window, close_all
-    from catan_graphics import set_players, draw_log, get_tiles, draw_tiles
-    from catan_graphics import draw_stats, draw_dice, turn_loop
+    from catan_graphics import set_players, get_tiles, draw_tiles, draw_stats
+    from catan_graphics import draw_log, write_log, draw_dice, turn_loop
     from catan_graphics import draw_resource_panel, clear_resource_panel
     from catan_graphics import draw_intermediate_screen
 
@@ -47,13 +47,13 @@ def new_game(splash,board):
         if guy.AI_code<0:
             all_computers = False
 
-    # Start drawing log file to the board window
-    draw_log(board)
-
     # Get the arrangement of tiles, then draw them to the board window
     tiles = get_tiles()
     tiles = set_tiles(tiles)
     draw_tiles(tiles)
+
+    # Start drawing log file to the board window
+    draw_log()
 
     # Draw player stats on board window
     playnum = len(players)
