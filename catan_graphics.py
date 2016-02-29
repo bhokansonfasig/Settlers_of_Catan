@@ -430,11 +430,11 @@ def draw_circle(point):
             point.vertex[0]+r,point.vertex[1]+r, width=3, tags="circle")
 
 
-def placement_loop(available_points):
+def placement_loop(player,available_points):
     """Loops until player chooses a valid vertex, then returns its coordinate"""
     valid_position = False
-    click_x.set(0)
-    click_y.set(0)
+    click_x.set(int(hex_x_off-water_width)+1)
+    click_y.set(int(hex_y_off-water_width)+1)
 
     # Wait for the player to click a valid vertex
     while(not(valid_position)):
@@ -442,6 +442,13 @@ def placement_loop(available_points):
         # Draw the circles for the valid plays
         #  (after clearing any existing circles)
         board_canvas.delete("circle")
+        # If the player clicked away from the hexagons, exit the loop early
+        #  Only allowed after the initial round of placements!
+        if (click_x.get()<hex_x_off-water_width or
+            click_y.get()<hex_y_off-water_width) and \
+            len(player.roads)>1:
+            return False
+        # Draw circles on available points
         for pt in available_points:
             draw_circle(pt)
         # Get the hexagons with vertices near the point clicked
@@ -477,7 +484,11 @@ def player_choose_settlement(player,players):
 
     print("Choose a vertex to place a settlement")
 
-    coordinate = placement_loop(available_points)
+    coordinate = placement_loop(player,available_points)
+
+    # If the placement loop was exited early, exit this loop early too
+    if not(coordinate):
+        return False
 
     print("Chose point",coordinate)
 
@@ -543,7 +554,11 @@ def player_choose_road(player,players):
 
 
         # Wait for the player to click a valid vertex
-        coordinate = placement_loop(available_points)
+        coordinate = placement_loop(player,available_points)
+
+        # If the placement loop was exited early, exit this loop early too
+        if not(coordinate):
+            return False
 
         # Add selected vertex to the road coordinates
         road_coordinates.append(Point(coordinate[0],coordinate[1],
@@ -593,7 +608,11 @@ def player_choose_city(player,players):
 
     print("Choose a vertex to place a city")
 
-    coordinate = placement_loop(available_points)
+    coordinate = placement_loop(player,available_points)
+
+    # If the placement loop was exited early, exit this loop early too
+    if not(coordinate):
+        return False
 
     print("Chose point",coordinate)
 

@@ -145,6 +145,13 @@ def build_settlement(player,players):
         settlement = player_choose_settlement(player,players)
     else:
         settlement = computer_choose_settlement(player,players)
+    # If the player didn't choose a settlement, refund resources and exit
+    if not(settlement):
+        player.wood += 1
+        player.brick += 1
+        player.wheat += 1
+        player.sheep += 1
+        return
     # Update the player's building list
     player_building_update(settlement,1,player)
     # Draw the settlement on the board
@@ -180,6 +187,11 @@ def build_road(player,players):
         road = player_choose_road(player,players)
     else:
         road = computer_choose_road(player,players)
+    # If the player didn't choose a road, refund resources and exit
+    if not(road):
+        player.wood += 1
+        player.brick += 1
+        return
     # Update the player's road and point lists
     player.roads.append(road)
     player.points.append(road.point1)
@@ -215,6 +227,11 @@ def build_city(player,players):
         city = player_choose_city(player,players)
     else:
         city = computer_choose_city(player,players)
+    # If the player didn't choose a city, refund resources and exit
+    if not(city):
+        player.stone += 3
+        player.wheat += 2
+        return
     # Update the player's building list
     player_building_update(city,2,player)
     # Draw the city on the board
