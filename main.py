@@ -76,10 +76,11 @@ def new_game(splash,board):
         if loop_index>=0:
             clear_resource_panel()
         draw_stats(players)
-        print(players[whose_turn%playnum].name,"'s turn", sep='')
-        draw_intermediate_screen(players[whose_turn%playnum].name)
         loop_index += 1
         whose_turn = loop_index%playnum + 1
+        print(players[whose_turn-1].name,"'s turn", sep='')
+        if players[whose_turn-1].AI_code<0:
+            draw_intermediate_screen(players[whose_turn-1].name)
 
         die_1,die_2 = roll_dice()
         draw_dice(die_1,die_2)
