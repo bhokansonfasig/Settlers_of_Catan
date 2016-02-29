@@ -4,31 +4,6 @@ from point import Point
 from player import Player
 
 
-#the leftmost points on the grid, which are used to generate the rest
-seed_points = [[0,1,7],[1,7,8],[7,8,15],[7,14,15],[14,15,21],[15,21,22],[21,28,29],[21,22,29],[28,29,35],[29,35,36],[35,42,43],[35,36,43]]
-all_points = []
-all_roads = []
-
-#generates all the points on the grid and stores them in all_points list
-def generate_points_and_roads():
-
-    for s in seed_points: #generate points
-        i = 0
-        while(i<6):
-            p = Point(s[0]+i,s[1]+i,s[2]+i)
-            if(p.valid):
-                all_points.append(p)
-            i += 1
-
-    for p1 in all_points: #generate roads
-        for p2 in all_points:
-            r = Road(p1,p2)
-            if(r not in all_roads and r.valid):
-                all_roads.append(r)
-
-generate_points_and_roads()
-
-
 ################################################################################
 # Function definitions
 
@@ -112,7 +87,35 @@ def set_tiles(tiles):
                 if tile1.has_neighbor(tile2):
                     acceptable_placement = False
 
+
+    # Prepare all_points and all_roads for later use
+    #the leftmost points on the grid, which are used to generate the rest
+    seed_points = [[0,1,7],[1,7,8],[7,8,15],[7,14,15],[14,15,21],[15,21,22],[21,28,29],[21,22,29],[28,29,35],[29,35,36],[35,42,43],[35,36,43]]
+    global all_points, all_roads
+    all_points = []
+    all_roads = []
+
+    generate_points_and_roads(seed_points)
+
     return tiles
+
+
+def generate_points_and_roads(seed_points):
+    """Generates all the points on the grid and stores them in all_points"""
+
+    for s in seed_points: #generate points
+        i = 0
+        while(i<6):
+            p = Point(s[0]+i,s[1]+i,s[2]+i)
+            if(p.valid):
+                all_points.append(p)
+            i += 1
+
+    for p1 in all_points: #generate roads
+        for p2 in all_points:
+            r = Road(p1,p2)
+            if(r not in all_roads and r.valid):
+                all_roads.append(r)
 
 
 def build_settlement(player,players):
