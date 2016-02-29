@@ -186,6 +186,8 @@ def build_road(player,players):
     # Recalculate the player's score
     player.calculate_score()
 
+    return road
+
 
 def build_city(player,players):
     from catan_graphics import player_choose_city, draw_city
@@ -216,6 +218,8 @@ def build_city(player,players):
     draw_city(city,player)
     # Recalculate the player's score
     player.calculate_score()
+
+    return city
 
 
 #adds the point to the list of points that a player _already_ has access to via built roads

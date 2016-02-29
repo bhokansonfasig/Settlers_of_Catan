@@ -73,8 +73,6 @@ def new_game(splash,board):
     global die_1,die_2
     # Additional condition that players can only win on their turn
     while not(players[whose_turn-1].index in check_winner(players)):
-        print("Turn:",players[whose_turn-1].index)
-        print("Winners:",check_winner(players))
         if loop_index>=0:
             clear_resource_panel()
         draw_stats(players)

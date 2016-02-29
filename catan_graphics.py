@@ -367,28 +367,28 @@ def set_players(board):
             try:
                 players.append(Player(1,"Computer 1",eval(player_1_name.get())))
             except:
-                players.append(Player(1,"Computer 1",1))
+                players.append(Player(1,"Computer 1",0))
         if player_2_type.get()=="Human":
             players.append(Player(2,player_2_name.get(),-1))
         elif player_2_type.get()=="Computer":
             try:
                 players.append(Player(2,"Computer 2",eval(player_2_name.get())))
             except:
-                players.append(Player(2,"Computer 2",1))
+                players.append(Player(2,"Computer 2",0))
         if player_3_type.get()=="Human":
             players.append(Player(3,player_3_name.get(),-1))
         elif player_3_type.get()=="Computer":
             try:
                 players.append(Player(3,"Computer 3",eval(player_3_name.get())))
             except:
-                players.append(Player(3,"Computer 3",1))
+                players.append(Player(3,"Computer 3",0))
         if player_4_type.get()=="Human":
             players.append(Player(4,player_4_name.get(),-1))
         elif player_4_type.get()=="Computer":
             try:
                 players.append(Player(4,"Computer 4",eval(player_4_name.get())))
             except:
-                players.append(Player(4,"Computer 4",1))
+                players.append(Player(4,"Computer 4",0))
 
     open_board_window(player_window,board)
 
@@ -898,17 +898,26 @@ def clear_resource_panel():
 
 
 def turn_loop(player,players):
-    button_chosen.set(-1)
-    while button_chosen.get()!=0:
-        draw_stats(players)
-        draw_resources(player)
-        board_canvas.wait_variable(button_chosen)
-        if button_chosen.get()==1:
-            build_settlement(player,players)
-        elif button_chosen.get()==2:
-            build_road(player,players)
-        elif button_chosen.get()==3:
-            build_city(player,players)
+    # For human players, draw buttons and get button clicks
+    if player.AI_code<0:
+        button_chosen.set(-1)
+        while button_chosen.get()!=0:
+            draw_stats(players)
+            draw_resources(player)
+            board_canvas.wait_variable(button_chosen)
+            if button_chosen.get()==1:
+                build_settlement(player,players)
+            elif button_chosen.get()==2:
+                build_road(player,players)
+            elif button_chosen.get()==3:
+                build_city(player,players)
+    # For computer players, reference AI file
+    else:
+        from catan_AI import computer_take_turn
+        computer_action = "none"
+        while not(computer_action=="ended turn"):
+            computer_action = computer_take_turn(player,players)
+            print(player.name,computer_action)
 
 
 ################################################################################
