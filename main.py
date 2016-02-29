@@ -61,16 +61,16 @@ def new_game(splash,board):
 
     # Place two settlements per player for the first turn
     for player in players:
-        print(player.name,"build first settlement")
+        write_log(str(player.name)+" build first settlement")
         build_settlement(player,players)
-        print(player.name,"build first road")
+        write_log(str(player.name)+" build first road")
         build_road(player,players)
         draw_stats(players)
     for player in reversed(players):
         first_round = False
-        print(player.name,"build second settlement")
+        write_log(str(player.name)+" build second settlement")
         point = build_settlement(player,players)
-        print(player.name,"build second road")
+        write_log(str(player.name)+" build second road")
         build_road(player,players)
         resources = point_resources(point,tiles)
         for resource in resources:

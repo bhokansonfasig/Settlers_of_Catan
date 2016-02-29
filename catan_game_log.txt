@@ -1,0 +1,5 @@
+Player 1build first settlement
+Player 1build first road
+Player 2build first settlement
+Player 2build first road
+Player 3build first settlement

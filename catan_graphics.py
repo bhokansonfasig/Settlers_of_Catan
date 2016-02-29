@@ -268,6 +268,7 @@ def redraw_board():
     board_canvas.delete(ALL)
     draw_tile_skeleton(tiles)
     draw_tiles(tiles)
+    undraw_log()
     draw_log()
     for player in players:
         for road in player.roads:
@@ -305,6 +306,7 @@ def close_all(splash,board):
     """Closes all windows to quit app"""
     print("Closing all windows")
     try:
+        undraw_log()
         splash.destroy()
         player_window.destroy()
         board.destroy()
@@ -401,13 +403,24 @@ def set_players(board):
 
 def draw_log():
     """Adds log to board window"""
-    global log_text
+    global log_text, log_file
     log_text = Text(board_canvas, height=2, width=30)
     log_text_window = board_canvas.create_window(
         int((hex_x_off-water_width)/2),int(win_height*5/6),
         height=int(win_height/3), width=hex_x_off-water_width,
         window=log_text, tags="log")
+
+    log_file = open('catan_game_log.txt','r+')
+    fullfile = log_file.read()
+    log_text.insert(END, fullfile)
     log_text.config(state=DISABLED)
+
+
+def undraw_log():
+    """Undraws log from the board window"""
+    board_canvas.delete("log")
+    log_text.destroy()
+    log_file.close()
 
 
 def write_log(text,end="\n"):
@@ -416,6 +429,7 @@ def write_log(text,end="\n"):
     log_text.config(state=NORMAL)
     log_text.insert(END, write_text)
     log_text.config(state=DISABLED)
+    log_file.write(write_text)
 
 
 def get_tiles():
