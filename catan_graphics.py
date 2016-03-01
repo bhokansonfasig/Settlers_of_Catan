@@ -63,7 +63,7 @@ class App(Frame):
             font=(txt_font,22), background=menu_color)
         player_1_label.grid(row=0,column=0,padx=20,pady=10)
         player_1_type = StringVar()
-        player_1_type.set("Human")
+        player_1_type.set("Computer")
         player_1_type_menu = OptionMenu(player_window, player_1_type,
             "Human", "Computer", "None")
         player_1_type_menu.grid(row=1,column=0,padx=20,pady=10)
@@ -75,7 +75,7 @@ class App(Frame):
             font=(txt_font,22), background=menu_color)
         player_2_label.grid(row=0,column=1,padx=20,pady=10)
         player_2_type = StringVar()
-        player_2_type.set("Human")
+        player_2_type.set("Computer")
         player_2_type_menu = OptionMenu(player_window, player_2_type,
             "Human", "Computer", "None")
         player_2_type_menu.grid(row=1,column=1,padx=20,pady=10)
@@ -87,7 +87,7 @@ class App(Frame):
             font=(txt_font,22), background=menu_color)
         player_3_label.grid(row=3,column=0,padx=20,pady=10)
         player_3_type = StringVar()
-        player_3_type.set("Human")
+        player_3_type.set("Computer")
         player_3_type_menu = OptionMenu(player_window, player_3_type,
             "Human", "Computer", "None")
         player_3_type_menu.grid(row=4,column=0,padx=20,pady=10)
@@ -99,7 +99,7 @@ class App(Frame):
             font=(txt_font,22), background=menu_color)
         player_4_label.grid(row=3,column=1,padx=20,pady=10)
         player_4_type = StringVar()
-        player_4_type.set("Human")
+        player_4_type.set("Computer")
         player_4_type_menu = OptionMenu(player_window, player_4_type,
             "Human", "Computer", "None")
         player_4_type_menu.grid(row=4,column=1,padx=20,pady=10)
