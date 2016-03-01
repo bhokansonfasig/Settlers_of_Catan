@@ -403,14 +403,15 @@ def set_players(board):
 
 def draw_log():
     """Adds log to board window"""
+    from main import log_file_name
     global log_text, log_file
     log_text = Text(board_canvas, height=2, width=30)
     log_text_window = board_canvas.create_window(
         int((hex_x_off-water_width)/2),int(win_height*5/6),
         height=int(win_height/3), width=hex_x_off-water_width,
         window=log_text, tags="log")
-
-    log_file = open('catan_game_log.txt','r+')
+    log_file = open(log_file_name,'a+')
+    log_file.seek(0)
     fullfile = log_file.read()
     log_text.insert(END, fullfile)
     log_text.config(state=DISABLED)

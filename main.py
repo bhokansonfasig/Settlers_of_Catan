@@ -1,6 +1,6 @@
 # Settlers of Catan
-# Created by Ben Hokanson-Fasig, Aman Abhishek, and Alex Scherer?
-# Last update 02-28-16
+# Created by Ben Hokanson-Fasig and Aman Abhishek
+# Last update 02-29-16
 version = "0.0.5"
 
 
@@ -20,6 +20,7 @@ def new_game(splash,board):
     from random import shuffle
     from player import Player
     from tiles import Tile
+    from os.path import isfile
     from catan_logic import set_tiles, roll_dice, check_winner
     from catan_logic import point_resources, distribute_resources
     from catan_logic import build_settlement, build_road, build_city
@@ -30,7 +31,23 @@ def new_game(splash,board):
     from catan_graphics import draw_resource_panel, clear_resource_panel
     from catan_graphics import draw_intermediate_screen
 
-    print("New game started")
+    # Set log file name and delete it if it already exists
+    global log_file_name
+    log_file_name = "catan_game_log.txt"
+    log_file_exists = False
+    try:
+        log_file_exists = isfile(log_file_name)
+    except:
+        pass
+    if log_file_exists:
+        from os import remove
+        remove(log_file_name)
+        print("Deleted old log file")
+
+    # Start drawing log file to the board window
+    draw_log()
+
+    write_log("-----New game started-----")
 
     global loop_index, die_1, die_2
     loop_index = -1
@@ -51,9 +68,6 @@ def new_game(splash,board):
     tiles = get_tiles()
     tiles = set_tiles(tiles)
     draw_tiles(tiles)
-
-    # Start drawing log file to the board window
-    draw_log()
 
     # Draw player stats on board window
     playnum = len(players)
