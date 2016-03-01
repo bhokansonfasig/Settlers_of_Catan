@@ -1,5 +1,12 @@
-Player 1build first settlement
-Player 1build first road
-Player 2build first settlement
-Player 2build first road
-Player 3build first settlement
+Player 1  build first settlement
+Player 1  build first road
+Computer 3  build first settlement
+Computer 3  build first road
+Computer 2  build first settlement
+Computer 2  build first road
+Computer 2  build second settlement
+Computer 2  build second road
+Computer 3  build second settlement
+Computer 3  build second road
+Player 1  build second settlement
+Player 1  build second road

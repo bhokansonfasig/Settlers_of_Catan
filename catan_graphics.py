@@ -423,9 +423,13 @@ def undraw_log():
     log_file.close()
 
 
-def write_log(text,end="\n"):
+def write_log(text,*args,sep=" ",end="\n"):
     """Writes text to the log"""
-    write_text = text+end
+    write_text = str(text)
+    for arg in args:
+        write_text += sep
+        write_text += str(arg)
+    write_text += end
     log_text.config(state=NORMAL)
     log_text.insert(END, write_text)
     log_text.config(state=DISABLED)
