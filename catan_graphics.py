@@ -22,49 +22,45 @@ class App(Frame):
     def initUI(self):
         self.parent.title("Settlers of Catan - Play")
         self.parent.geometry(board_geometry)
-        # self.pack(fill=BOTH, expand=1)
-
-        # global board
-        # board = 0
 
         # Create splash window
         global splash
         splash = Toplevel(background=menu_color)
-        splash.geometry("400x300+100+100")
+        #splash.geometry("400x300+100+100")
         splash.title("Settlers of Catan - Welcome")
         global splash_canvas
         # splash_canvas = Canvas(splash, background=menu_color)
         # Welcome text
         game_label = Label(splash, text="Settlers of Catan",
-            font=("Helvetica", 36), background=menu_color)
+            font=(txt_font,36), background=menu_color)
         game_label.pack()
         version_label = Label(splash, text="Version "+version,
-            font=("Helvetica", 18), background=menu_color)
+            font=(txt_font,18), background=menu_color)
         version_label.pack(pady=30)
         # Buttons
-        play_button = Button(splash, font=("Helvetica", 16), text="New Game",
+        play_button = Button(splash, font=(txt_font,16), text="New Game",
             command=lambda : new_game(splash, self.parent))
-        play_button.configure(width=10, activebackground = button_color)
+        play_button.configure(width=10, activebackground=active_button_color)
         play_button.pack(pady=10)
-        load_button = Button(splash, font=("Helvetica", 16), text="Load Game",
+        load_button = Button(splash, font=(txt_font,16), text="Load Game",
             command=lambda : load_game(splash, self.parent))
-        load_button.configure(width=10, activebackground = button_color)
+        load_button.configure(width=10, activebackground=active_button_color)
         load_button.pack(pady=10)
-        quit_button = Button(splash, font=("Helvetica", 16), text="Quit",
+        quit_button = Button(splash, font=(txt_font,16), text="Quit",
             command=self.quit)
-        quit_button.configure(width=10, activebackground = button_color)
+        quit_button.configure(width=10, activebackground=active_button_color)
         quit_button.pack(pady=10)
 
         # Create player selection window
         global player_window
         player_window = Toplevel(background=menu_color)
-        player_window.geometry("470x350+300+100")
+        #player_window.geometry("470x350+300+100")
         player_window.title("Settlers of Catan - Select Players")
 
         global player_1_type,player_1_name, player_2_type,player_2_name
         global player_3_type,player_3_name, player_4_type,player_4_name
         player_1_label = Label(player_window, text="Player 1:",
-            font=("Helvetica", 22), background=menu_color)
+            font=(txt_font,22), background=menu_color)
         player_1_label.grid(row=0,column=0,padx=20,pady=10)
         player_1_type = StringVar()
         player_1_type.set("Human")
@@ -76,7 +72,7 @@ class App(Frame):
         player_1_name_entry = Entry(player_window, textvariable=player_1_name)
         player_1_name_entry.grid(row=2,column=0,padx=20,pady=5)
         player_2_label = Label(player_window, text="Player 2:",
-            font=("Helvetica", 22), background=menu_color)
+            font=(txt_font,22), background=menu_color)
         player_2_label.grid(row=0,column=1,padx=20,pady=10)
         player_2_type = StringVar()
         player_2_type.set("Human")
@@ -88,7 +84,7 @@ class App(Frame):
         player_2_name_entry = Entry(player_window, textvariable=player_2_name)
         player_2_name_entry.grid(row=2,column=1,padx=20,pady=5)
         player_3_label = Label(player_window, text="Player 3:",
-            font=("Helvetica", 22), background=menu_color)
+            font=(txt_font,22), background=menu_color)
         player_3_label.grid(row=3,column=0,padx=20,pady=10)
         player_3_type = StringVar()
         player_3_type.set("Human")
@@ -100,7 +96,7 @@ class App(Frame):
         player_3_name_entry = Entry(player_window, textvariable=player_3_name)
         player_3_name_entry.grid(row=5,column=0,padx=20,pady=5)
         player_4_label = Label(player_window, text="Player 4:",
-            font=("Helvetica", 22), background=menu_color)
+            font=(txt_font,22), background=menu_color)
         player_4_label.grid(row=3,column=1,padx=20,pady=10)
         player_4_type = StringVar()
         player_4_type.set("Human")
@@ -116,9 +112,9 @@ class App(Frame):
         button_chosen = IntVar()
         button_chosen.set(-1)
 
-        ready_button = Button(player_window, font=("Helvetica", 16),
+        ready_button = Button(player_window, font=(txt_font,16),
             text="Okay", command=lambda : set_button_chosen(1))
-        ready_button.configure(width=10, activebackground = button_color)
+        ready_button.configure(width=10, activebackground=active_button_color)
         ready_button.grid(row=6,pady=30,columnspan=2)
 
         # Hide player selection window
@@ -127,7 +123,7 @@ class App(Frame):
 
         # Create board window's canvas and items
         global board_canvas
-        board_canvas = Canvas(self.parent)
+        board_canvas = Canvas(self.parent, background=background_color)
         board_canvas.pack(fill=BOTH, expand=1)
 
         # Generate 49 tiles
@@ -188,13 +184,16 @@ def aesthetics(width,height):
     """Defines aesthetic parameters for the GUI"""
 
     # Define window dimensions and colors
-    global win_width, win_height, menu_color, button_color, sand_color
+    global win_width, win_height, menu_color, background_color
+    global active_button_color, inactive_button_color, sand_color
     global wood_color, brick_color, sheep_color, wheat_color, stone_color
 
     win_width = width
     win_height = height
     menu_color = set_color("menu")
-    button_color = set_color("button")
+    background_color = set_color("background")
+    active_button_color = set_color("active button")
+    inactive_button_color = set_color("inactive button")
     sand_color = set_color("sand")
     wood_color = set_color("wood")
     brick_color = set_color("brick")
@@ -202,7 +201,9 @@ def aesthetics(width,height):
     wheat_color = set_color("wheat")
     stone_color = set_color("stone")
 
-    global txt_size
+    global txt_font, txt_size
+    txt_font = "Helvetica"
+
     if win_height<167:
         txt_size = 5
     elif win_height>1200:
@@ -211,7 +212,7 @@ def aesthetics(width,height):
         txt_size = int(.03*win_height)
 
     # Raise errors for strange dimensions
-    if 2*win_width>3.1*win_height or 2*win_width<2.9*win_height:
+    if 625*win_width>1.1*900*win_height or 625*win_width<.9*900*win_height:
         print("Board dimensions are incorrect, some elements may appear",
             "distorted.")
     if win_width<500 or win_height<500:
@@ -219,15 +220,15 @@ def aesthetics(width,height):
 
     # Geometry for board window
     global board_geometry
-    board_geometry = "%dx%d+50+50" % (win_width,win_height)
+    board_geometry = "%dx%d" % (win_width,win_height)
 
     # Set width and height of hexagon section
     global hex_height, hex_width
     if win_width>=win_height:
-        hex_height = win_height*75/100
+        hex_height = win_height*.7
         hex_width = hex_height
     else:
-        hex_width = win_width*75/100
+        hex_width = win_width*.7
         hex_height = hex_width
 
     # Set width of water region
@@ -247,8 +248,12 @@ def set_color(element):
         brick, sheep, wheat, stone)"""
     if element.lower()=="menu":
         return "#EECC8C"
-    if element.lower()=="button":
+    if element.lower()=="background":
+        return "#F7D9B2"
+    if element.lower()=="active button":
         return "#FFFFCC"
+    if element.lower()=="inactive button":
+        return "#F7D9B2"
     if element.lower()=="sand":
         return "#D7B992"
     if element.lower()=="wood":
@@ -405,7 +410,8 @@ def draw_log():
     """Adds log to board window"""
     from main import log_file_name
     global log_text, log_file
-    log_text = Text(board_canvas, height=2, width=30)
+    log_text = Text(board_canvas, height=2, width=30,
+        background=background_color, font=(txt_font,int(txt_size*.8)))
     log_text_window = board_canvas.create_window(
         int((hex_x_off-water_width)/2),int(win_height*5/6),
         height=int(win_height/3), width=hex_x_off-water_width,
@@ -433,6 +439,7 @@ def write_log(text,*args,sep=" ",end="\n"):
     write_text += end
     log_text.config(state=NORMAL)
     log_text.insert(END, write_text)
+    log_text.yview(MOVETO, 1)
     log_text.config(state=DISABLED)
     log_file.write(write_text)
 
@@ -762,10 +769,10 @@ def draw_dice(die_1,die_2):
     """Undraws previous dice and draws dice of values 'die_1' and 'die_2'"""
     board_canvas.delete("dice")
 
-    die_height = int((hex_y_off-water_width)*.9)
+    die_height = int((hex_y_off-water_width)*.5)
     die_width = die_height
     die_x_off = int((hex_x_off-water_width-2*die_width)*2/5)
-    die_y_off = int((hex_y_off-water_width-die_height)/2)
+    die_y_off = int((hex_y_off-water_width-die_height)/3)
     die_sep = int(die_x_off/2)
     board_canvas.create_rectangle(die_x_off,die_y_off,
         die_x_off+die_width,die_y_off+die_height,
@@ -829,17 +836,17 @@ def draw_dice(die_1,die_2):
                 fill="black", tags="dice")
 
 
-def draw_intermediate_screen(name):
+def draw_intermediate_screen(player):
     """Draws a screen with player name between turns"""
-    text_string = name+"'s turn!"
+    text_string = player.name+"'s turn!"
     intermediate_text_1 = board_canvas.create_text(
-        int((win_width-hex_width-2*water_width)/2),int(win_height/2),
-        text=text_string, width=int(.9*(win_width-hex_width-2*water_width)),
-        font=("Helvetica",2*txt_size))
+        int((hex_x_off-water_width)/2),int(win_height/3),
+        text=text_string, font=(txt_font,2*txt_size), fill=player.color,
+        width=int(.9*(hex_x_off-water_width)))
     intermediate_text_2 = board_canvas.create_text(
-        int((win_width-hex_width-2*water_width)/2),int(win_height/2)+2*txt_size,
-        text="Click to continue", font=("Helvetica",txt_size),
-        width=int(.9*(win_width-hex_width-2*water_width)))
+        int((hex_x_off-water_width)/2),int(win_height/3)+2*txt_size,
+        text="Click to continue", font=(txt_font,txt_size), fill= player.color,
+        width=int(.9*(hex_x_off-water_width)))
     board_canvas.wait_variable(click_x)
     board_canvas.delete(intermediate_text_1)
     board_canvas.delete(intermediate_text_2)
@@ -850,21 +857,21 @@ def draw_stats(players):
     to game board window"""
     board_canvas.delete("stats")
 
-    portion = (win_width-hex_x_off)/len(players)
+    portion = (win_width-hex_x_off+water_width)/len(players)
     for i in range(len(players)):
         player = players[i]
         board_canvas.create_text(hex_x_off-water_width+int((i+.5)*portion),
             int((hex_y_off-water_width)/4), text=player.name, fill=player.color,
-            font=("Helvetica", int(.9*txt_size)), tags="stats")
+            font=(txt_font, int(.9*txt_size)), tags="stats")
         vp_string = "Victory points: "+str(player.score)
         board_canvas.create_text(hex_x_off-water_width+int((i+.5)*portion),
             int(2*(hex_y_off-water_width)/4), text=vp_string, fill=player.color,
-            font=("Helvetica", int(.7*txt_size)), tags="stats")
+            font=(txt_font, int(.7*txt_size)), tags="stats")
         resource_string = "Resources: "+str(player.wood+player.brick+ \
             player.wheat+player.sheep+player.stone)
         board_canvas.create_text(hex_x_off-water_width+int((i+.5)*portion),
             int(3*(hex_y_off-water_width)/4), text=resource_string,
-            fill=player.color, font=("Helvetica", int(.7*txt_size)),
+            fill=player.color, font=(txt_font, int(.7*txt_size)),
             tags="stats")
 
 
@@ -874,39 +881,60 @@ def draw_buttons(player,players):
 
     # Create buttons on board window
     build_settlement_button = Button(board_canvas,
-        font=("Helvetica", int(.8*txt_size)), text="Build Settlement",
+        font=(txt_font, int(.8*txt_size)), text="Build Settlement",
         command=lambda : set_button_chosen(1))
-    build_settlement_button.configure(width=15, activebackground = button_color)
+    build_settlement_button.configure(width=15, height=1,
+        background=inactive_button_color, activebackground=active_button_color)
     build_settlement_button_window = board_canvas.create_window(
-        int((hex_x_off-water_width)*3/10),int(win_height/2),
+        int((hex_x_off-water_width)*3/10),int(win_height*.4),
         window=build_settlement_button, tags="button")
+    settlement_cost_text = board_canvas.create_text(
+        int((hex_x_off-water_width)*3/10),int(win_height*.4+txt_size),
+        text="Cost: 1 wood, 1 brick",
+        font=(txt_font, int(.6*txt_size)), tags="button")
+    settlement_cost_text_2 = board_canvas.create_text(
+        int((hex_x_off-water_width)*3/10+1.05*txt_size),
+        int(win_height*.4+1.75*txt_size), text="1 sheep, 1 wheat",
+        font=(txt_font, int(.6*txt_size)), tags="button")
     build_road_button = Button(board_canvas,
-        font=("Helvetica", int(.8*txt_size)), text="Build Road",
+        font=(txt_font, int(.8*txt_size)), text="Build Road",
         command=lambda : set_button_chosen(2))
-    build_road_button.configure(width=15, activebackground = button_color)
+    build_road_button.configure(width=15, height=1,
+        background=inactive_button_color, activebackground=active_button_color)
     build_road_button_window = board_canvas.create_window(
-        int((hex_x_off-water_width)*7/10),int(win_height/2),
+        int((hex_x_off-water_width)*7/10),int(win_height*.4),
         window=build_road_button, tags="button")
+    road_cost_text = board_canvas.create_text(
+        int((hex_x_off-water_width)*7/10),int(win_height*.4+txt_size),
+        text="Cost: 1 wood, 1 brick",
+        font=(txt_font, int(.6*txt_size)), tags="button")
     build_city_button = Button(board_canvas,
-        font=("Helvetica", int(.8*txt_size)), text="Build City",
+        font=(txt_font, int(.8*txt_size)), text="Build City",
         command=lambda : set_button_chosen(3))
-    build_city_button.configure(width=15, activebackground = button_color)
+    build_city_button.configure(width=15, height=1,
+        background=inactive_button_color, activebackground=active_button_color)
     build_city_button_window = board_canvas.create_window(
-        int((hex_x_off-water_width)*3/10),int(win_height/2+1.5*txt_size),
+        int((hex_x_off-water_width)*3/10),int(win_height*.4+3*txt_size),
         window=build_city_button, tags="button")
+    city_cost_text = board_canvas.create_text(
+        int((hex_x_off-water_width)*3/10),int(win_height*.4+4*txt_size),
+        text="Cost: 2 wheat, 3 stone",
+        font=(txt_font, int(.6*txt_size)), tags="button")
     trading_post_button = Button(board_canvas,
-        font=("Helvetica", int(.8*txt_size)), text="Trade",
+        font=(txt_font, int(.8*txt_size)), text="Trade",
         command=lambda : set_button_chosen(4))
-    trading_post_button.configure(width=15, activebackground = button_color)
+    trading_post_button.configure(width=15, height=1,
+        background=inactive_button_color, activebackground=active_button_color)
     trading_post_button_window = board_canvas.create_window(
-        int((hex_x_off-water_width)*7/10),int(win_height/2+1.5*txt_size),
+        int((hex_x_off-water_width)*7/10),int(win_height*.4+3*txt_size),
         window=trading_post_button, tags="button")
     end_turn_button = Button(board_canvas,
-        font=("Helvetica", int(.8*txt_size)), text="End Turn",
+        font=(txt_font, int(.8*txt_size)), text="End Turn",
         command=lambda : set_button_chosen(0))
-    end_turn_button.configure(width=15, activebackground = button_color)
+    end_turn_button.configure(width=10, height=1,
+        background=inactive_button_color, activebackground=active_button_color)
     end_turn_button_window = board_canvas.create_window(
-        int((hex_x_off-water_width)*5/10),int(win_height/2+3*txt_size),
+        int((hex_x_off-water_width)*5/10),int(win_height*.4+6*txt_size),
         window=end_turn_button, tags="button")
 
 
@@ -928,8 +956,8 @@ def draw_resources(player):
     board_canvas.delete("resources")
 
     board_canvas.create_text(int((hex_x_off-water_width)/2),
-        hex_y_off-water_width+int(1.5*txt_size), text=player.name, fill=player.color,
-        font=("Helvetica", int(1.5*txt_size)), tags="resources")
+        hex_y_off-water_width, text=player.name, fill=player.color,
+        font=(txt_font, int(1.5*txt_size)), tags="resources")
 
     wood_text = "Wood: "+str(player.wood)
     brick_text = "Brick: "+str(player.brick)
@@ -938,24 +966,24 @@ def draw_resources(player):
     stone_text = "Stone: "+str(player.stone)
 
     board_canvas.create_text(int((hex_x_off-water_width)/2),
-        hex_y_off-water_width+int(4*txt_size), text=wood_text,# anchor=NW,
-        font=("Helvetica", int(.8*txt_size)), fill=wood_color,
+        hex_y_off-water_width+int(1.8*txt_size), text=wood_text,# anchor=NW,
+        font=(txt_font, int(.8*txt_size)), #fill=wood_color,
         tags="resources")
     board_canvas.create_text(int((hex_x_off-water_width)/2),
-        hex_y_off-water_width+int(5.5*txt_size), text=brick_text,# anchor=NW,
-        font=("Helvetica", int(.8*txt_size)), fill=brick_color,
+        hex_y_off-water_width+int(2.9*txt_size), text=brick_text,# anchor=NW,
+        font=(txt_font, int(.8*txt_size)), #fill=brick_color,
         tags="resources")
     board_canvas.create_text(int((hex_x_off-water_width)/2),
-        hex_y_off-water_width+int(7*txt_size), text=sheep_text,# anchor=NW,
-        font=("Helvetica", int(.8*txt_size)), fill=sheep_color,
+        hex_y_off-water_width+int(4.0*txt_size), text=sheep_text,# anchor=NW,
+        font=(txt_font, int(.8*txt_size)), #fill=sheep_color,
         tags="resources")
     board_canvas.create_text(int((hex_x_off-water_width)/2),
-        hex_y_off-water_width+int(8.5*txt_size), text=wheat_text,# anchor=NW,
-        font=("Helvetica", int(.8*txt_size)), fill=wheat_color,
+        hex_y_off-water_width+int(5.1*txt_size), text=wheat_text,# anchor=NW,
+        font=(txt_font, int(.8*txt_size)), #fill=wheat_color,
         tags="resources")
     board_canvas.create_text(int((hex_x_off-water_width)/2),
-        hex_y_off-water_width+int(10*txt_size), text=stone_text,# anchor=NW,
-        font=("Helvetica", int(.8*txt_size)), fill=stone_color,
+        hex_y_off-water_width+int(6.2*txt_size), text=stone_text,# anchor=NW,
+        font=(txt_font, int(.8*txt_size)), #fill=stone_color,
         tags="resources")
 
 

@@ -10,13 +10,13 @@ class Player:
 
 		# Color of player's pieces
 		if self.index==1:
-			self.color = "red"
+			self.color = "#EE0000"  # Red
 		elif self.index==2:
-			self.color = "blue"
+			self.color = "#0000CC"  # Blue
 		elif self.index==3:
-			self.color = "green"
+			self.color = "#00CC00"  # Green
 		elif self.index==4:
-			self.color = "orange"
+			self.color = "#FF8000"  # Orange
 
 		self.name = name
 

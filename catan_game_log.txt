@@ -1,46 +1,187 @@
 -----New game started-----
+Computer 4 build first settlement
+Computer 4 built a settlement at [17, 23, 24]
+Computer 4 build first road
+Computer 4 built a road at [[16, 17, 23], [17, 23, 24]]
 Player 1 build first settlement
-Player 1 built a settlement at [18, 19, 25]
+Player 1 built a settlement at [24, 25, 32]
 Player 1 build first road
-Player 1 built a road at [[18, 19, 25], [19, 25, 26]]
+Player 1 built a road at [[24, 25, 32], [25, 32, 33]]
 Computer 2 build first settlement
-Computer 2 built a settlement at [21, 22, 29]
+Computer 2 built a settlement at [10, 17, 18]
 Computer 2 build first road
-Computer 2 built a road at [[15, 21, 22], [21, 22, 29]]
+Computer 2 built a road at [[10, 11, 18], [10, 17, 18]]
 Computer 3 build first settlement
-Computer 3 built a settlement at [5, 11, 12]
+Computer 3 built a settlement at [4, 5, 11]
 Computer 3 build first road
 Computer 3 built a road at [[4, 5, 11], [5, 11, 12]]
-Computer 4 build first settlement
-Computer 4 built a settlement at [31, 37, 38]
-Computer 4 build first road
-Computer 4 built a road at [[30, 31, 37], [31, 37, 38]]
-Computer 4 build second settlement
-Computer 4 built a settlement at [30, 36, 37]
-Computer 4 build second road
-Computer 4 built a road at [[29, 30, 36], [30, 36, 37]]
 Computer 3 build second settlement
-Computer 3 built a settlement at [8, 9, 16]
+Computer 3 built a settlement at [21, 22, 29]
 Computer 3 build second road
-Computer 3 built a road at [[2, 8, 9], [8, 9, 16]]
+Computer 3 built a road at [[15, 21, 22], [21, 22, 29]]
 Computer 2 build second settlement
-Computer 2 built a settlement at [10, 11, 18]
+Computer 2 built a settlement at [33, 39, 40]
 Computer 2 build second road
-Computer 2 built a road at [[10, 11, 18], [10, 17, 18]]
+Computer 2 built a road at [[33, 39, 40], [39, 40, 47]]
 Player 1 build second settlement
-Player 1 built a settlement at [16, 17, 23]
+Player 1 built a settlement at [31, 32, 38]
 Player 1 build second road
-Player 1 built a road at [[9, 16, 17], [16, 17, 23]]
+Player 1 built a road at [[31, 32, 38], [32, 38, 39]]
+Computer 4 build second settlement
+Computer 4 built a settlement at [3, 9, 10]
+Computer 4 build second road
+Computer 4 built a road at [[3, 4, 10], [3, 9, 10]]
+Computer 4's turn:
+Rolled 2 + 4 = 6
+Computer 4 ended turn
 Player 1's turn:
-Rolled 1 + 4 = 5
-Player 1 built a city at [18, 19, 25]
+Rolled 2 + 2 = 4
 Computer 2's turn:
-Rolled 4 + 1 = 5
+Rolled 5 + 2 = 7
+Player 1 got robbed!
+Computer 2 built a road at [[10, 17, 18], [17, 18, 24]]
+Computer 2 built a road at[[10, 17, 18], [17, 18, 24]]
+Computer 2 ended turn
+Computer 3's turn:
+Rolled 2 + 4 = 6
+Computer 3 ended turn
+Computer 4's turn:
+Rolled 1 + 1 = 2
+Computer 4 ended turn
+Player 1's turn:
+Rolled 6 + 5 = 11
+Computer 2's turn:
+Rolled 1 + 4 = 5
+Computer 2 ended turn
+Computer 3's turn:
+Rolled 6 + 2 = 8
+Computer 3 ended turn
+Computer 4's turn:
+Rolled 1 + 5 = 6
+Computer 4 ended turn
+Player 1's turn:
+Rolled 3 + 3 = 6
+Computer 2's turn:
+Rolled 1 + 4 = 5
+Computer 2 ended turn
+Computer 3's turn:
+Rolled 5 + 5 = 10
+Computer 3 ended turn
+Computer 4's turn:
+Rolled 3 + 6 = 9
+Computer 4 built a road at [[3, 4, 10], [4, 10, 11]]
+Computer 4 built a road at[[3, 4, 10], [4, 10, 11]]
+Computer 4 ended turn
+Player 1's turn:
+Rolled 6 + 3 = 9
+Computer 2's turn:
+Rolled 5 + 2 = 7
+Player 1 got robbed!
+Computer 2 ended turn
+Computer 3's turn:
+Rolled 3 + 4 = 7
+Player 1 got robbed!
+Computer 3 ended turn
+Computer 4's turn:
+Rolled 6 + 5 = 11
+Computer 4 ended turn
+Player 1's turn:
+Rolled 6 + 1 = 7
+Player 1 got robbed!
+Computer 2's turn:
+Rolled 3 + 5 = 8
+Computer 2 ended turn
+Computer 3's turn:
+Rolled 6 + 1 = 7
+Player 1 got robbed!
+Computer 3 ended turn
+Computer 4's turn:
+Rolled 1 + 3 = 4
+Computer 4 ended turn
+Player 1's turn:
+Rolled 1 + 1 = 2
+Computer 2's turn:
+Rolled 1 + 5 = 6
+Computer 2 ended turn
+Computer 3's turn:
+Rolled 1 + 4 = 5
+Computer 3 ended turn
+Computer 4's turn:
+Rolled 3 + 2 = 5
+Computer 4 ended turn
+Player 1's turn:
+Rolled 5 + 1 = 6
+Computer 2's turn:
+Rolled 6 + 6 = 12
 Computer 2 ended turn
 Computer 3's turn:
 Rolled 3 + 6 = 9
 Computer 3 ended turn
 Computer 4's turn:
-Rolled 1 + 1 = 2
+Rolled 2 + 6 = 8
+Computer 4 ended turn
+Player 1's turn:
+Rolled 1 + 4 = 5
+Computer 2's turn:
+Rolled 5 + 5 = 10
+Computer 2 ended turn
+Computer 3's turn:
+Rolled 1 + 5 = 6
+Computer 3 ended turn
+Computer 4's turn:
+Rolled 6 + 5 = 11
+Computer 4 built a road at [[2, 3, 9], [3, 9, 10]]
+Computer 4 built a road at[[2, 3, 9], [3, 9, 10]]
+Computer 4 ended turn
+Player 1's turn:
+Rolled 2 + 4 = 6
+Computer 2's turn:
+Rolled 4 + 2 = 6
+Computer 2 ended turn
+Computer 3's turn:
+Rolled 4 + 1 = 5
+Computer 3 ended turn
+Computer 4's turn:
+Rolled 3 + 4 = 7
+Player 1 got robbed!
+Computer 2 got robbed!
+Computer 3 got robbed!
+Computer 4 ended turn
+Player 1's turn:
+Rolled 2 + 3 = 5
+Computer 2's turn:
+Rolled 6 + 3 = 9
+Computer 2 ended turn
+Computer 3's turn:
+Rolled 3 + 6 = 9
+Computer 3 ended turn
+Computer 4's turn:
+Rolled 6 + 5 = 11
+Computer 4 ended turn
+Player 1's turn:
+Rolled 6 + 4 = 10
+Computer 2's turn:
+Rolled 3 + 6 = 9
+Computer 2 ended turn
+Computer 3's turn:
+Rolled 3 + 4 = 7
+Computer 3 got robbed!
+Computer 4 got robbed!
+Player 1 got robbed!
+Computer 2 got robbed!
+Computer 3 ended turn
+Computer 4's turn:
+Rolled 3 + 3 = 6
+Computer 4 ended turn
+Player 1's turn:
+Rolled 5 + 5 = 10
+Computer 2's turn:
+Rolled 4 + 1 = 5
+Computer 2 ended turn
+Computer 3's turn:
+Rolled 4 + 6 = 10
+Computer 3 ended turn
+Computer 4's turn:
+Rolled 3 + 6 = 9
 Computer 4 ended turn
 Player 1's turn:

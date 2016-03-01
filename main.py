@@ -1,14 +1,14 @@
 # Settlers of Catan
 # Created by Ben Hokanson-Fasig and Aman Abhishek
 # Last update 02-29-16
-version = "0.0.5"
+version = "0.0.6"
 
 
 if __name__ == '__main__':
     from catan_graphics import aesthetics, App
     from tkinter import Tk
 
-    aesthetics(900,600)
+    aesthetics(900,625)
     root = Tk()
     app = App(root)
     # Draw window and run app
@@ -103,7 +103,7 @@ def new_game(splash,board):
         write_log(players[whose_turn-1].name,"'s turn:", sep='')
         # Wait screen for human players, or if all computer players
         if players[whose_turn-1].AI_code<0 or all_computers:
-            draw_intermediate_screen(players[whose_turn-1].name)
+            draw_intermediate_screen(players[whose_turn-1])
 
         die_1,die_2 = roll_dice()
         draw_dice(die_1,die_2)
