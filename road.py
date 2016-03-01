@@ -39,41 +39,19 @@ class Road:
         else:
             return False
 
-if __name__ == '__main__':
-    from point import Point
-    x = 17
-    y = 23
-    z = 24
-    while(True):
-        x2 = int(input("hex1: "))
-        y2 = int(input("hex2: "))
-        z2 = int(input("hex3: "))
+#allots a number to each road which corresponds to how many other roads its connected to
+def classify_road(player):
+    # from player import Player
+    output = [] 
+    for road in player.roads:
+        connections = 0
+        for other_road in player.roads:
+            if(road == other_road):
+                continue
+            else:
+                if(road.connected(other_road)):
+                    connections += 1
+        output.append(connections)
 
-        x1 = int(input("hex1: "))
-        y1 = int(input("hex2: "))
-        z1 = int(input("hex3: "))
+    return output
 
-        p1 = Point(x1,y1,z1)
-        p2 = Point(x2,y2,z2)
-
-
-        r1 = Road(p1,p2)
-        print("r1 initialized.\n")
-
-        x2 = int(input("hex1: "))
-        y2 = int(input("hex2: "))
-        z2 = int(input("hex3: "))
-
-        x1 = int(input("hex1: "))
-        y1 = int(input("hex2: "))
-        z1 = int(input("hex3: "))
-
-        p3 = Point(x1,y1,z1)
-        p4 = Point(x2,y2,z2)
-
-        r2 = Road(p3,p4)
-
-        if(r1==r2):
-            print("same road")
-        else:
-            print("distinct roads")
