@@ -65,7 +65,7 @@ def set_tiles(tiles):
     acceptable_placement = False
     # Loop through number placement until high numbers are not adjacent
     while not(acceptable_placement):
-        print("Placing numbers")
+        #print("Placing numbers")
         numbers = [2,3,3,4,4,5,5,6,6,8,8,9,9,10,10,11,11,12]
         for tile in tiles:
             # Pick a random dice value and remove it from the remaining choices
@@ -120,6 +120,7 @@ def generate_points_and_roads(seed_points):
 
 def build_settlement(player,players):
     from catan_graphics import player_choose_settlement, draw_settlement
+    from catan_graphics import write_log
     from catan_AI import computer_choose_settlement
     # If the player can't build a settlement, exit without building anything
     available_points = legal_settlement_placements(player,players)
@@ -156,6 +157,8 @@ def build_settlement(player,players):
     player_building_update(settlement,1,player)
     # Draw the settlement on the board
     draw_settlement(settlement,player)
+    # Write to log where player built settlement
+    write_log(player.name,"built a settlement at",settlement.coordinate)
     # Recalculate the player's score
     player.calculate_score()
 
@@ -163,7 +166,7 @@ def build_settlement(player,players):
 
 
 def build_road(player,players):
-    from catan_graphics import player_choose_road, draw_road
+    from catan_graphics import player_choose_road, draw_road, write_log
     from catan_AI import computer_choose_road
     # If the player can't build a road, exit without building anything
     available_roads = legal_road_placements(player,players)
@@ -198,6 +201,8 @@ def build_road(player,players):
     player.points.append(road.point2)
     # Draw the road on the board
     draw_road(road,player)
+    # Write to log where player built road
+    write_log(player.name,"built a road at",road.coordinates)
     # Recalculate the player's score
     player.calculate_score()
 
@@ -205,7 +210,7 @@ def build_road(player,players):
 
 
 def build_city(player,players):
-    from catan_graphics import player_choose_city, draw_city
+    from catan_graphics import player_choose_city, draw_city, write_log
     from catan_AI import computer_choose_city
     # If the player can't build a city, exit without building anything
     available_points = player.settlements
@@ -236,6 +241,8 @@ def build_city(player,players):
     player_building_update(city,2,player)
     # Draw the city on the board
     draw_city(city,player)
+    # Write to log where player built city
+    write_log(player.name,"built a city at",city.coordinate)
     # Recalculate the player's score
     player.calculate_score()
 
@@ -326,11 +333,12 @@ def check_winner(players):
 
 
 def roll_dice():
+    from catan_graphics import write_log
     """Rolls two six sided dice and returns their values."""
     die_values = [1,2,3,4,5,6]
     die_1 = choice(die_values)
     die_2 = choice(die_values)
-    print("Rolled",die_1,"+",die_2,"=",die_1+die_2)
+    write_log("Rolled",die_1,"+",die_2,"=",die_1+die_2)
     return die_1, die_2
 
 

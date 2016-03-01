@@ -524,7 +524,7 @@ def player_choose_settlement(player,players):
     # Determine the places a player can legally play
     available_points = legal_settlement_placements(player,players)
 
-    print("Choose a vertex to place a settlement")
+    #print("Choose a vertex to place a settlement")
 
     coordinate = placement_loop(player,available_points)
 
@@ -532,7 +532,7 @@ def player_choose_settlement(player,players):
     if not(coordinate):
         return False
 
-    print("Chose point",coordinate)
+    #print("Chose point",coordinate)
 
     # # Stop watching for click events
     # board_canvas.unbind("<Button-1>")
@@ -559,7 +559,7 @@ def player_choose_road(player,players):
     road_coordinates = []
     valid_road = False
 
-    print("Choose two vertices to place a road")
+    #print("Choose two vertices to place a road")
 
     # Loop until player picks a valid road pair
     while(not(valid_road)):
@@ -626,7 +626,7 @@ def player_choose_road(player,players):
             if not(valid_road):
                 road_coordinates = []
 
-    print("Chose road",road.point1.coordinate,road.point2.coordinate)
+    #print("Chose road",road.point1.coordinate,road.point2.coordinate)
 
     # # Stop watching for click events
     # board_canvas.unbind("<Button-1>")
@@ -648,7 +648,7 @@ def player_choose_city(player,players):
     for point in player.settlements:
         available_points.append(point)
 
-    print("Choose a vertex to place a city")
+    #print("Choose a vertex to place a city")
 
     coordinate = placement_loop(player,available_points)
 
@@ -656,7 +656,7 @@ def player_choose_city(player,players):
     if not(coordinate):
         return False
 
-    print("Chose point",coordinate)
+    #print("Chose point",coordinate)
 
     # # Stop watching for click events
     # board_canvas.unbind("<Button-1>")
@@ -1016,7 +1016,7 @@ def turn_loop(player,players):
         computer_action = "none"
         while not(computer_action=="ended turn"):
             computer_action = computer_take_turn(player,players)
-            print(player.name,computer_action)
+            write_log(player.name,computer_action)
 
 
 ################################################################################

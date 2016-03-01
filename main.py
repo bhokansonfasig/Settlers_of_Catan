@@ -42,7 +42,7 @@ def new_game(splash,board):
     if log_file_exists:
         from os import remove
         remove(log_file_name)
-        print("Deleted old log file")
+        print("Deleted old log file",log_file_name)
 
     # Start drawing log file to the board window
     draw_log()
@@ -100,7 +100,7 @@ def new_game(splash,board):
         draw_stats(players)
         loop_index += 1
         whose_turn = loop_index%playnum + 1
-        print(players[whose_turn-1].name,"'s turn", sep='')
+        write_log(players[whose_turn-1].name,"'s turn:", sep='')
         # Wait screen for human players, or if all computer players
         if players[whose_turn-1].AI_code<0 or all_computers:
             draw_intermediate_screen(players[whose_turn-1].name)
@@ -113,10 +113,10 @@ def new_game(splash,board):
             # Robber sequence. Start with the current player, and loop through
             for player in players[whose_turn-1:]:
                 if player.robbable():
-                    print(player.name,"got robbed!")
+                    write_log(player.name,"got robbed!")
             for player in players[:whose_turn-1]:
                 if player.robbable():
-                    print(player.name,"got robbed!")
+                    write_log(player.name,"got robbed!")
 
         draw_stats(players)
         draw_resource_panel(players[whose_turn-1],players)
@@ -124,7 +124,7 @@ def new_game(splash,board):
         turn_loop(players[whose_turn-1],players)
 
     winner = whose_turn
-    print("*****Congratulations ",players[winner-1].name,"!*****", sep='')
+    write_log("*****Congratulations ",players[winner-1].name,"!*****", sep='')
 
     close_all(splash,board)
 

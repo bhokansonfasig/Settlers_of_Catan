@@ -1,6 +1,46 @@
 -----New game started-----
-Player 3 build first settlement
-Player 3 build first road
 Player 1 build first settlement
+Player 1 built a settlement at [18, 19, 25]
 Player 1 build first road
-Player 4 build first settlement
+Player 1 built a road at [[18, 19, 25], [19, 25, 26]]
+Computer 2 build first settlement
+Computer 2 built a settlement at [21, 22, 29]
+Computer 2 build first road
+Computer 2 built a road at [[15, 21, 22], [21, 22, 29]]
+Computer 3 build first settlement
+Computer 3 built a settlement at [5, 11, 12]
+Computer 3 build first road
+Computer 3 built a road at [[4, 5, 11], [5, 11, 12]]
+Computer 4 build first settlement
+Computer 4 built a settlement at [31, 37, 38]
+Computer 4 build first road
+Computer 4 built a road at [[30, 31, 37], [31, 37, 38]]
+Computer 4 build second settlement
+Computer 4 built a settlement at [30, 36, 37]
+Computer 4 build second road
+Computer 4 built a road at [[29, 30, 36], [30, 36, 37]]
+Computer 3 build second settlement
+Computer 3 built a settlement at [8, 9, 16]
+Computer 3 build second road
+Computer 3 built a road at [[2, 8, 9], [8, 9, 16]]
+Computer 2 build second settlement
+Computer 2 built a settlement at [10, 11, 18]
+Computer 2 build second road
+Computer 2 built a road at [[10, 11, 18], [10, 17, 18]]
+Player 1 build second settlement
+Player 1 built a settlement at [16, 17, 23]
+Player 1 build second road
+Player 1 built a road at [[9, 16, 17], [16, 17, 23]]
+Player 1's turn:
+Rolled 1 + 4 = 5
+Player 1 built a city at [18, 19, 25]
+Computer 2's turn:
+Rolled 4 + 1 = 5
+Computer 2 ended turn
+Computer 3's turn:
+Rolled 3 + 6 = 9
+Computer 3 ended turn
+Computer 4's turn:
+Rolled 1 + 1 = 2
+Computer 4 ended turn
+Player 1's turn:
