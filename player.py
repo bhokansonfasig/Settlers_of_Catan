@@ -168,7 +168,7 @@ class Player:
 			print(self.name,index)
 
 	#a single road connected to a loop is an edge, but it has _two_ connections
-	def include_complex_edges(self):
+	def find_complex_edges(self):
 		self.isolate_simple_straight_chains()
 		complex_edges = []
 		for possible_edge in self.road_types[2]:
@@ -179,15 +179,9 @@ class Player:
 			c = neighbors[0].common_tile(neighbors[1])
 
 			if(len(set(a+b+c))==3):
-				# self.road_types[2].remove(possible_edge)
 				complex_edges.append(possible_edge)
 		
 		print(self.name,"has",len(complex_edges),"complex edges")
-		# for t in complex_edges:
-		# 	self.road_types[2].remove(t)
-			# print(t.tiles,"point coord:",t.coordinates)
-		
-		
 		
 		return complex_edges
 
