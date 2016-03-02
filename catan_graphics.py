@@ -295,7 +295,7 @@ def redraw_board():
             return
         draw_dice(die_1,die_2)
         whose_turn = loop_index%len(players) + 1
-        draw_resource_panel(players[whose_turn-1],players)
+        draw_resource_panel(players[whose_turn-1])
 
 
 def open_board_window(other,board):
@@ -796,6 +796,34 @@ def draw_city(point, player):
         tags=("city",player.index))
 
 
+def maritime_trade(player,players):
+    """Clears buttons and draws trading screen for player"""
+    undraw_buttons()
+
+    trade_button = Button(board_canvas,
+        font=(txt_font, int(.8*txt_size)), text="Trade",
+        command=lambda : set_button_chosen(0))
+    trade_button.configure(width=10, height=1,
+        background=inactive_button_color, activebackground=active_button_color)
+    trade_button_window = board_canvas.create_window(
+        int((hex_x_off-water_width)*5/10),int(win_height*.4+8*txt_size),
+        window=trade_button, tags="trade")
+
+    while button_chosen.get()!=0:
+        draw_stats(players)
+        draw_resources(player)
+        board_canvas.wait_variable(button_chosen)
+
+    button_chosen.set(-1)
+
+    print(player.name,"attempted a maritime trade.")
+
+    board_canvas.delete("trade")
+    trade_button.destroy()
+
+    draw_buttons(player)
+
+
 def draw_dice(die_1,die_2):
     """Undraws previous dice and draws dice of values 'die_1' and 'die_2'"""
     board_canvas.delete("dice")
@@ -906,9 +934,11 @@ def draw_stats(players):
             tags="stats")
 
 
-def draw_buttons(player,players):
+def draw_buttons(player):
     """Draws buttons for player actions on the board window"""
     global build_settlement_button, build_road_button, build_city_button
+    global buy_dev_button, maritime_trade_button, trading_post_button
+    global end_turn_button
 
     # Create buttons on board window
     build_settlement_button = Button(board_canvas,
@@ -951,13 +981,33 @@ def draw_buttons(player,players):
         int((hex_x_off-water_width)*3/10),int(win_height*.4+4*txt_size),
         text="Cost: 2 wheat, 3 stone",
         font=(txt_font, int(.6*txt_size)), tags="button")
-    trading_post_button = Button(board_canvas,
-        font=(txt_font, int(.8*txt_size)), text="Trade",
+    buy_dev_button = Button(board_canvas,
+        font=(txt_font, int(.8*txt_size)), text="Development Card",
         command=lambda : set_button_chosen(4))
+    buy_dev_button.configure(width=15, height=1,
+        background=inactive_button_color, activebackground=active_button_color)
+    buy_dev_button_window = board_canvas.create_window(
+        int((hex_x_off-water_width)*7/10),int(win_height*.4+3*txt_size),
+        window=buy_dev_button, tags="button")
+    city_cost_text = board_canvas.create_text(
+        int((hex_x_off-water_width)*7/10),int(win_height*.4+4*txt_size),
+        text="Cost: 1 sheep, 1 wheat, 1 stone",
+        font=(txt_font, int(.6*txt_size)), tags="button")
+    maritime_trade_button = Button(board_canvas,
+        font=(txt_font, int(.8*txt_size)), text="Port Trade",
+        command=lambda : set_button_chosen(5))
+    maritime_trade_button.configure(width=15, height=1,
+        background=inactive_button_color, activebackground=active_button_color)
+    maritime_trade_button_window = board_canvas.create_window(
+        int((hex_x_off-water_width)*3/10),int(win_height*.4+6*txt_size),
+        window=maritime_trade_button, tags="button")
+    trading_post_button = Button(board_canvas,
+        font=(txt_font, int(.8*txt_size)), text="Player Trade",
+        command=lambda : set_button_chosen(6))
     trading_post_button.configure(width=15, height=1,
         background=inactive_button_color, activebackground=active_button_color)
     trading_post_button_window = board_canvas.create_window(
-        int((hex_x_off-water_width)*7/10),int(win_height*.4+3*txt_size),
+        int((hex_x_off-water_width)*7/10),int(win_height*.4+6*txt_size),
         window=trading_post_button, tags="button")
     end_turn_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="End Turn",
@@ -965,7 +1015,7 @@ def draw_buttons(player,players):
     end_turn_button.configure(width=10, height=1,
         background=inactive_button_color, activebackground=active_button_color)
     end_turn_button_window = board_canvas.create_window(
-        int((hex_x_off-water_width)*5/10),int(win_height*.4+6*txt_size),
+        int((hex_x_off-water_width)*5/10),int(win_height*.4+8*txt_size),
         window=end_turn_button, tags="button")
 
 
@@ -980,6 +1030,10 @@ def undraw_buttons():
     build_settlement_button.destroy()
     build_road_button.destroy()
     build_city_button.destroy()
+    buy_dev_button.destroy()
+    maritime_trade_button.destroy()
+    trading_post_button.destroy()
+    end_turn_button.destroy()
 
 
 def draw_resources(player):
@@ -1018,11 +1072,11 @@ def draw_resources(player):
         tags="resources")
 
 
-def draw_resource_panel(player,players):
+def draw_resource_panel(player):
     """Draws resources available to player number 'index' in the resource panel
     of the board window. Also activates buttons available to player."""
 
-    draw_buttons(player,players)
+    draw_buttons(player)
 
     draw_resources(player)
 
@@ -1069,6 +1123,8 @@ def turn_loop(player,players):
                 build_road(player,players)
             elif button_chosen.get()==3:
                 build_city(player,players)
+            elif button_chosen.get()==5:
+                maritime_trade(player,players)
     # For computer players, reference AI file
     else:
         from catan_AI import computer_take_turn

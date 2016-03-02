@@ -98,7 +98,7 @@ def set_tiles(tiles):
                     acceptable_placement = False
 
     docks = ["wood","brick","sheep","wheat","stone","any","any","any","any"]
-
+    # Assign ports randomly (positions are already fixed)
     for tile in tiles:
         if tile.dock:
             dock_resource = choice(docks)

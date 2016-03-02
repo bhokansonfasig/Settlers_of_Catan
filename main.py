@@ -119,7 +119,7 @@ def new_game(splash,board):
                     write_log(player.name,"got robbed!")
 
         draw_stats(players)
-        draw_resource_panel(players[whose_turn-1],players)
+        draw_resource_panel(players[whose_turn-1])
 
         turn_loop(players[whose_turn-1],players)
 
