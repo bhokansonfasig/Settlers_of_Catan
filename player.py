@@ -44,12 +44,12 @@ class Player:
 		self.stone = 0
 
 		# For testing, add resources to human players
-		if self.AI_code<0:
-			self.wood += 20
-			self.brick += 20
-			self.wheat += 20
-			self.sheep += 20
-			self.stone += 20
+		# if self.AI_code<0:
+		self.wood += 20
+		self.brick += 20
+		self.wheat += 20
+		self.sheep += 20
+		self.stone += 20
 
 		#longest road stuff
 		self.road_types = [[],[],[],[],[]] #the index corresponds to the number of connections
