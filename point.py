@@ -14,6 +14,15 @@ class Point:
 
         self.tk_index = None  # Tkinter index of settlement or city
 
+        port_tile_pairs = [[15,16],[2,9],[4,10],
+                            [12,19],[27,26],[40,33],
+                            [46,38],[44,37],[29,30]]
+
+        self.is_port = False
+        for pair in port_tile_pairs:
+            if (pair[0] in self.coordinate) and (pair[1] in self.coordinate):
+                self.is_port = True
+
         #self.settlement_owner = 0  # Owner of settlement on point
         #self.city_owner = 0  # Owner of city on point
 
@@ -82,6 +91,15 @@ class Point:
                 return True
         else:
             return False
+
+    def make_port(self,resource):
+        self.is_port = True
+        self.port_resource = resource.lower()
+        if self.port_resource=="any" or self.port_resource=="?":
+            self.port_ratio = 3
+        else:
+            self.port_ratio = 2
+
 
 if __name__ == '__main__':
     x = 17

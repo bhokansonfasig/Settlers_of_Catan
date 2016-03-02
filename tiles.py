@@ -4,6 +4,8 @@ class Tile:
 
         self.tk_hex = None
         self.tk_number = None
+        self.tk_dock = None
+        self.tk_dock_ratio = None
         self.vertices = []  # Coordinates of vertices for GUI
 
         board_tiles = [9,10,11,
@@ -26,6 +28,13 @@ class Tile:
             self.edge = True
         else:
             self.edge = False
+
+        dock_tiles = [2,4,12,15,27,29,40,44,46]
+        # Determines if a dock is to be drawn on the tile
+        if self.index in dock_tiles:
+            self.dock = True
+        else:
+            self.dock = False
 
         self.resource = 'none'  # Tile's associated resource
         self.roll_number = -1  # Tile's associated dice roll number
@@ -113,11 +122,32 @@ class Tile:
         # Draw number in black, or red if a 6 or 8
         if (self.roll_number>0 and self.roll_number<6) or (self.roll_number>8):
             self.tk_number = canvas.create_text(pos_x, pos_y,
-                text=self.roll_number, font=("Helvetica", txt_size))
+                text=self.roll_number, font=("Helvetica", txt_size),
+                tags="hex")
         elif (self.roll_number==6 or self.roll_number==8):
             self.tk_number = canvas.create_text(pos_x, pos_y, fill='red',
-                text=self.roll_number, font=("Helvetica", txt_size))
+                text=self.roll_number, font=("Helvetica", txt_size),
+                tags="hex")
 
+    def draw_dock(self, canvas, txt_size, resource, ratio):
+        """Draws a dock on the tile for trading resource at ratio"""
+        from catan_graphics import set_color
+        # Get the color for the dock
+        dock_color = set_color(resource)
+        # Get position of center of tile
+        pos_x = (self.vertices[0]+self.vertices[6])/2
+        pos_y = (self.vertices[1]+self.vertices[7])/2
+        # Get half the side length of the dock rectangle
+        side = (self.vertices[3]-self.vertices[1])/5
+        # Draw the dock rectangle
+        self.tk_dock = canvas.create_rectangle(pos_x-2*side,pos_y-side,
+            pos_x+2*side,pos_y+side, fill=dock_color, outline=dock_color,
+            tags="dock")
+        ratio_text = str(ratio)+":1"
+        # Draw the ratio
+        self.tk_dock_ratio = canvas.create_text(pos_x,pos_y,
+            text=ratio_text, font=("Helvetica", txt_size),
+            tags="dock")
 
     def has_neighbor(self,neighbor):
         hex1 = self.index

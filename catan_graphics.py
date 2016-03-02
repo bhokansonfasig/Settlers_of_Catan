@@ -237,7 +237,7 @@ def aesthetics(width,height):
 
     # Set offsets from top right corner for hexagon section (without water)
     global hex_x_off, hex_y_off
-    hex_x_off = int(win_width-hex_width-water_width)
+    hex_x_off = int(win_width-hex_width-1.75*water_width)
     hex_y_off = int(win_height-hex_height-water_width)
 
     return width, height
@@ -254,8 +254,13 @@ def set_color(element):
         return "#FFFFCC"
     if element.lower()=="inactive button":
         return "#F7D9B2"
+    if element.lower()=="water":
+        return "#6680FF"
     if element.lower()=="sand":
         return "#D7B992"
+    if element.lower()=="dock" or element.lower()=="any" or \
+        element.lower()=="?":
+        return "#996633"
     if element.lower()=="wood":
         return "#2C8236"
     if element.lower()=="brick":
@@ -452,8 +457,9 @@ def get_tiles():
 def draw_tile_skeleton(tiles):
     """Draws the outlines for the hexagon tiles"""
     # Water base
-    board_canvas.create_rectangle(hex_x_off-water_width,
-        hex_y_off-water_width, win_width, win_height, fill="#6680FF")
+    water_color = set_color("water")
+    board_canvas.create_rectangle(hex_x_off-water_width, hex_y_off-water_width,
+        win_width, win_height, fill=water_color)
 
     for tile in tiles:
         tile.set_vertices(hex_width, hex_height, hex_x_off, hex_y_off)
@@ -467,6 +473,31 @@ def draw_tiles(tiles):
         if tile.visible:
             tile.draw(board_canvas)
             tile.draw_number(board_canvas,txt_size)
+
+    draw_ports(tiles)
+
+
+def draw_ports(tiles):
+    """Draws the ports on the game board window"""
+    from catan_logic import all_points
+    dock_color = set_color("dock")
+    for tile in tiles:
+        for point in all_points:
+            if not(tile.index in point.coordinate):
+                continue
+            if point.is_port and tile.dock:
+                point.link_vertex(hex_width, hex_height, hex_x_off, hex_y_off)
+                # Center of tile
+                tile_x = (tile.vertices[0]+tile.vertices[6])/2
+                tile_y = (tile.vertices[1]+tile.vertices[7])/2
+                board_canvas.create_line(point.vertex[0],point.vertex[1],
+                    tile_x,tile_y, fill=dock_color, width=5)
+                dock_resource = point.port_resource
+                dock_ratio = point.port_ratio
+        if tile.dock:
+            tile.draw_dock(board_canvas, int(.8*txt_size), dock_resource,
+                dock_ratio)
+    board_canvas.tag_raise("hex")
 
 
 def draw_circle(point):

@@ -10,6 +10,16 @@ from player import Player
 def set_tiles(tiles):
     """Takes array of tiles and sets resources and dice roll numbers to the
     appropriate game board tiles"""
+
+    # Prepare all_points and all_roads for later use
+    #the leftmost points on the grid, which are used to generate the rest
+    seed_points = [[0,1,7],[1,7,8],[7,8,15],[7,14,15],[14,15,21],[15,21,22],[21,28,29],[21,22,29],[28,29,35],[29,35,36],[35,42,43],[35,36,43]]
+    global all_points, all_roads
+    all_points = []
+    all_roads = []
+
+    generate_points_and_roads(seed_points)
+
     # Suggested preset:
     # tiles[1][1] = "wood"
     # tiles[1][2] = 11
@@ -87,15 +97,15 @@ def set_tiles(tiles):
                 if tile1.has_neighbor(tile2):
                     acceptable_placement = False
 
+    docks = ["wood","brick","sheep","wheat","stone","any","any","any","any"]
 
-    # Prepare all_points and all_roads for later use
-    #the leftmost points on the grid, which are used to generate the rest
-    seed_points = [[0,1,7],[1,7,8],[7,8,15],[7,14,15],[14,15,21],[15,21,22],[21,28,29],[21,22,29],[28,29,35],[29,35,36],[35,42,43],[35,36,43]]
-    global all_points, all_roads
-    all_points = []
-    all_roads = []
-
-    generate_points_and_roads(seed_points)
+    for tile in tiles:
+        if tile.dock:
+            dock_resource = choice(docks)
+            docks.remove(dock_resource)
+            for point in all_points:
+                if (tile.index in point.coordinate) and point.is_port:
+                    point.make_port(dock_resource)
 
     return tiles
 
