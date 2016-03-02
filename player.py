@@ -193,21 +193,21 @@ class Player:
 
 
 
-	def only_branches_and_no_loops(self):
-		self.isolate_simple_straight_chains()
-		if(len(self.isolate_loops)==0):
-			complex_edges = find_complex_edges()
-			all_edges = self.road_types[1]+complex_edges
-			output = [[0 for x in range(len(all_edges)))] for x in range(len(all_edges))] 
+	# def only_branches_and_no_loops(self):
+	# 	self.isolate_simple_straight_chains()
+	# 	if(len(self.isolate_loops)==0):
+	# 		complex_edges = find_complex_edges()
+	# 		all_edges = self.road_types[1]+complex_edges
+	# 		output = [[0 for x in range(len(all_edges)))] for x in range(len(all_edges))] 
 		
-			for edge in all_edges:
-				all_edges = self.road_types[1]+complex_edges
-				paths = []
-				intermediate_road = edge
-				while (len(all_edges) != 0):
-					middle_roads = road_types[2]+road_types[3]+road_types[4]
-		            intermediate_road = intermediate_road.find_connected(middle_roads)
-		            paths.append[intermediate_road]
+	# 		for edge in all_edges:
+	# 			all_edges = self.road_types[1]+complex_edges
+	# 			paths = []
+	# 			intermediate_road = edge
+	# 			while (len(all_edges) != 0):
+	# 				middle_roads = road_types[2]+road_types[3]+road_types[4]
+	# 	            intermediate_road = intermediate_road.find_connected(middle_roads)
+	# 	            paths.append[intermediate_road]
 
 
 	# def only_branches_and_no_loops(self):
@@ -223,4 +223,4 @@ class Player:
 	# 				middle_roads = road_types[2]+road_types[3]+road_types[4]
 	# 	            intermediate_road = intermediate_road.find_connected(middle_roads)
 	# 	            self.road_types[2].remove(intermediate_road)
->>>>>>> 55443118702d7acee653e83a9ab02d6a1073ff26
+
