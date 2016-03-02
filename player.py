@@ -100,3 +100,55 @@ class Player:
 			self.sheep += 1
 		elif resource=="stone":
 			self.stone += 1
+
+	#allots a number to each road which corresponds to how many other roads its connected to
+	def classify_road(self):
+	    self.road_types = [[],[],[],[],[]]
+	    for road in self.roads:
+	        connections = 0
+	        for other_road in self.roads:
+	            # if(road == other_road):
+	            #     continue
+	            # else:
+	            if(road.connected(other_road)):
+	                connections += 1
+	        self.road_types[connections].append(road)
+
+	    # s = ''
+	    # for t in range(0,5):
+	    #     s += str(len(self.road_types[t])) + " "
+	    # print(s,self.name)
+
+
+	def isolate_simple_straight_chains(self):
+	    chain_lengths = []
+	    self.calculation_complete = False
+	    for edge in self.road_types[1]:
+	        length = 0
+	        intermediate_road = edge
+	        self.road_types[1].remove(edge)
+	        while (len(intermediate_road.find_connected(self.road_types[2])) != 0):
+	            intermediate_road = intermediate_road.find_connected(self.road_types[2])[0]
+	            self.road_types[2].remove(intermediate_road)
+	            length += 1
+	        if(len(intermediate_road.find_connected(self.road_types[1]))==1):
+	            other_edge = intermediate_road.find_connected(self.road_types[1])[0]
+	            self.road_types[1].remove(other_edge)
+	            chain_lengths.append(length+2)
+	        # print(chain_lengths,self.name)
+	    
+	    if(len(chain_lengths) == 2): #there were two chains, and they were identified
+	        self.calculation_complete = True
+	    if(len(chain_lengths) == 1): #checking if whats left is too small to give the longest road
+	        leftover = len(self.roads)-chain_lengths[0]
+	        if (leftover < (chain_lengths[0]+1)): #the leftover _must_ have a longer chain, else no need to evaluate it
+	            self.calculation_complete = True
+
+	    if(self.calculation_complete):
+	        print("longest:",max(chain_lengths),self.name)
+	    
+	    #the length of the chain that we do have is useful for comparision while looking at the complex structure
+	    if(len(chain_lengths)!=0):
+	        return max(chain_lengths)
+	    else:
+	        return 0

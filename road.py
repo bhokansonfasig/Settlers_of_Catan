@@ -52,57 +52,7 @@ class Road:
         return connections
 
 
-#allots a number to each road which corresponds to how many other roads its connected to
-def classify_road(player):
-    player.road_types = [[],[],[],[],[]]
-    for road in player.roads:
-        connections = 0
-        for other_road in player.roads:
-            # if(road == other_road):
-            #     continue
-            # else:
-            if(road.connected(other_road)):
-                connections += 1
-        player.road_types[connections].append(road)
 
-    # s = ''
-    # for t in range(0,5):
-    #     s += str(len(player.road_types[t])) + " "
-    # print(s,player.name)
-
-
-def isolate_simple_straight_chains(player):
-    chain_lengths = []
-    player.calculation_complete = False
-    for edge in player.road_types[1]:
-        length = 0
-        intermediate_road = edge
-        player.road_types[1].remove(edge)
-        while (len(intermediate_road.find_connected(player.road_types[2])) != 0):
-            intermediate_road = intermediate_road.find_connected(player.road_types[2])[0]
-            player.road_types[2].remove(intermediate_road)
-            length += 1
-        if(len(intermediate_road.find_connected(player.road_types[1]))==1):
-            other_edge = intermediate_road.find_connected(player.road_types[1])[0]
-            player.road_types[1].remove(other_edge)
-            chain_lengths.append(length+2)
-        # print(chain_lengths,player.name)
-    
-    if(len(chain_lengths) == 2): #there were two chains, and they were identified
-        player.calculation_complete = True
-    if(len(chain_lengths) == 1): #checking if whats left is too small to give the longest road
-        leftover = len(player.roads)-chain_lengths[0]
-        if (leftover < (chain_lengths[0]+1)): #the leftover _must_ have a longer chain, else no need to evaluate it
-            player.calculation_complete = True
-
-    if(player.calculation_complete):
-        print("longest:",max(chain_lengths),player.name)
-    
-    #the length of the chain that we do have is useful for comparision while looking at the complex structure
-    if(len(chain_lengths)!=0):
-        return max(chain_lengths)
-    else:
-        return 0
 
             
 
