@@ -944,7 +944,7 @@ def draw_buttons(player):
     build_settlement_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Build Settlement",
         command=lambda : set_button_chosen(1))
-    build_settlement_button.configure(width=15, height=1,
+    build_settlement_button.configure(width=15, height=1, padx=0, pady=0,
         background=inactive_button_color, activebackground=active_button_color)
     build_settlement_button_window = board_canvas.create_window(
         int((hex_x_off-water_width)*3/10),int(win_height*.4),
