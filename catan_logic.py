@@ -207,7 +207,7 @@ def build_road(player,players):
     player.calculate_score()
 
     classify_road(player)
-    isolate_simple_straight_chains(player)
+    print (isolate_simple_straight_chains(player))
 
     return road
 

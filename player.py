@@ -53,6 +53,7 @@ class Player:
 
 		#longest road stuff
 		self.road_types = [[],[],[],[],[]] #the index corresponds to the number of connections
+		self.calculation_complete = False
 
 		#Development cards: lets leave these for now
 
