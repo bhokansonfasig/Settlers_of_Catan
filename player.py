@@ -55,6 +55,7 @@ class Player:
 		self.road_types = [[],[],[],[],[]] #the index corresponds to the number of connections
 		self.calculation_complete = False
 		self.longest_simple_chain = 0
+		self.loops = []
 
 		#Development cards: lets leave these for now
 
@@ -102,7 +103,7 @@ class Player:
 		elif resource=="stone":
 			self.stone += 1
 
-	#allots a number to each road which corresponds to how many other roads its connected to
+	#alots a number to each road which corresponds to how many other roads its connected to
 	def classify_road(self):
 	    self.road_types = [[],[],[],[],[]]
 	    for road in self.roads:
@@ -149,4 +150,21 @@ class Player:
 	        longest_simple_chain = max(chain_lengths)
 	    else:
 	    	longest_simple_chain = 0
+
+	def isolate_loops(self):
+		self.isolate_simple_straight_chains()
+		occupied_edges = [0]*49
+		tiles_with_loops = []
+
+		for road in self.road_types[2]+self.road_types[3]+self.road_types[4]:
+			occupied_edges[road.tiles[0]] += 1
+			occupied_edges[road.tiles[1]] += 1
+
+		for tile in range(0,len(occupied_edges)):
+			if(occupied_edges[tile]==6):
+				tiles_with_loops.append(tile)
+
+		for index in tiles_with_loops:
+			print(self.name,index)
+
 
