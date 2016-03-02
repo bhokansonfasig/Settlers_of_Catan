@@ -206,7 +206,7 @@ def build_road(player,players):
     # Recalculate the player's score
     player.calculate_score()
 
-    print(classify_road(player))
+    classify_road(player)
     return road
 
 
@@ -295,7 +295,7 @@ def legal_road_placements(player,players):
         connected = (road.point1 in player.points) or (road.point2 in player.points)
         #check all the roads to see if the road is not replacing any other road
         new_road = True
-        for x in range(0,len(players)-1):
+        for x in range(0,len(players)):
             new_road = new_road and (road not in players[x].roads)
             if(not new_road):
                 break
@@ -325,10 +325,10 @@ def check_winner(players):
 
     winners = []
 
-    for player in players:
-        player.calculate_score()
-        if player.score>=10:
-            winners.append(player.index)
+    # for player in players:
+    #     player.calculate_score()
+    #     if player.score>=10:
+    #         winners.append(player.index)
 
     return winners
 
