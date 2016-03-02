@@ -29,7 +29,7 @@ def new_game(splash,board):
     from catan_graphics import set_players, get_tiles, draw_tiles, draw_stats
     from catan_graphics import draw_log, write_log, draw_dice, turn_loop
     from catan_graphics import draw_resource_panel, clear_resource_panel
-    from catan_graphics import draw_intermediate_screen
+    from catan_graphics import draw_intermediate_screen, draw_winning_screen
 
     # Set log file name and delete it if it already exists
     global log_file_name
@@ -125,6 +125,9 @@ def new_game(splash,board):
 
     winner = whose_turn
     write_log("*****Congratulations ",players[winner-1].name,"!*****", sep='')
+
+    clear_resource_panel()
+    draw_winning_screen(players[winner-1])
 
     close_all(splash,board)
 

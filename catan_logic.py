@@ -327,10 +327,10 @@ def check_winner(players):
 
     winners = []
 
-    # for player in players:
-    #     player.calculate_score()
-    #     if player.score>=10:
-    #         winners.append(player.index)
+    for player in players:
+        player.calculate_score()
+        if player.score>=10:
+            winners.append(player.index)
 
     return winners
 
