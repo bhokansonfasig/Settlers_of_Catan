@@ -7,7 +7,8 @@ class Road:
                             self.coordinates[0][2])
         self.point2 = Point(self.coordinates[1][0],self.coordinates[1][1],
                             self.coordinates[1][2])
-
+        self.tiles = list(set(point1.coordinate).intersection(point2.coordinate))
+        
         self.tk_index = None  # Tkinter index of road
 
         self.connections = 0 #for calculating longest road
