@@ -803,7 +803,7 @@ def maritime_trade(player,players):
     trade_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Trade",
         command=lambda : set_button_chosen(0))
-    trade_button.configure(width=10, height=1,
+    trade_button.configure(width=10, height=1, padx=0, pady=0,
         background=inactive_button_color, activebackground=active_button_color)
     trade_button_window = board_canvas.create_window(
         int((hex_x_off-water_width)*5/10),int(win_height*.4+8*txt_size),
@@ -960,7 +960,7 @@ def draw_buttons(player):
     build_road_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Build Road",
         command=lambda : set_button_chosen(2))
-    build_road_button.configure(width=15, height=1,
+    build_road_button.configure(width=15, height=1, padx=0, pady=0,
         background=inactive_button_color, activebackground=active_button_color)
     build_road_button_window = board_canvas.create_window(
         int((hex_x_off-water_width)*7/10),int(win_height*.4),
@@ -972,7 +972,7 @@ def draw_buttons(player):
     build_city_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Build City",
         command=lambda : set_button_chosen(3))
-    build_city_button.configure(width=15, height=1,
+    build_city_button.configure(width=15, height=1, padx=0, pady=0,
         background=inactive_button_color, activebackground=active_button_color)
     build_city_button_window = board_canvas.create_window(
         int((hex_x_off-water_width)*3/10),int(win_height*.4+3*txt_size),
@@ -984,7 +984,7 @@ def draw_buttons(player):
     buy_dev_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Development Card",
         command=lambda : set_button_chosen(4))
-    buy_dev_button.configure(width=15, height=1,
+    buy_dev_button.configure(width=15, height=1, padx=0, pady=0,
         background=inactive_button_color, activebackground=active_button_color)
     buy_dev_button_window = board_canvas.create_window(
         int((hex_x_off-water_width)*7/10),int(win_height*.4+3*txt_size),
@@ -1000,7 +1000,7 @@ def draw_buttons(player):
     maritime_trade_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Port Trade",
         command=lambda : set_button_chosen(5))
-    maritime_trade_button.configure(width=15, height=1,
+    maritime_trade_button.configure(width=15, height=1, padx=0, pady=0,
         background=inactive_button_color, activebackground=active_button_color)
     maritime_trade_button_window = board_canvas.create_window(
         int((hex_x_off-water_width)*3/10),int(win_height*.4+6*txt_size),
@@ -1008,7 +1008,7 @@ def draw_buttons(player):
     trading_post_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Player Trade",
         command=lambda : set_button_chosen(6))
-    trading_post_button.configure(width=15, height=1,
+    trading_post_button.configure(width=15, height=1, padx=0, pady=0,
         background=inactive_button_color, activebackground=active_button_color)
     trading_post_button_window = board_canvas.create_window(
         int((hex_x_off-water_width)*7/10),int(win_height*.4+6*txt_size),
@@ -1016,7 +1016,7 @@ def draw_buttons(player):
     end_turn_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="End Turn",
         command=lambda : set_button_chosen(0))
-    end_turn_button.configure(width=10, height=1,
+    end_turn_button.configure(width=10, height=1, padx=0, pady=0,
         background=inactive_button_color, activebackground=active_button_color)
     end_turn_button_window = board_canvas.create_window(
         int((hex_x_off-water_width)*5/10),int(win_height*.4+8*txt_size),
