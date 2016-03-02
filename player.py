@@ -54,6 +54,7 @@ class Player:
 		#longest road stuff
 		self.road_types = [[],[],[],[],[]] #the index corresponds to the number of connections
 		self.calculation_complete = False
+		self.longest_simple_chain = 0
 
 		#Development cards: lets leave these for now
 
@@ -114,15 +115,11 @@ class Player:
 	                connections += 1
 	        self.road_types[connections].append(road)
 
-	    # s = ''
-	    # for t in range(0,5):
-	    #     s += str(len(self.road_types[t])) + " "
-	    # print(s,self.name)
-
 
 	def isolate_simple_straight_chains(self):
 	    chain_lengths = []
 	    self.calculation_complete = False
+	    self.classify_road()
 	    for edge in self.road_types[1]:
 	        length = 0
 	        intermediate_road = edge
@@ -149,6 +146,7 @@ class Player:
 	    
 	    #the length of the chain that we do have is useful for comparision while looking at the complex structure
 	    if(len(chain_lengths)!=0):
-	        return max(chain_lengths)
+	        longest_simple_chain = max(chain_lengths)
 	    else:
-	        return 0
+	    	longest_simple_chain = 0
+
