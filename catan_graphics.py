@@ -989,9 +989,13 @@ def draw_buttons(player):
     buy_dev_button_window = board_canvas.create_window(
         int((hex_x_off-water_width)*7/10),int(win_height*.4+3*txt_size),
         window=buy_dev_button, tags="button")
-    city_cost_text = board_canvas.create_text(
+    dev_cost_text = board_canvas.create_text(
         int((hex_x_off-water_width)*7/10),int(win_height*.4+4*txt_size),
-        text="Cost: 1 sheep, 1 wheat, 1 stone",
+        text="Cost: 1 sheep, 1 wheat",
+        font=(txt_font, int(.6*txt_size)), tags="button")
+    dev_cost_text_2 = board_canvas.create_text(
+        int((hex_x_off-water_width)*7/10-.5*txt_size),
+        int(win_height*.4+4.75*txt_size), text="1 stone",
         font=(txt_font, int(.6*txt_size)), tags="button")
     maritime_trade_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Port Trade",
