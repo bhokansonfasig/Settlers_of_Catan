@@ -1,5 +1,5 @@
 from random import choice
-from road import Road
+from road import Road, classify_road
 from point import Point
 from player import Player
 
@@ -206,6 +206,7 @@ def build_road(player,players):
     # Recalculate the player's score
     player.calculate_score()
 
+    print(classify_road(player))
     return road
 
 
