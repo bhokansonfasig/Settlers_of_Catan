@@ -1047,6 +1047,16 @@ def turn_loop(player,players):
             write_log(player.name,computer_action)
 
 
+def draw_winning_screen(player):
+    """Draws a congratulatory screen for the winning player"""
+    text_string = player.name+" wins!"
+    winning_text = board_canvas.create_text(
+        int((hex_x_off-water_width)/2),int(win_height/3),
+        text=text_string, font=(txt_font,3*txt_size), fill=player.color,
+        width=int(.9*(hex_x_off-water_width)))
+    board_canvas.wait_window(board_canvas)
+
+
 ################################################################################
 # If this file is run itself, do the following
 if __name__ == '__main__':

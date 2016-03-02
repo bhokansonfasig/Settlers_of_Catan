@@ -43,13 +43,16 @@ class Player:
 		self.sheep = 0
 		self.stone = 0
 
-		# For testing, add resources to human players
-		# if self.AI_code<0:
-		self.wood += 20
-		self.brick += 20
-		self.wheat += 20
-		self.sheep += 20
-		self.stone += 20
+		# For testing, add resources to human players and fewer to computers
+		if self.AI_code<0:
+			self.wood += 20
+			self.brick += 20
+			self.wheat += 20
+			self.sheep += 20
+			self.stone += 20
+		else:
+			self.wood += 20
+			self.brick += 20
 
 		#longest road stuff
 		self.road_types = [[],[],[],[],[]] #the index corresponds to the number of connections
@@ -133,7 +136,7 @@ class Player:
 	            self.road_types[1].remove(other_edge)
 	            chain_lengths.append(length+2)
 	        # print(chain_lengths,self.name)
-	    
+
 	    if(len(chain_lengths) == 2): #there were two chains, and they were identified
 	        self.calculation_complete = True
 	    if(len(chain_lengths) == 1): #checking if whats left is too small to give the longest road
@@ -143,7 +146,7 @@ class Player:
 
 	    if(self.calculation_complete):
 	        print("longest:",max(chain_lengths),self.name)
-	    
+
 	    #the length of the chain that we do have is useful for comparision while looking at the complex structure
 	    if(len(chain_lengths)!=0):
 	        longest_simple_chain = max(chain_lengths)
@@ -181,10 +184,11 @@ class Player:
 
 			if(len(set(a+b+c))==3):
 				complex_edges.append(possible_edge)
-		
+
 		print(self.name,"has",len(complex_edges),"complex edges")
-		
+
 		return complex_edges
+
 
 
 
@@ -205,3 +209,18 @@ class Player:
 		            intermediate_road = intermediate_road.find_connected(middle_roads)
 		            paths.append[intermediate_road]
 
+
+	# def only_branches_and_no_loops(self):
+	# 	import copy
+	# 	self.isolate_loops()
+	# 	road_types = copy.deepcopy(self.road_types)
+	# 	output = []
+	# 	if(len(loops)==0):
+	# 		for edge in road_types[1]:
+	# 			paths = []
+	# 			intermediate_road = edge
+	# 			while (len(road_types[1]) != 0):
+	# 				middle_roads = road_types[2]+road_types[3]+road_types[4]
+	# 	            intermediate_road = intermediate_road.find_connected(middle_roads)
+	# 	            self.road_types[2].remove(intermediate_road)
+>>>>>>> 55443118702d7acee653e83a9ab02d6a1073ff26
