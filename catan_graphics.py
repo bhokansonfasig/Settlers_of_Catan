@@ -5,7 +5,7 @@ from catan_logic import build_settlement, build_road, build_city
 from player import Player
 from tiles import Tile
 from point import Point
-from road import Road
+from road import *
 
 
 ################################################################################

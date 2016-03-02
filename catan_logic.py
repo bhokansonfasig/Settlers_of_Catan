@@ -1,5 +1,5 @@
 from random import choice
-from road import Road, classify_road
+from road import *
 from point import Point
 from player import Player
 
@@ -207,6 +207,8 @@ def build_road(player,players):
     player.calculate_score()
 
     classify_road(player)
+    isolate_simple_straight_chains(player)
+
     return road
 
 

@@ -48,13 +48,12 @@ class Road:
         for road in road_list:
             if(self.connected(road)):
                 connections.append(road)
+
         return connections
 
 
 #allots a number to each road which corresponds to how many other roads its connected to
 def classify_road(player):
-    # from player import Player
-    # output = [] 
     player.road_types = [[],[],[],[],[]]
     for road in player.roads:
         connections = 0
@@ -66,32 +65,27 @@ def classify_road(player):
                 connections += 1
         player.road_types[connections].append(road)
 
-    s = ''
-    for t in range(0,5):
-        s += str(len(player.road_types[t])) + " "
-    # return output
-    print(s,player.name)
+    # s = ''
+    # for t in range(0,5):
+    #     s += str(len(player.road_types[t])) + " "
+    # print(s,player.name)
 
-# #isolates disconnected single piece roads and simple straight roads
-# def isolate_simple_structures(player,road_types):
-#     edges = []
-#     for t in road_types:
-#         if(t == 0): #lone roads, nothing to be done
-#             road_types[t] = -1 
-#         elif(t == 1):
-#             edges.append(player.roads[t])
-#             # road_types[t] = -1
-#         else:
-#             continue
-#     #start from edges and see if we end up on another edge => straight chain
-#     for edge in edges:
-#         # if(road_types)
-#         # for road in player.roads:
-#         #     if(road.connected(intermediate_road)):
-#         intermediate_road = edge.find_connected(player.roads)
-#         while(intermediate_road.connections == 2):
-#             intermediate_road.connections = -1
-#             intermediate_road = intermediate_road.find_connected(player.roads)
+
+def isolate_simple_straight_chains(player):
+    chain_lengths = []
+    for edge in player.road_types[1]:
+        length = 0
+        intermediate_road = edge
+        player.road_types[1].remove(edge)
+        while (len(intermediate_road.find_connected(player.road_types[2])) != 0):
+            intermediate_road = intermediate_road.find_connected(player.road_types[2])[0]
+            player.road_types[2].remove(intermediate_road)
+            length += 1
+        if(len(intermediate_road.find_connected(player.road_types[1]))==1):
+            other_edge = intermediate_road.find_connected(player.road_types[1])[0]
+            player.road_types[1].remove(other_edge)
+            chain_lengths.append(length+2)
+        print(chain_lengths,player.name)
 
             
 
