@@ -58,7 +58,6 @@ class Player:
 		self.road_types = [[],[],[],[],[]] #the index corresponds to the number of connections
 		self.calculation_complete = False
 		self.longest_simple_chain = 0
-		self.loops = []
 
 		#Development cards: lets leave these for now
 
@@ -167,8 +166,10 @@ class Player:
 			if(occupied_edges[tile]==6):
 				tiles_with_loops.append(tile)
 
-		for index in tiles_with_loops:
-			print(self.name,index)
+		return tiles_with_loops
+
+		# for index in tiles_with_loops:
+		# 	print(self.name,index)
 
 	#a single road connected to a loop is an edge, but it has _two_ connections
 	def find_complex_edges(self):
@@ -191,6 +192,24 @@ class Player:
 
 
 
+
+	# def only_branches_and_no_loops(self):
+	# 	self.isolate_simple_straight_chains()
+	# 	if(len(self.isolate_loops)==0):
+	# 		complex_edges = find_complex_edges()
+	# 		all_edges = self.road_types[1]+complex_edges
+	# 		output = [[0 for x in range(len(all_edges)))] for x in range(len(all_edges))] 
+		
+	# 		for edge in all_edges:
+	# 			all_edges = self.road_types[1]+complex_edges
+	# 			paths = []
+	# 			intermediate_road = edge
+	# 			while (len(all_edges) != 0):
+	# 				middle_roads = road_types[2]+road_types[3]+road_types[4]
+	# 	            intermediate_road = intermediate_road.find_connected(middle_roads)
+	# 	            paths.append[intermediate_road]
+
+
 	# def only_branches_and_no_loops(self):
 	# 	import copy
 	# 	self.isolate_loops()
@@ -204,3 +223,4 @@ class Player:
 	# 				middle_roads = road_types[2]+road_types[3]+road_types[4]
 	# 	            intermediate_road = intermediate_road.find_connected(middle_roads)
 	# 	            self.road_types[2].remove(intermediate_road)
+
