@@ -207,6 +207,7 @@ def build_road(player,players):
     player.calculate_score()
 
     player.isolate_loops()
+    player.include_complex_edges()
 
     return road
 

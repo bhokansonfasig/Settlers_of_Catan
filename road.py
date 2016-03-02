@@ -52,6 +52,9 @@ class Road:
 
         return connections
 
+    def common_tile(self,other):
+        return(list(set(self.tiles).intersection(other.tiles)))
+
 
 
 

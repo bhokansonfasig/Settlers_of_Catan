@@ -167,4 +167,37 @@ class Player:
 		for index in tiles_with_loops:
 			print(self.name,index)
 
+	#a single road connected to a loop is an edge, but it has _two_ connections
+	def include_complex_edges(self):
+		complex_edges = []
+		for possible_edge in self.road_types[2]:
+			neighbors = possible_edge.find_connected(self.roads)
+			a = len(possible_edge.common_tile(neighbors[0])) == 1
+			b = len(possible_edge.common_tile(neighbors[1])) == 1
+			c = len(neighbors[0].common_tile(neighbors[1])) == 1
+			if(a and b and c):
+				# self.road_types[2].remove(possible_edge)
+				complex_edges.append(possible_edge)
+		for t in complex_edges:
+			self.road_types[2].remove(t)
+		
+		print(self.name,"has",len(complex_edges),"complex edges")
+		return complex_edges
+
+
+
+
+	# def only_branches_and_no_loops(self):
+	# 	import copy
+	# 	self.isolate_loops()
+	# 	road_types = copy.deepcopy(self.road_types)
+	# 	output = []
+	# 	if(len(loops)==0):
+	# 		for edge in road_types[1]:
+	# 			paths = []
+	# 			intermediate_road = edge
+	# 			while (len(road_types[1]) != 0):
+	# 				middle_roads = road_types[2]+road_types[3]+road_types[4]
+	# 	            intermediate_road = intermediate_road.find_connected(middle_roads)
+	# 	            self.road_types[2].remove(intermediate_road)
 
