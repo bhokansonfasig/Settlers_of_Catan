@@ -900,7 +900,7 @@ def draw_intermediate_screen(player):
     text_string = player.name+"'s turn!"
     intermediate_text_1 = board_canvas.create_text(
         int((hex_x_off-water_width)/2),int(win_height/3),
-        text=text_string, font=(txt_font,2*txt_size), fill=player.color,
+        text=text_string, font=(txt_font,int(1.5*txt_size)), fill=player.color,
         width=int(.9*(hex_x_off-water_width)))
     intermediate_text_2 = board_canvas.create_text(
         int((hex_x_off-water_width)/2),int(win_height/3)+2*txt_size,
