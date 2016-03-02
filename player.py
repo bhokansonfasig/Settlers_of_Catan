@@ -51,6 +51,9 @@ class Player:
 			self.sheep += 20
 			self.stone += 20
 
+		#longest road stuff
+		self.road_types = [[],[],[],[],[]] #the index corresponds to the number of connections
+
 		#Development cards: lets leave these for now
 
 		# Score keeping
