@@ -59,6 +59,7 @@ def new_game(splash,board):
     shuffle(players)
 
     # Check to see if all players are computers
+    global all_computers
     all_computers = True
     for guy in players:
         if guy.AI_code<0:

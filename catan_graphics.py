@@ -274,7 +274,7 @@ def set_color(element):
 
 
 def redraw_board():
-    from main import players, loop_index
+    from main import players, loop_index, all_computers
     board_canvas.delete(ALL)
     draw_tile_skeleton(tiles)
     draw_tiles(tiles)
@@ -295,7 +295,8 @@ def redraw_board():
             return
         draw_dice(die_1,die_2)
         whose_turn = loop_index%len(players) + 1
-        draw_resource_panel(players[whose_turn-1])
+        if not(all_computers):
+            draw_resource_panel(players[whose_turn-1])
 
 
 def open_board_window(other,board):
@@ -951,7 +952,7 @@ def draw_buttons(player):
         window=build_settlement_button, tags="button")
     settlement_cost_text = board_canvas.create_text(
         int((hex_x_off-water_width)*3/10),int(win_height*.4+1.25*txt_size),
-        text="1 wood, 1 brick, 1 sheep, 1 wheat",
+        text="(1 wood, 1 brick, 1 sheep, 1 wheat)",
         font=(txt_font, int(.5*txt_size)), tags="button")
     build_road_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Build Road",
@@ -963,7 +964,7 @@ def draw_buttons(player):
         window=build_road_button, tags="button")
     road_cost_text = board_canvas.create_text(
         int((hex_x_off-water_width)*7/10),int(win_height*.4+1.25*txt_size),
-        text="1 wood, 1 brick",
+        text="(1 wood, 1 brick)",
         font=(txt_font, int(.5*txt_size)), tags="button")
     build_city_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Build City",
@@ -975,7 +976,7 @@ def draw_buttons(player):
         window=build_city_button, tags="button")
     city_cost_text = board_canvas.create_text(
         int((hex_x_off-water_width)*3/10),int(win_height*.4+4.25*txt_size),
-        text="2 wheat, 3 stone",
+        text="(2 wheat, 3 stone)",
         font=(txt_font, int(.5*txt_size)), tags="button")
     buy_dev_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Development",
@@ -987,7 +988,7 @@ def draw_buttons(player):
         window=buy_dev_button, tags="button")
     dev_cost_text = board_canvas.create_text(
         int((hex_x_off-water_width)*7/10),int(win_height*.4+4.25*txt_size),
-        text="1 sheep, 1 wheat, 1 stone",
+        text="(1 sheep, 1 wheat, 1 stone)",
         font=(txt_font, int(.5*txt_size)), tags="button")
     maritime_trade_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Port Trade",
