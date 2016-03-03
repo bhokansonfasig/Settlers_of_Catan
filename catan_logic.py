@@ -465,7 +465,28 @@ def occupied_points_on_board(players):
 def move_robber(player,players):
     """Depending on human or computer, should move robber to new space and steal
         random card from player on that space"""
-    pass
+    from catan_graphics import player_place_robber, redraw_robber, get_tiles
+    from catan_graphics import player_steal_resource
+    from catan_graphics import write_log
+    from catan_AI import computer_place_robber, computer_steal_resource
+    tiles = get_tiles()
+    for tile in tiles:
+        if tile.has_robber:
+            tile.has_robber = False
+            break
+    # Get the tile for the robber to be placed, and take a resource from a
+    #  player on this tile
+    if player.AI_code<0:
+        robber_tile = player_place_robber(player,tiles)
+        player_steal_resource(player,players,robber_tile)
+    else:
+        robber_tile = computer_place_robber(player,tiles)
+        computer_steal_resource(player,players,robber_tile)
+    robber_tile.has_robber = True
+    # Redraw the robber on the board
+    redraw_robber(tiles)
+    # Write to log where player put the robber
+    write_log(player.name,"placed the robber on tile",robber_tile.index)
 
 
 def discard_resources(player):

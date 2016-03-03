@@ -1,6 +1,7 @@
 from random import choice
 from point import Point
 from road import Road
+from tiles import Tile
 
 def computer_choose_settlement(computer,players):
     """Has computer place settlement. Returns tuple of the placed settlement"""
@@ -37,6 +38,30 @@ def computer_choose_city(computer,players):
         for point in computer.settlements:
             available_points.append(point)
         return choice(available_points)
+
+
+def computer_place_robber(computer,tiles):
+    """Has computer place robber. Returns tile where robber was placed"""
+    for tile in tiles:
+        if tile.has_robber:
+            original_tile = tile
+            break
+    if computer.AI_code==1:
+        # Place robber in ocean
+        return Tile(7)
+    else:
+        # Place robber randomly
+        robber_tile = Tile(0)
+        while not(robber_tile.visible):
+            robber_tile = choice(tiles)
+            if robber_tile = original_tile:
+                robber_tile = Tile(0)
+        return robber_tile
+
+
+def computer_steal_resource(computer,players,robber_tile):
+    """Has computer select a player to steal from"""
+    pass
 
 
 def computer_take_turn(computer,players):

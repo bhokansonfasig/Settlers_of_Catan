@@ -808,6 +808,16 @@ def draw_city(point, player):
         tags=("city",player.index))
 
 
+def player_place_robber(player,tiles):
+    """Gets click of where player would like to place the robber"""
+    return Tile(7)
+
+
+def player_steal_resource(player,players,robber_tile):
+    """Prompts player for which player they would like to steal from"""
+    pass
+
+
 def maritime_trade(player,players):
     """Clears buttons and draws trading screen for player"""
     undraw_buttons()
