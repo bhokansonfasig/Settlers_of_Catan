@@ -106,6 +106,8 @@ def set_tiles(tiles):
             for point in all_points:
                 if (tile.index in point.coordinate) and point.is_port:
                     point.make_port(dock_resource)
+                    print("Made point",point.coordinate,"a port with resource",
+                        point.port_resource)
 
     return tiles
 
@@ -389,28 +391,47 @@ def find_vertices(tile):
 
 
 
-#updates the player obj with the buidling info
+#updates the player obj with the building info
 def player_building_update(point,build_type,player):
+    for a_point in all_points:
+        if point==a_point:
+            point = a_point
+
     point.building = build_type
 
-    found = False
-    for p in player.points:
-        if(point == p):
-            p.building = build_type
-            found = True
-            if(build_type == 1):
-                player.settlements.append(p)
-            else:
-                player.cities.append(p)
-                player.settlements.remove(p)
-            break
-    if not found:
-        player.points.append(point)
-        if(build_type == 1):
-            player.settlements.append(point)
-        else:
-            player.cities.append(point)
-            player.settlements.remove(point)
+    # found = False
+    # for p in player.points:
+    #     if(point == p):
+    #         player.points.remove(p)
+    #         player.points.append(point)
+    #         p.building = build_type
+    #         found = True
+    #         if(build_type == 1):
+    #             player.settlements.append(p)
+    #             if p.is_port:
+    #                 player.ports.append(p.port_resource)
+    #         else:
+    #             player.cities.append(p)
+    #             player.settlements.remove(p)
+    #         break
+    # if not found:
+    #     player.points.append(point)
+    #     if(build_type == 1):
+    #         player.settlements.append(point)
+    #         if point.is_port:
+    #             player.ports.append(point.port_resource)
+    #     else:
+    #         player.cities.append(point)
+    #         player.settlements.remove(point)
+
+    player.points.append(point)
+    if(build_type == 1):
+        player.settlements.append(point)
+        if point.is_port:
+            player.ports.append(point.port_resource)
+    else:
+        player.cities.append(point)
+        player.settlements.remove(point)
 
 def occupied_points_on_board(players):
     points = []

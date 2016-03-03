@@ -48,11 +48,11 @@ class Player:
 
 		# For testing, add resources to human players and fewer to computers
 		if self.AI_code<0:
-			self.wood += 2
-			self.brick += 2
-			self.wheat += 2
-			self.sheep += 2
-			self.stone += 2
+			self.wood += 20
+			self.brick += 20
+			self.wheat += 20
+			self.sheep += 20
+			self.stone += 20
 		else:
 			self.wood += 20
 			self.brick += 20
