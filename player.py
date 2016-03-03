@@ -33,6 +33,9 @@ class Player:
 		self.settlements = []
 		self.cities = []
 
+		# Strings of resources for ports owned
+		self.ports = []
+
 		#Access to points: useful for implementing building of new roads
 		self.points = []
 
@@ -45,11 +48,11 @@ class Player:
 
 		# For testing, add resources to human players and fewer to computers
 		if self.AI_code<0:
-			self.wood += 20
-			self.brick += 20
-			self.wheat += 20
-			self.sheep += 20
-			self.stone += 20
+			self.wood += 2
+			self.brick += 2
+			self.wheat += 2
+			self.sheep += 2
+			self.stone += 2
 		else:
 			self.wood += 20
 			self.brick += 20
@@ -198,8 +201,8 @@ class Player:
 	# 	if(len(self.isolate_loops)==0):
 	# 		complex_edges = find_complex_edges()
 	# 		all_edges = self.road_types[1]+complex_edges
-	# 		output = [[0 for x in range(len(all_edges)))] for x in range(len(all_edges))] 
-		
+	# 		output = [[0 for x in range(len(all_edges)))] for x in range(len(all_edges))]
+
 	# 		for edge in all_edges:
 	# 			all_edges = self.road_types[1]+complex_edges
 	# 			paths = []
@@ -223,4 +226,3 @@ class Player:
 	# 				middle_roads = road_types[2]+road_types[3]+road_types[4]
 	# 	            intermediate_road = intermediate_road.find_connected(middle_roads)
 	# 	            self.road_types[2].remove(intermediate_road)
-

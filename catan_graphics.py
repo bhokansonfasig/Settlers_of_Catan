@@ -802,37 +802,80 @@ def maritime_trade(player,players):
     """Clears buttons and draws trading screen for player"""
     undraw_buttons()
 
-    res_give_options = ["3 wood","3 brick","3 sheep"]
-    res_get_options = ["1 wheat","1 stone"]
+    res_give_options = []
+    res_get_options = ["1 wood","1 brick","1 sheep","1 wheat","1 stone"]
 
-    res_give_text = board_canvas.create_text(
-        int((hex_x_off-water_width)*5/10),int(win_height*.4),
-        text="Trade the resources:",
-        font=(txt_font, int(.8*txt_size)), tags="trade")
-    res_give = StringVar()
-    res_give.set("Choose a resource to give")
-    res_give_menu = OptionMenu(board_canvas, res_give, *res_give_options)
-    res_give_window = board_canvas.create_window(
-        int((hex_x_off-water_width)*5/10),int(win_height*.4+2*txt_size),
-        window=res_give_menu, tags="trade")
-    res_get_text = board_canvas.create_text(
-        int((hex_x_off-water_width)*5/10),int(win_height*.4+4*txt_size),
-        text="for the resource:",
-        font=(txt_font, int(.8*txt_size)), tags="trade")
-    res_get = StringVar()
-    res_get.set("Choose a resource to receive")
-    res_get_menu = OptionMenu(board_canvas, res_get, *res_get_options)
-    res_get_window = board_canvas.create_window(
-        int((hex_x_off-water_width)*5/10),int(win_height*.4+6*txt_size),
-        window=res_get_menu, tags="trade")
-    trade_button = Button(board_canvas,
-        font=(txt_font, int(.8*txt_size)), text="Trade",
-        command=lambda : set_button_chosen(0))
-    trade_button.configure(width=10, height=1, padx=0, pady=0,
-        background=inactive_button_color, activebackground=active_button_color)
-    trade_button_window = board_canvas.create_window(
-        int((hex_x_off-water_width)*5/10),int(win_height*.4+8*txt_size),
-        window=trade_button, tags="trade")
+    # for res in res_get_options:
+    #     if res[2:] in player.ports:
+    #         res_give_options.append("2 "+res[2:])
+    if "any" in player.ports or "?" in player.ports:
+        trade_ratio = 3
+    else:
+        trade_ratio = 4
+
+    if ("wood" in player.ports) and player.wood>=2:
+        res_give_options.append("2 wood")
+    elif player.wood>=trade_ratio:
+        res_give_options.append(str(trade_ratio)+" wood")
+    if ("brick" in player.ports) and player.brick>=2:
+        res_give_options.append("2 brick")
+    elif player.brick>=trade_ratio:
+        res_give_options.append(str(trade_ratio)+" brick")
+    if ("sheep" in player.ports) and player.sheep>=2:
+        res_give_options.append("2 sheep")
+    elif player.sheep>=trade_ratio:
+        res_give_options.append(str(trade_ratio)+" sheep")
+    if ("wheat" in player.ports) and player.wheat>=2:
+        res_give_options.append("2 wheat")
+    elif player.wheat>=trade_ratio:
+        res_give_options.append(str(trade_ratio)+" wheat")
+    if ("stone" in player.ports) and player.stone>=2:
+        res_give_options.append("2 stone")
+    elif player.stone>=trade_ratio:
+        res_give_options.append(str(trade_ratio)+" stone")
+
+    if len(res_give_options)!=0:
+        res_give_text = board_canvas.create_text(
+            int((hex_x_off-water_width)*5/10),int(win_height*.4),
+            text="Trade the resources:",
+            font=(txt_font, int(.8*txt_size)), tags="trade")
+        res_give = StringVar()
+        res_give.set("Choose a resource to give")
+        res_give_menu = OptionMenu(board_canvas, res_give, *res_give_options)
+        res_give_window = board_canvas.create_window(
+            int((hex_x_off-water_width)*5/10),int(win_height*.4+2*txt_size),
+            window=res_give_menu, tags="trade")
+        res_get_text = board_canvas.create_text(
+            int((hex_x_off-water_width)*5/10),int(win_height*.4+4*txt_size),
+            text="for the resource:",
+            font=(txt_font, int(.8*txt_size)), tags="trade")
+        res_get = StringVar()
+        res_get.set("Choose a resource to receive")
+        res_get_menu = OptionMenu(board_canvas, res_get, *res_get_options)
+        res_get_window = board_canvas.create_window(
+            int((hex_x_off-water_width)*5/10),int(win_height*.4+6*txt_size),
+            window=res_get_menu, tags="trade")
+        trade_button = Button(board_canvas,
+            font=(txt_font, int(.8*txt_size)), text="Trade",
+            command=lambda : set_button_chosen(0))
+        trade_button.configure(width=10, height=1, padx=0, pady=0,
+            background=inactive_button_color, activebackground=active_button_color)
+        trade_button_window = board_canvas.create_window(
+            int((hex_x_off-water_width)*5/10),int(win_height*.4+8*txt_size),
+            window=trade_button, tags="trade")
+    else:
+        res_give_text = board_canvas.create_text(
+            int((hex_x_off-water_width)*5/10),int(win_height*.4),
+            text="Not enough resources to trade!",
+            font=(txt_font, int(.8*txt_size)), tags="trade")
+        trade_button = Button(board_canvas,
+            font=(txt_font, int(.8*txt_size)), text="Cancel",
+            command=lambda : set_button_chosen(0))
+        trade_button.configure(width=10, height=1, padx=0, pady=0,
+            background=inactive_button_color, activebackground=active_button_color)
+        trade_button_window = board_canvas.create_window(
+            int((hex_x_off-water_width)*5/10),int(win_height*.4+8*txt_size),
+            window=trade_button, tags="trade")
 
     while button_chosen.get()!=0:
         draw_stats(players)
@@ -841,13 +884,14 @@ def maritime_trade(player,players):
 
     button_chosen.set(-1)
 
-    print(player.name,"attempted a maritime trade of",res_give.get(),"for",
-        res_get.get())
+    if len(res_give_options)!=0:
+        res_give_menu.destroy()
+        res_get_menu.destroy()
+        print(player.name,"attempted a maritime trade of",res_give.get(),"for",
+            res_get.get())
 
     board_canvas.delete("trade")
     trade_button.destroy()
-    res_give_menu.destroy()
-    res_get_menu.destroy()
 
     draw_buttons(player)
 
