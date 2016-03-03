@@ -208,9 +208,7 @@ def build_road(player,players):
         player.brick += 1
         return
     # Update the player's road and point lists
-    player.roads.append(road)
-    player.points.append(road.point1)
-    player.points.append(road.point2)
+    player_road_update(road,player)
     # Draw the road on the board
     draw_road(road,player)
     # Write to log where player built road
@@ -266,7 +264,7 @@ def build_city(player,players):
 
 #adds the point to the list of points that a player _already_ has access to via built roads
 def add_point(point,player):
-    if(point not in player.points):
+    if (point not in player.points):
         player.points.append(point)
 
 
@@ -399,39 +397,68 @@ def player_building_update(point,build_type,player):
 
     point.building = build_type
 
-    # found = False
-    # for p in player.points:
-    #     if(point == p):
-    #         player.points.remove(p)
-    #         player.points.append(point)
-    #         p.building = build_type
-    #         found = True
-    #         if(build_type == 1):
-    #             player.settlements.append(p)
-    #             if p.is_port:
-    #                 player.ports.append(p.port_resource)
-    #         else:
-    #             player.cities.append(p)
-    #             player.settlements.remove(p)
-    #         break
-    # if not found:
-    #     player.points.append(point)
-    #     if(build_type == 1):
-    #         player.settlements.append(point)
-    #         if point.is_port:
-    #             player.ports.append(point.port_resource)
-    #     else:
-    #         player.cities.append(point)
-    #         player.settlements.remove(point)
+    found = False
+    for p in player.points:
+        if(point == p):
+            p.building = build_type
+            found = True
+            if(build_type == 1):
+                player.settlements.append(p)
+                if p.is_port:
+                    player.ports.append(p.port_resource)
+            else:
+                player.cities.append(p)
+                player.settlements.remove(p)
+            break
+    if not found:
+        player.points.append(point)
+        if(build_type == 1):
+            player.settlements.append(point)
+            if point.is_port:
+                player.ports.append(point.port_resource)
+        else:
+            player.cities.append(point)
+            player.settlements.remove(point)
 
-    player.points.append(point)
-    if(build_type == 1):
-        player.settlements.append(point)
-        if point.is_port:
-            player.ports.append(point.port_resource)
-    else:
-        player.cities.append(point)
-        player.settlements.remove(point)
+    # player.points.append(point)
+    # if(build_type == 1):
+    #     player.settlements.append(point)
+    #     if point.is_port:
+    #         player.ports.append(point.port_resource)
+    # else:
+    #     player.cities.append(point)
+    #     player.settlements.remove(point)
+
+
+def player_road_update(road,player):
+    for a_point in all_points:
+        if road.point1==a_point:
+            point1 = a_point
+        if road.point2==a_point:
+            point2 = a_point
+
+    player.points.append(point1)
+    player.points.append(point2)
+    player.roads.append(Road(point1,point2))
+
+    # Search for point 1 and add it if it isn't found
+    found = False
+    for p in player.points:
+        if(point1 == p):
+            found = True
+            break
+    if not found:
+        player.points.append(point1)
+
+    # Search for point 2 and add it if it isn't found
+    found = False
+    for p in player.points:
+        if(point2 == p):
+            found = True
+            break
+    if not found:
+        player.points.append(point2)
+
 
 def occupied_points_on_board(players):
     points = []
