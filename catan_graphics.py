@@ -909,7 +909,7 @@ def maritime_trade(player,players):
             player.wheat += gotten_number
         if gotten_resource=="stone":
             player.stone += gotten_number
-        print(player.name,"traded",given_number,given_resource,"for",
+        write_log(player.name,"traded",given_number,given_resource,"for",
             gotten_number,gotten_resource)
         res_give_menu.destroy()
         res_get_menu.destroy()
