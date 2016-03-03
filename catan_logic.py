@@ -108,8 +108,6 @@ def set_tiles(tiles):
             for point in all_points:
                 if (tile.index in point.coordinate) and point.is_port:
                     point.make_port(dock_resource)
-                    print("Made point",point.coordinate,"a port with resource",
-                        point.port_resource)
 
     return tiles
 
