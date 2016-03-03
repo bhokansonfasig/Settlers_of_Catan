@@ -24,7 +24,7 @@ def new_game(splash,board):
     from catan_logic import set_tiles, roll_dice, check_winner
     from catan_logic import point_resources, distribute_resources
     from catan_logic import build_settlement, build_road, build_city
-    from catan_logic import player_building_update
+    from catan_logic import move_robber, discard_resources
     from catan_graphics import open_board_window, close_board_window, close_all
     from catan_graphics import set_players, get_tiles, draw_tiles, draw_stats
     from catan_graphics import draw_log, write_log, draw_dice, turn_loop
@@ -114,10 +114,13 @@ def new_game(splash,board):
             # Robber sequence. Start with the current player, and loop through
             for player in players[whose_turn-1:]:
                 if player.robbable():
+                    discard_resources(player)
                     write_log(player.name,"got robbed!")
             for player in players[:whose_turn-1]:
                 if player.robbable():
+                    discard_resources(player)
                     write_log(player.name,"got robbed!")
+            move_robber(player,players)
 
         draw_stats(players)
         draw_resource_panel(players[whose_turn-1])

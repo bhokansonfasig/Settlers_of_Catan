@@ -79,9 +79,11 @@ def set_tiles(tiles):
         numbers = [2,3,3,4,4,5,5,6,6,8,8,9,9,10,10,11,11,12]
         for tile in tiles:
             # Pick a random dice value and remove it from the remaining choices
-            #  unless the resource is "desert", then set dice value to 0
-            if tile.resource!="none" and tile.resource=="desert":
+            #  unless the resource is "desert", then set dice value to 0 and put
+            #  the robber there
+            if tile.resource=="desert":
                 tile.roll_number = 0
+                tile.has_robber = True
             elif tile.resource!="none":
                 tile.roll_number = choice(numbers)
                 numbers.remove(tile.roll_number)
@@ -362,7 +364,7 @@ def distribute_resources(dice_value,tiles,players):
     hexes = []
 
     for tile in tiles:
-        if(dice_value == tile.roll_number):
+        if (dice_value == tile.roll_number) and not(tile.has_robber):
             hexes.append(tile)
 
 
@@ -459,6 +461,20 @@ def occupied_points_on_board(players):
         for city in player.cities:
             points.append(city)
     return points
+
+
+
+def move_robber(player,players):
+    """Depending on human or computer, should move robber to new space and steal
+        random card from player on that space"""
+    pass
+
+
+def discard_resources(player):
+    """Depending on human or computer, should discard resources to get down to
+        half the current value (rounded up; e.g. player with 9 cards dicards to
+        get down to 5)"""
+    pass
 
 
 ################################################################################

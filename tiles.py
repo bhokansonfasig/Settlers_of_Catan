@@ -38,6 +38,7 @@ class Tile:
 
         self.resource = 'none'  # Tile's associated resource
         self.roll_number = -1  # Tile's associated dice roll number
+        self.has_robber = False
 
 
     def __eq__(self,other):
