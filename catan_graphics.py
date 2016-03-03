@@ -59,13 +59,14 @@ class App(Frame):
 
         global player_1_type,player_1_name, player_2_type,player_2_name
         global player_3_type,player_3_name, player_4_type,player_4_name
+        player_type_options = ["Human","Computer","None"]
         player_1_label = Label(player_window, text="Player 1:",
             font=(txt_font,22), background=menu_color)
         player_1_label.grid(row=0,column=0,padx=20,pady=10)
         player_1_type = StringVar()
-        player_1_type.set("Computer")
+        player_1_type.set(player_type_options[1])
         player_1_type_menu = OptionMenu(player_window, player_1_type,
-            "Human", "Computer", "None")
+            *player_type_options)
         player_1_type_menu.grid(row=1,column=0,padx=20,pady=10)
         player_1_name = StringVar()
         player_1_name.set("Player 1")
@@ -75,9 +76,9 @@ class App(Frame):
             font=(txt_font,22), background=menu_color)
         player_2_label.grid(row=0,column=1,padx=20,pady=10)
         player_2_type = StringVar()
-        player_2_type.set("Computer")
+        player_2_type.set(player_type_options[1])
         player_2_type_menu = OptionMenu(player_window, player_2_type,
-            "Human", "Computer", "None")
+            *player_type_options)
         player_2_type_menu.grid(row=1,column=1,padx=20,pady=10)
         player_2_name = StringVar()
         player_2_name.set("Player 2")
@@ -87,9 +88,9 @@ class App(Frame):
             font=(txt_font,22), background=menu_color)
         player_3_label.grid(row=3,column=0,padx=20,pady=10)
         player_3_type = StringVar()
-        player_3_type.set("Computer")
+        player_3_type.set(player_type_options[1])
         player_3_type_menu = OptionMenu(player_window, player_3_type,
-            "Human", "Computer", "None")
+            *player_type_options)
         player_3_type_menu.grid(row=4,column=0,padx=20,pady=10)
         player_3_name = StringVar()
         player_3_name.set("Player 3")
@@ -99,9 +100,9 @@ class App(Frame):
             font=(txt_font,22), background=menu_color)
         player_4_label.grid(row=3,column=1,padx=20,pady=10)
         player_4_type = StringVar()
-        player_4_type.set("Computer")
+        player_4_type.set(player_type_options[1])
         player_4_type_menu = OptionMenu(player_window, player_4_type,
-            "Human", "Computer", "None")
+            *player_type_options)
         player_4_type_menu.grid(row=4,column=1,padx=20,pady=10)
         player_4_name = StringVar()
         player_4_name.set("Player 4")
@@ -801,6 +802,29 @@ def maritime_trade(player,players):
     """Clears buttons and draws trading screen for player"""
     undraw_buttons()
 
+    res_give_options = ["3 wood","3 brick","3 sheep"]
+    res_get_options = ["1 wheat","1 stone"]
+
+    res_give_text = board_canvas.create_text(
+        int((hex_x_off-water_width)*5/10),int(win_height*.4),
+        text="Trade the resources:",
+        font=(txt_font, int(.8*txt_size)), tags="trade")
+    res_give = StringVar()
+    res_give.set("Choose a resource to give")
+    res_give_menu = OptionMenu(board_canvas, res_give, *res_give_options)
+    res_give_window = board_canvas.create_window(
+        int((hex_x_off-water_width)*5/10),int(win_height*.4+2*txt_size),
+        window=res_give_menu, tags="trade")
+    res_get_text = board_canvas.create_text(
+        int((hex_x_off-water_width)*5/10),int(win_height*.4+4*txt_size),
+        text="for the resource:",
+        font=(txt_font, int(.8*txt_size)), tags="trade")
+    res_get = StringVar()
+    res_get.set("Choose a resource to receive")
+    res_get_menu = OptionMenu(board_canvas, res_get, *res_get_options)
+    res_get_window = board_canvas.create_window(
+        int((hex_x_off-water_width)*5/10),int(win_height*.4+6*txt_size),
+        window=res_get_menu, tags="trade")
     trade_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Trade",
         command=lambda : set_button_chosen(0))
@@ -817,10 +841,13 @@ def maritime_trade(player,players):
 
     button_chosen.set(-1)
 
-    print(player.name,"attempted a maritime trade.")
+    print(player.name,"attempted a maritime trade of",res_give.get(),"for",
+        res_get.get())
 
     board_canvas.delete("trade")
     trade_button.destroy()
+    res_give_menu.destroy()
+    res_get_menu.destroy()
 
     draw_buttons(player)
 
@@ -1009,7 +1036,7 @@ def draw_buttons(player):
     end_turn_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="End Turn",
         command=lambda : set_button_chosen(0))
-    end_turn_button.configure(width=8, height=1, padx=0, pady=0,
+    end_turn_button.configure(width=10, height=1, padx=0, pady=0,
         background=inactive_button_color, activebackground=active_button_color)
     end_turn_button_window = board_canvas.create_window(
         int((hex_x_off-water_width)*5/10),int(win_height*.4+8*txt_size),
