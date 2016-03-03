@@ -477,6 +477,7 @@ def draw_tiles(tiles):
             tile.draw_number(board_canvas,txt_size)
 
     draw_ports(tiles)
+    redraw_robber(tiles)
 
 
 def draw_ports(tiles):
@@ -500,6 +501,15 @@ def draw_ports(tiles):
             tile.draw_dock(board_canvas, int(.8*txt_size), dock_resource,
                 dock_ratio)
     board_canvas.tag_raise("hex")
+
+
+def redraw_robber(tiles):
+    """Redraws the robber onto his current tile"""
+    board_canvas.delete("robber")
+    for tile in tiles:
+        if tile.has_robber:
+            tile.draw_robber(board_canvas)
+            break
 
 
 def draw_circle(point):

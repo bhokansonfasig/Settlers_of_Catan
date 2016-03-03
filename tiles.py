@@ -6,6 +6,7 @@ class Tile:
         self.tk_number = None
         self.tk_dock = None
         self.tk_dock_ratio = None
+        self.tk_robber = None
         self.vertices = []  # Coordinates of vertices for GUI
 
         board_tiles = [9,10,11,
@@ -129,6 +130,18 @@ class Tile:
             self.tk_number = canvas.create_text(pos_x, pos_y, fill='red',
                 text=self.roll_number, font=("Helvetica", txt_size),
                 tags="hex")
+
+    def draw_robber(self, canvas):
+        """Draws the robber at the center of the tile"""
+        # Get position of center of tile
+        pos_x = (self.vertices[0]+self.vertices[6])/2
+        pos_y = (self.vertices[1]+self.vertices[7])/2
+        # Set the radius of the circle based on a third the side length
+        r = (self.vertices[3]-self.vertices[1])/3
+        # Draw the robber circle
+        self.tk_robber = canvas.create_oval(pos_x-r,pos_y-r, pos_x+r,pos_y+r,
+            fill="black", tags="robber")
+
 
     def draw_dock(self, canvas, txt_size, resource, ratio):
         """Draws a dock on the tile for trading resource at ratio"""
