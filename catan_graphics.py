@@ -885,10 +885,34 @@ def maritime_trade(player,players):
     button_chosen.set(-1)
 
     if len(res_give_options)!=0:
+        given_resource = res_give.get()[2:]
+        given_number = int(res_give.get()[0])
+        gotten_resource = res_get.get()[2:]
+        gotten_number = int(res_get.get()[0])
+        if given_resource=="wood":
+            player.wood -= given_number
+        if given_resource=="brick":
+            player.brick -= given_number
+        if given_resource=="sheep":
+            player.sheep -= given_number
+        if given_resource=="wheat":
+            player.wheat -= given_number
+        if given_resource=="stone":
+            player.stone -= given_number
+        if gotten_resource=="wood":
+            player.wood += gotten_number
+        if gotten_resource=="brick":
+            player.brick += gotten_number
+        if gotten_resource=="sheep":
+            player.sheep += gotten_number
+        if gotten_resource=="wheat":
+            player.wheat += gotten_number
+        if gotten_resource=="stone":
+            player.stone += gotten_number
+        print(player.name,"traded",given_number,given_resource,"for",
+            gotten_number,gotten_resource)
         res_give_menu.destroy()
         res_get_menu.destroy()
-        print(player.name,"attempted a maritime trade of",res_give.get(),"for",
-            res_get.get())
 
     board_canvas.delete("trade")
     trade_button.destroy()
