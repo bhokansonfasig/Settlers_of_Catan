@@ -420,15 +420,6 @@ def player_building_update(point,build_type,player):
             player.cities.append(point)
             player.settlements.remove(point)
 
-    # player.points.append(point)
-    # if(build_type == 1):
-    #     player.settlements.append(point)
-    #     if point.is_port:
-    #         player.ports.append(point.port_resource)
-    # else:
-    #     player.cities.append(point)
-    #     player.settlements.remove(point)
-
 
 def player_road_update(road,player):
     for a_point in all_points:
