@@ -492,18 +492,18 @@ def move_robber(player,players):
         computer_steal_resource(player,players,robber_tile)
 
 
-def discard_resources(player):
+def discard_resources(player,players):
     """Depending on human or computer, should discard resources to get down to
         half the current value (rounded up; e.g. player with 9 cards dicards to
         get down to 5)"""
     from catan_graphics import player_discard
     from catan_AI import computer_discard
     # Find out the number of resources the player needs to get down to
-    new_resource_count = int(player.resource_count()/2+1)
+    new_resource_count = int((player.resource_count()+1)/2)
     # Just in case, loop through until the player discards enough resources
     while player.resource_count()>new_resource_count:
         if player.AI_code<0:
-            discard_count = player_discard(player,new_resource_count)
+            discard_count = player_discard(player,players,new_resource_count)
         else:
             discard_count = computer_discard(player,new_resource_count)
 

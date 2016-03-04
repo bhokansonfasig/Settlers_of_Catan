@@ -130,6 +130,9 @@ def computer_steal_resource(computer,players,robber_tile):
                 stealable_players.append(guy)
     if computer in stealable_players:
         stealable_players.remove(computer)
+    for guy in stealable_players:
+        if guy.resource_count()==0:
+            stealable_players.remove(guy)
 
     if len(stealable_players)==0:
         return

@@ -861,10 +861,111 @@ def player_place_robber(player,tiles):
     return robber_tile
 
 
-def player_discard(player,new_resource_count):
+def player_discard(player,players,new_resource_count):
     """Prompts player for how many of each resource they would like to
         discard. They need to get down to new_resource_count"""
-    return 0
+    draw_resources(player)
+    draw_stats(players)
+
+    starting_resource_count = player.resource_count()
+
+    wood_discard_options = ["Wood","0"]
+    brick_discard_options = ["Brick","0"]
+    sheep_discard_options = ["Sheep","0"]
+    wheat_discard_options = ["Wheat","0"]
+    stone_discard_options = ["Stone","0"]
+    for i in range(player.wood):
+        wood_discard_options.append(str(i+1))
+    for i in range(player.brick):
+        brick_discard_options.append(str(i+1))
+    for i in range(player.sheep):
+        sheep_discard_options.append(str(i+1))
+    for i in range(player.wheat):
+        wheat_discard_options.append(str(i+1))
+    for i in range(player.stone):
+        stone_discard_options.append(str(i+1))
+
+    discard_string = "Give up resources to get down to "+\
+        str(new_resource_count)+"resources:"
+    discard_text = board_canvas.create_text(
+        int((hex_x_off-water_width)*5/10),int(win_height*.4),
+        text=discard_string, font=(txt_font, int(.8*txt_size)), tags="discard")
+    wood_discard = StringVar()
+    wood_discard.set(wood_discard_options[0])
+    wood_discard_menu = OptionMenu(board_canvas, wood_discard,
+        *wood_discard_options)
+    wood_discard_window = board_canvas.create_window(
+        int((hex_x_off-water_width)*3/10),int(win_height*.4+2*txt_size),
+        window=wood_discard_menu, tags="discard")
+    brick_discard = StringVar()
+    brick_discard.set(brick_discard_options[0])
+    brick_discard_menu = OptionMenu(board_canvas, brick_discard,
+        *brick_discard_options)
+    brick_discard_window = board_canvas.create_window(
+        int((hex_x_off-water_width)*7/10),int(win_height*.4+2*txt_size),
+        window=brick_discard_menu, tags="discard")
+    sheep_discard = StringVar()
+    sheep_discard.set(sheep_discard_options[0])
+    sheep_discard_menu = OptionMenu(board_canvas, sheep_discard,
+        *sheep_discard_options)
+    sheep_discard_window = board_canvas.create_window(
+        int((hex_x_off-water_width)*3/10),int(win_height*.4+4*txt_size),
+        window=sheep_discard_menu, tags="discard")
+    wheat_discard = StringVar()
+    wheat_discard.set(wheat_discard_options[0])
+    wheat_discard_menu = OptionMenu(board_canvas, wheat_discard,
+        *wheat_discard_options)
+    wheat_discard_window = board_canvas.create_window(
+        int((hex_x_off-water_width)*7/10),int(win_height*.4+4*txt_size),
+        window=wheat_discard_menu, tags="discard")
+    stone_discard = StringVar()
+    stone_discard.set(stone_discard_options[0])
+    stone_discard_menu = OptionMenu(board_canvas, stone_discard,
+        *stone_discard_options)
+    stone_discard_window = board_canvas.create_window(
+        int((hex_x_off-water_width)*3/10),int(win_height*.4+6*txt_size),
+        window=stone_discard_menu, tags="discard")
+    give_button = Button(board_canvas,
+        font=(txt_font, int(.8*txt_size)), text="Give up resources",
+        command=lambda : set_button_chosen(0))
+    give_button.configure(width=15, height=1, padx=0, pady=0,
+        background=inactive_button_color, activebackground=active_button_color)
+    give_button_window = board_canvas.create_window(
+        int((hex_x_off-water_width)*5/10),int(win_height*.4+8*txt_size),
+        window=give_button, tags="discard")
+
+    button_chosen.set(-1)
+    while button_chosen.get()!=0:
+        board_canvas.wait_variable(button_chosen)
+    button_chosen.set(-1)
+
+    try:
+        player.wood -= eval(wood_discard.get())
+    except:
+        pass
+    try:
+        player.brick -= eval(brick_discard.get())
+    except:
+        pass
+    try:
+        player.sheep -= eval(sheep_discard.get())
+    except:
+        pass
+    try:
+        player.wheat -= eval(wheat_discard.get())
+    except:
+        pass
+    try:
+        player.stone -= eval(stone_discard.get())
+    except:
+        pass
+
+    board_canvas.delete("discard")
+    wood_discard_menu.destroy()
+    give_button.destroy()
+
+    discard_count = starting_resource_count - player.resource_count()
+    return discard_count
 
 
 def player_steal_resource(player,players,robber_tile):
@@ -884,6 +985,9 @@ def player_steal_resource(player,players,robber_tile):
                 stealable_players.append(guy)
     if player in stealable_players:
         stealable_players.remove(player)
+    for guy in stealable_players:
+        if guy.resource_count()==0:
+            stealable_players.remove(guy)
 
     if len(stealable_players)==0:
         return
