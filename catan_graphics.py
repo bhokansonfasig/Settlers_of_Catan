@@ -878,7 +878,7 @@ def player_steal_resource(player,players,robber_tile):
                 stealable_players.append(guy)
     if player in stealable_players:
         stealable_players.remove(player)
-    print(player.name,"able to steal from:",stealable_players)
+
     if len(stealable_players)==0:
         return
 
@@ -944,6 +944,8 @@ def player_steal_resource(player,players,robber_tile):
     if stolen_resource=="stone":
         target_player.stone -= 1
         player.stone += 1
+
+    write_log(player.name,"stole a resource from",target_player.name)
 
     board_canvas.delete("steal")
     player_choice_menu.destroy()
@@ -1377,7 +1379,7 @@ def turn_loop(player,players):
         computer_action = "none"
         while not(computer_action=="ended turn"):
             computer_action = computer_take_turn(player,players)
-        write_log(player.name,computer_action)
+            # write_log(player.name,computer_action)
 
 
 def draw_winning_screen(player):

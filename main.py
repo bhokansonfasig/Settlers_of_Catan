@@ -47,7 +47,7 @@ def new_game(splash,board):
     # Start drawing log file to the board window
     draw_log()
 
-    write_log("-----New game started-----")
+    write_log("*****New game started*****")
 
     global loop_index, die_1, die_2
     loop_index = -1
@@ -101,7 +101,7 @@ def new_game(splash,board):
         draw_stats(players)
         loop_index += 1
         whose_turn = loop_index%playnum + 1
-        write_log(players[whose_turn-1].name,"'s turn:", sep='')
+        write_log("---",players[whose_turn-1].name,"'s turn---", sep='')
         # Wait screen for human players, or if all computer players
         if players[whose_turn-1].AI_code<0 or all_computers:
             draw_intermediate_screen(players[whose_turn-1])

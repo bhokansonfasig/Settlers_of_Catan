@@ -73,6 +73,7 @@ def computer_place_robber(computer,tiles):
 
 def computer_steal_resource(computer,players,robber_tile):
     """Has computer select a player to steal from"""
+    from catan_graphics import write_log
     stealable_players = []
     for guy in players:
         guy_added = False
@@ -88,7 +89,7 @@ def computer_steal_resource(computer,players,robber_tile):
                 stealable_players.append(guy)
     if computer in stealable_players:
         stealable_players.remove(computer)
-    print(computer.name,"able to steal from:",stealable_players)
+        
     if len(stealable_players)==0:
         return
 
@@ -123,6 +124,9 @@ def computer_steal_resource(computer,players,robber_tile):
         if stolen_resource=="stone":
             target_player.stone -= 1
             computer.stone += 1
+
+    write_log(computer.name,"stole a resource from",target_player.name)
+
 
 
 def computer_take_turn(computer,players):
