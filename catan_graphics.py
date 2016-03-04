@@ -2,6 +2,7 @@ from tkinter import *
 from main import version, new_game, load_game
 from catan_logic import legal_settlement_placements, legal_road_placements
 from catan_logic import build_settlement, build_road, build_city
+from catan_AI import set_computer
 from player import Player
 from tiles import Tile
 from point import Point
@@ -381,31 +382,35 @@ def set_players(board):
         if player_1_type.get()=="Human":
             players.append(Player(1,player_1_name.get(),-1))
         elif player_1_type.get()=="Computer":
-            try:
-                players.append(Player(1,"Computer 1",eval(player_1_name.get())))
-            except:
-                players.append(Player(1,"Computer 1",0))
+            comp_name = player_1_name.get()
+            if comp_name=="Player 1":
+                comp_name = "Computer 1"
+            comp_level = set_computer(comp_name)
+            players.append(Player(1,comp_name,comp_level))
         if player_2_type.get()=="Human":
             players.append(Player(2,player_2_name.get(),-1))
         elif player_2_type.get()=="Computer":
-            try:
-                players.append(Player(2,"Computer 2",eval(player_2_name.get())))
-            except:
-                players.append(Player(2,"Computer 2",0))
+            comp_name = player_2_name.get()
+            if comp_name=="Player 2":
+                comp_name = "Computer 2"
+            comp_level = set_computer(comp_name)
+            players.append(Player(2,comp_name,comp_level))
         if player_3_type.get()=="Human":
             players.append(Player(3,player_3_name.get(),-1))
         elif player_3_type.get()=="Computer":
-            try:
-                players.append(Player(3,"Computer 3",eval(player_3_name.get())))
-            except:
-                players.append(Player(3,"Computer 3",0))
+            comp_name = player_3_name.get()
+            if comp_name=="Player 3":
+                comp_name = "Computer 3"
+            comp_level = set_computer(comp_name)
+            players.append(Player(3,comp_name,comp_level))
         if player_4_type.get()=="Human":
             players.append(Player(4,player_4_name.get(),-1))
         elif player_4_type.get()=="Computer":
-            try:
-                players.append(Player(4,"Computer 4",eval(player_4_name.get())))
-            except:
-                players.append(Player(4,"Computer 4",0))
+            comp_name = player_4_name.get()
+            if comp_name=="Player 4":
+                comp_name = "Computer 4"
+            comp_level = set_computer(comp_name)
+            players.append(Player(4,comp_name,comp_level))
 
     open_board_window(player_window,board)
 

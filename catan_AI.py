@@ -3,6 +3,12 @@ from point import Point
 from road import Road
 from tiles import Tile
 
+
+def set_computer(name):
+    """Checks the name of the computer against known computer personalities.
+        Returns AI level if known, or 0 if unknown."""
+    return 0
+
 def computer_choose_settlement(computer,players):
     """Has computer place settlement. Returns tuple of the placed settlement"""
     from catan_logic import legal_settlement_placements
