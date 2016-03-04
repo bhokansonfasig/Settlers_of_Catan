@@ -54,7 +54,7 @@ def computer_place_robber(computer,tiles):
         robber_tile = Tile(0)
         while not(robber_tile.visible):
             robber_tile = choice(tiles)
-            if robber_tile = original_tile:
+            if robber_tile==original_tile:
                 robber_tile = Tile(0)
         return robber_tile
 

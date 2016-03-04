@@ -470,10 +470,6 @@ def move_robber(player,players):
     from catan_graphics import write_log
     from catan_AI import computer_place_robber, computer_steal_resource
     tiles = get_tiles()
-    for tile in tiles:
-        if tile.has_robber:
-            tile.has_robber = False
-            break
     # Get the tile for the robber to be placed, and take a resource from a
     #  player on this tile
     if player.AI_code<0:
@@ -482,7 +478,13 @@ def move_robber(player,players):
     else:
         robber_tile = computer_place_robber(player,tiles)
         computer_steal_resource(player,players,robber_tile)
-    robber_tile.has_robber = True
+    for tile in tiles:
+        if tile.has_robber:
+            tile.has_robber = False
+            break
+    for tile in tiles:
+        if tile==robber_tile:
+            tile.has_robber = True
     # Redraw the robber on the board
     redraw_robber(tiles)
     # Write to log where player put the robber

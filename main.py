@@ -120,7 +120,7 @@ def new_game(splash,board):
                 if player.robbable():
                     discard_resources(player)
                     write_log(player.name,"got robbed!")
-            move_robber(player,players)
+            move_robber(players[whose_turn-1],players)
 
         draw_stats(players)
         draw_resource_panel(players[whose_turn-1])
