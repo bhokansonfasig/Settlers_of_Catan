@@ -54,7 +54,43 @@ def computer_choose_city(computer,players):
 
 def computer_discard(computer,new_resource_count):
     """Computer must discard to get down to new_resource_count"""
-    return 0
+    starting_resource_count = computer.resource_count()
+
+    if computer.AI_code==99:
+        # Get rid of all cards
+        computer.wood = 0
+        computer.brick = 0
+        computer.sheep = 0
+        computer.wheat = 0
+        computer.stone = 0
+    else:
+        # Radomly get rid of resources
+        while computer.resource_count()>new_resource_count:
+            all_resources = []
+            for i in range(computer.wood):
+                all_resources.append("wood")
+            for i in range(computer.brick):
+                all_resources.append("brick")
+            for i in range(computer.sheep):
+                all_resources.append("sheep")
+            for i in range(computer.wheat):
+                all_resources.append("wheat")
+            for i in range(computer.stone):
+                all_resources.append("stone")
+            discarded_resource = choice(all_resources)
+            if discarded_resource=="wood":
+                computer.wood -= 1
+            elif discarded_resource=="brick":
+                computer.brick -= 1
+            elif discarded_resource=="sheep":
+                computer.sheep -= 1
+            elif discarded_resource=="wheat":
+                computer.wheat -= 1
+            elif discarded_resource=="stone":
+                computer.stone -= 1
+
+    discard_count = starting_resource_count - computer.resource_count()
+    return discard_count
 
 
 def computer_place_robber(computer,tiles):
@@ -117,16 +153,16 @@ def computer_steal_resource(computer,players,robber_tile):
         if stolen_resource=="wood":
             target_player.wood -= 1
             computer.wood += 1
-        if stolen_resource=="brick":
+        elif stolen_resource=="brick":
             target_player.brick -= 1
             computer.brick += 1
-        if stolen_resource=="sheep":
+        elif stolen_resource=="sheep":
             target_player.sheep -= 1
             computer.sheep += 1
-        if stolen_resource=="wheat":
+        elif stolen_resource=="wheat":
             target_player.wheat -= 1
             computer.wheat += 1
-        if stolen_resource=="stone":
+        elif stolen_resource=="stone":
             target_player.stone -= 1
             computer.stone += 1
 
