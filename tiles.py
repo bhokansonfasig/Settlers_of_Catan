@@ -7,6 +7,7 @@ class Tile:
         self.tk_dock = None
         self.tk_dock_ratio = None
         self.tk_robber = None
+        self.tk_robber_2 = None
         self.vertices = []  # Coordinates of vertices for GUI
 
         board_tiles = [9,10,11,
@@ -141,6 +142,9 @@ class Tile:
         # Draw the robber circle
         self.tk_robber = canvas.create_oval(pos_x-r,pos_y-r, pos_x+r,pos_y+r,
             fill="black", tags="robber")
+        # Draw a smaller circle with the color given
+        # self.tk_robber_2 = canvas.create_oval(int(pos_x-r/2),int(pos_y-r/2),
+        #     int(pos_x+r/2),int(pos_y+r/2), fill=extra_color, tags="robber")
 
 
     def draw_dock(self, canvas, txt_size, resource, ratio):

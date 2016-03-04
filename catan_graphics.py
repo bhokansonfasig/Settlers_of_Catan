@@ -121,7 +121,6 @@ class App(Frame):
         # Hide player selection window
         player_window.withdraw()
 
-
         # Create board window's canvas and items
         global board_canvas
         board_canvas = Canvas(self.parent, background=background_color)
@@ -810,7 +809,50 @@ def draw_city(point, player):
 
 def player_place_robber(player,tiles):
     """Gets click of where player would like to place the robber"""
-    return Tile(7)
+    valid_position = False
+    click_x.set(int(hex_x_off-water_width)+1)
+    click_y.set(int(hex_y_off-water_width)+1)
+
+    available_tiles = []
+    for tile in tiles:
+        if tile.visible and not(tile.has_robber):
+            available_tiles.append(tile)
+
+    robber_tile = Tile(0)
+    # Wait for the player to click a valid tile for the robber
+    while(not(robber_tile in available_tiles)):
+        coordinate = 0
+        # Draw the circles for the valid plays
+        #  (after clearing any existing circles)
+        board_canvas.delete("circle")
+        # Draw circles on available tiles
+        for tile in available_tiles:
+            # Get position of center of tile
+            pos_x = (tile.vertices[0]+tile.vertices[6])/2
+            pos_y = (tile.vertices[1]+tile.vertices[7])/2
+            # Set the radius of the circle based on a third the side length
+            r = (tile.vertices[3]-tile.vertices[1])/3
+            # Draw the circle
+            board_canvas.create_oval(pos_x-r,pos_y-r, pos_x+r,pos_y+r, width=3,
+                tags="circle")
+        # Find which tile was clicked
+        for tile in available_tiles:
+            # Get position of center of tile
+            pos_x = (tile.vertices[0]+tile.vertices[6])/2
+            pos_y = (tile.vertices[1]+tile.vertices[7])/2
+            # Set the radius of the circle based on a third the side length
+            r = (tile.vertices[3]-tile.vertices[1])/3
+            if click_x.get()>pos_x-r and click_x.get()<pos_x+r and \
+                click_y.get()>pos_y-r and click_y.get()<pos_y+r:
+                robber_tile = tile
+                break
+        # If the point clicked is not a legal vertex, try again
+        if not(robber_tile in available_tiles):
+            board_canvas.wait_variable(click_x)
+
+    board_canvas.delete("circle")
+
+    return robber_tile
 
 
 def player_steal_resource(player,players,robber_tile):
