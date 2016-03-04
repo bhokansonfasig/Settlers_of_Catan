@@ -131,6 +131,7 @@ def new_game(splash,board):
     write_log("*****Congratulations ",players[winner-1].name,"!*****", sep='')
 
     clear_resource_panel()
+    draw_stats(players)
     draw_winning_screen(players[winner-1])
 
     close_all(splash,board)
