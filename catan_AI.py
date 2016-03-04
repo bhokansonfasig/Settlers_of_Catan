@@ -14,6 +14,7 @@ def set_computer(name):
     else:
         return 0
 
+
 def computer_choose_settlement(computer,players):
     """Has computer place settlement. Returns tuple of the placed settlement"""
     from catan_logic import legal_settlement_placements
@@ -72,14 +73,63 @@ def computer_place_robber(computer,tiles):
 
 def computer_steal_resource(computer,players,robber_tile):
     """Has computer select a player to steal from"""
-    pass
+    stealable_players = []
+    for guy in players:
+        guy_added = False
+        for point in guy.settlements:
+            if robber_tile.index in point.coordinate:
+                stealable_players.append(guy)
+                guy_added = True
+                break
+        if guy_added:
+            continue
+        for point in guy.cities:
+            if robber_tile.index in point.coordinate:
+                stealable_players.append(guy)
+    if computer in stealable_players:
+        stealable_players.remove(computer)
+    print(computer.name,"able to steal from:",stealable_players)
+    if len(stealable_players)==0:
+        return
+
+    if computer.AI_code==99:
+        pass
+    else:
+        target_player = choice(stealable_players)
+        target_resources = []
+        for i in range(target_player.wood):
+            target_resources.append("wood")
+        for i in range(target_player.brick):
+            target_resources.append("brick")
+        for i in range(target_player.sheep):
+            target_resources.append("sheep")
+        for i in range(target_player.wheat):
+            target_resources.append("wheat")
+        for i in range(target_player.stone):
+            target_resources.append("stone")
+        stolen_resource = choice(target_resources)
+        if stolen_resource=="wood":
+            target_player.wood -= 1
+            computer.wood += 1
+        if stolen_resource=="brick":
+            target_player.brick -= 1
+            computer.brick += 1
+        if stolen_resource=="sheep":
+            target_player.sheep -= 1
+            computer.sheep += 1
+        if stolen_resource=="wheat":
+            target_player.wheat -= 1
+            computer.wheat += 1
+        if stolen_resource=="stone":
+            target_player.stone -= 1
+            computer.stone += 1
 
 
 def computer_take_turn(computer,players):
     """Defines what the computer does in its turn"""
     from catan_logic import legal_settlement_placements, legal_road_placements
     from catan_logic import build_settlement, build_road, build_city
-    if computer.AI_code==1:
+    if computer.AI_code==99:
         pass
     else:
         # If the computer can place a city, place a city randomly
@@ -88,7 +138,7 @@ def computer_take_turn(computer,players):
             len(computer.cities)<computer.city_max and \
             computer.wheat>=2 and computer.stone>=3:
             city = build_city(computer,players)
-            city_string = "built a city at"+str(city.coordinate)
+            city_string = "built a city at "+str(city.coordinate)
             return city_string
         # If the computer can place a settlement, place a settlement randomly
         available_points = legal_settlement_placements(computer,players)
@@ -97,7 +147,7 @@ def computer_take_turn(computer,players):
             computer.wood>=1 and computer.brick>=1 and computer.sheep>=1 and \
             computer.wheat>=1:
             settlement = build_settlement(computer,players)
-            set_string = "built a settlement at"+str(settlement.coordinate)
+            set_string = "built a settlement at "+str(settlement.coordinate)
             return set_string
         # If the computer can place a road, place a road randomly
         available_roads = legal_road_placements(computer,players)
@@ -105,7 +155,7 @@ def computer_take_turn(computer,players):
             len(computer.roads)<computer.road_max and \
             computer.wood>=1 and computer.brick>=1:
             road = build_road(computer,players)
-            road_string = "built a road at"+str(road.coordinates)
+            road_string = "built a road at "+str(road.coordinates)
             return road_string
         # If nothing has been done, stop
         return "ended turn"

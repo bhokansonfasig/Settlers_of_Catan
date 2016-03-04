@@ -1292,7 +1292,7 @@ def turn_loop(player,players):
         computer_action = "none"
         while not(computer_action=="ended turn"):
             computer_action = computer_take_turn(player,players)
-            write_log(player.name,computer_action)
+        write_log(player.name,computer_action)
 
 
 def draw_winning_screen(player):
