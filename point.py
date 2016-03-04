@@ -47,7 +47,7 @@ class Point:
     #checks if two points are adjacent
     def adjacent_point(self,other):
         if(not(self.valid and other.valid)):
-            print ("non valid points were given to check for adjacency!")
+            #print ("non valid points were given to check for adjacency!")
             return False
         common = list(set(self.coordinate).intersection(other.coordinate))
         if(len(common) == 2):

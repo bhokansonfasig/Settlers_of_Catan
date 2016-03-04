@@ -7,12 +7,17 @@ from tiles import Tile
 def set_computer(name):
     """Checks the name of the computer against known computer personalities.
         Returns AI level if known, or 0 if unknown."""
-    return 0
+    if name.lower()=="idiot" or name.lower()=="ocean":
+        return 99
+    elif name.lower()=="random":
+        return 0
+    else:
+        return 0
 
 def computer_choose_settlement(computer,players):
     """Has computer place settlement. Returns tuple of the placed settlement"""
     from catan_logic import legal_settlement_placements
-    if computer.AI_code==1:
+    if computer.AI_code==99:
         # Place settlement in the ocean
         return Point(0,1,7)
     else:
@@ -24,7 +29,7 @@ def computer_choose_settlement(computer,players):
 def computer_choose_road(computer,players):
     """Has computer place road. Returns tuples of the placed road"""
     from catan_logic import legal_road_placements
-    if computer.AI_code==1:
+    if computer.AI_code==99:
         # Place road in the ocean
         return Road(Point(0,1,7),Point(1,7,8))
     else:
@@ -35,7 +40,7 @@ def computer_choose_road(computer,players):
 
 def computer_choose_city(computer,players):
     """Has computer place city. Returns tuple of the placed settlement"""
-    if computer.AI_code==1:
+    if computer.AI_code==99:
         # Place city in the ocean
         return Point(0,1,7)
     else:
@@ -52,7 +57,7 @@ def computer_place_robber(computer,tiles):
         if tile.has_robber:
             original_tile = tile
             break
-    if computer.AI_code==1:
+    if computer.AI_code==99:
         # Place robber in ocean
         return Tile(7)
     else:
