@@ -861,6 +861,12 @@ def player_place_robber(player,tiles):
     return robber_tile
 
 
+def player_discard(player,new_resource_count):
+    """Prompts player for how many of each resource they would like to
+        discard. They need to get down to new_resource_count"""
+    return 0
+
+
 def player_steal_resource(player,players,robber_tile):
     """Prompts player for which player they would like to steal from"""
     stealable_players = []

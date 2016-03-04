@@ -52,6 +52,11 @@ def computer_choose_city(computer,players):
         return choice(available_points)
 
 
+def computer_discard(computer,new_resource_count):
+    """Computer must discard to get down to new_resource_count"""
+    return 0
+
+
 def computer_place_robber(computer,tiles):
     """Has computer place robber. Returns tile where robber was placed"""
     for tile in tiles:
@@ -89,7 +94,7 @@ def computer_steal_resource(computer,players,robber_tile):
                 stealable_players.append(guy)
     if computer in stealable_players:
         stealable_players.remove(computer)
-        
+
     if len(stealable_players)==0:
         return
 

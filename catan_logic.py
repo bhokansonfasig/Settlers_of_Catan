@@ -466,8 +466,7 @@ def move_robber(player,players):
     """Depending on human or computer, should move robber to new space and steal
         random card from player on that space"""
     from catan_graphics import player_place_robber, redraw_robber, get_tiles
-    from catan_graphics import player_steal_resource
-    from catan_graphics import write_log
+    from catan_graphics import player_steal_resource, write_log
     from catan_AI import computer_place_robber, computer_steal_resource
     tiles = get_tiles()
     # Get the tile for the robber to be placed
@@ -497,7 +496,18 @@ def discard_resources(player):
     """Depending on human or computer, should discard resources to get down to
         half the current value (rounded up; e.g. player with 9 cards dicards to
         get down to 5)"""
-    pass
+    from catan_graphics import player_discard
+    from catan_AI import computer_discard
+    # Find out the number of resources the player needs to get down to
+    new_resource_count = int(player.resource_count()/2+1)
+    # Just in case, loop through until the player discards enough resources
+    while player.resource_count()>new_resource_count:
+        if player.AI_code<0:
+            discard_count = player_discard(player,new_resource_count)
+        else:
+            discard_count = computer_discard(player,new_resource_count)
+
+    return discard_count
 
 
 ################################################################################

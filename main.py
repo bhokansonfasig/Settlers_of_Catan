@@ -114,12 +114,14 @@ def new_game(splash,board):
             # Robber sequence. Start with the current player, and loop through
             for player in players[whose_turn-1:]:
                 if player.robbable():
-                    discard_resources(player)
-                    write_log(player.name,"got robbed!")
+                    discard_count = discard_resources(player)
+                    write_log(player.name,"was robbed of",discard_count,
+                        "resources.")
             for player in players[:whose_turn-1]:
                 if player.robbable():
-                    discard_resources(player)
-                    write_log(player.name,"got robbed!")
+                    discard_count = discard_resources(player)
+                    write_log(player.name,"was robbed of",discard_count,
+                        "resources.")
             draw_stats(players)
             move_robber(players[whose_turn-1],players)
 
