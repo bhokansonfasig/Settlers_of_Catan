@@ -1,4 +1,5 @@
 from tkinter import *
+from random import choice
 from main import version, new_game, load_game
 from catan_logic import legal_settlement_placements, legal_road_placements
 from catan_logic import build_settlement, build_road, build_city
@@ -862,7 +863,91 @@ def player_place_robber(player,tiles):
 
 def player_steal_resource(player,players,robber_tile):
     """Prompts player for which player they would like to steal from"""
-    pass
+    stealable_players = []
+    for guy in players:
+        guy_added = False
+        for point in guy.settlements:
+            if robber_tile.index in point.coordinate:
+                stealable_players.append(guy)
+                guy_added = True
+                break
+        if guy_added:
+            continue
+        for point in guy.cities:
+            if robber_tile.index in point.coordinate:
+                stealable_players.append(guy)
+    if player in stealable_players:
+        stealable_players.remove(player)
+    print(player.name,"able to steal from:",stealable_players)
+    if len(stealable_players)==0:
+        return
+
+    player_options = []
+    for guy in stealable_players:
+        player_options.append(guy.name)
+
+    player_choice_text = board_canvas.create_text(
+        int((hex_x_off-water_width)*5/10),int(win_height*.4+4*txt_size),
+        text="Take a resource from:",
+        font=(txt_font, int(.8*txt_size)), tags="steal")
+    player_choice = StringVar()
+    player_choice.set("Choose a player to steal from")
+    player_choice_menu = OptionMenu(board_canvas, player_choice,
+        *player_options)
+    player_choice_window = board_canvas.create_window(
+        int((hex_x_off-water_width)*5/10),int(win_height*.4+6*txt_size),
+        window=player_choice_menu, tags="steal")
+    steal_button = Button(board_canvas,
+        font=(txt_font, int(.8*txt_size)), text="Steal",
+        command=lambda : set_button_chosen(0))
+    steal_button.configure(width=10, height=1, padx=0, pady=0,
+        background=inactive_button_color, activebackground=active_button_color)
+    steal_button_window = board_canvas.create_window(
+        int((hex_x_off-water_width)*5/10),int(win_height*.4+8*txt_size),
+        window=steal_button, tags="steal")
+
+    button_chosen.set(-1)
+    while button_chosen.get()!=0 or \
+        player_choice.get()=="Choose a player to steal from":
+        board_canvas.wait_variable(button_chosen)
+    button_chosen.set(-1)
+
+    target_player_name = player_choice.get()
+    for guy in stealable_players:
+        if guy.name==target_player_name:
+            target_player = guy
+            break
+    target_resources = []
+    for i in range(target_player.wood):
+        target_resources.append("wood")
+    for i in range(target_player.brick):
+        target_resources.append("brick")
+    for i in range(target_player.sheep):
+        target_resources.append("sheep")
+    for i in range(target_player.wheat):
+        target_resources.append("wheat")
+    for i in range(target_player.stone):
+        target_resources.append("stone")
+    stolen_resource = choice(target_resources)
+    if stolen_resource=="wood":
+        target_player.wood -= 1
+        player.wood += 1
+    if stolen_resource=="brick":
+        target_player.brick -= 1
+        player.brick += 1
+    if stolen_resource=="sheep":
+        target_player.sheep -= 1
+        player.sheep += 1
+    if stolen_resource=="wheat":
+        target_player.wheat -= 1
+        player.wheat += 1
+    if stolen_resource=="stone":
+        target_player.stone -= 1
+        player.stone += 1
+
+    board_canvas.delete("steal")
+    player_choice_menu.destroy()
+    steal_button.destroy()
 
 
 def maritime_trade(player,players):
@@ -945,8 +1030,8 @@ def maritime_trade(player,players):
             window=trade_button, tags="trade")
 
     while button_chosen.get()!=0:
-        draw_stats(players)
-        draw_resources(player)
+        # draw_stats(players)
+        # draw_resources(player)
         board_canvas.wait_variable(button_chosen)
 
     button_chosen.set(-1)
