@@ -885,8 +885,8 @@ def player_discard(player,players,new_resource_count):
     for i in range(player.stone):
         stone_discard_options.append(str(i+1))
 
-    discard_string = "Give up resources to get down to "+\
-        str(new_resource_count)+"resources:"
+    discard_string = "Choose "+str(starting_resource_count-new_resource_count)+\
+        " resources to give up:"
     discard_text = board_canvas.create_text(
         int((hex_x_off-water_width)*5/10),int(win_height*.4),
         text=discard_string, font=(txt_font, int(.8*txt_size)), tags="discard")
