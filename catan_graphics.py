@@ -928,8 +928,8 @@ def player_discard(player,players,new_resource_count):
     give_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Give up resources",
         command=lambda : set_button_chosen(0))
-    give_button.configure(width=15, height=1, padx=0, pady=0,
-        background=inactive_button_color, activebackground=active_button_color)
+    give_button.configure(width=15, height=1, padx=0, pady=0)
+        #background=inactive_button_color, activebackground=active_button_color)
     give_button_window = board_canvas.create_window(
         int((hex_x_off-water_width)*5/10),int(win_height*.4+8*txt_size),
         window=give_button, tags="discard")
@@ -1010,8 +1010,8 @@ def player_steal_resource(player,players,robber_tile):
     steal_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Steal",
         command=lambda : set_button_chosen(0))
-    steal_button.configure(width=10, height=1, padx=0, pady=0,
-        background=inactive_button_color, activebackground=active_button_color)
+    steal_button.configure(width=10, height=1, padx=0, pady=0)
+        #background=inactive_button_color, activebackground=active_button_color)
     steal_button_window = board_canvas.create_window(
         int((hex_x_off-water_width)*5/10),int(win_height*.4+8*txt_size),
         window=steal_button, tags="steal")
@@ -1122,8 +1122,8 @@ def maritime_trade(player,players):
         trade_button = Button(board_canvas,
             font=(txt_font, int(.8*txt_size)), text="Trade",
             command=lambda : set_button_chosen(0))
-        trade_button.configure(width=10, height=1, padx=0, pady=0,
-            background=inactive_button_color, activebackground=active_button_color)
+        trade_button.configure(width=10, height=1, padx=0, pady=0)
+            #background=inactive_button_color, activebackground=active_button_color)
         trade_button_window = board_canvas.create_window(
             int((hex_x_off-water_width)*5/10),int(win_height*.4+8*txt_size),
             window=trade_button, tags="trade")
@@ -1135,8 +1135,8 @@ def maritime_trade(player,players):
         trade_button = Button(board_canvas,
             font=(txt_font, int(.8*txt_size)), text="Cancel",
             command=lambda : set_button_chosen(0))
-        trade_button.configure(width=10, height=1, padx=0, pady=0,
-            background=inactive_button_color, activebackground=active_button_color)
+        trade_button.configure(width=10, height=1, padx=0, pady=0)
+            #background=inactive_button_color, activebackground=active_button_color)
         trade_button_window = board_canvas.create_window(
             int((hex_x_off-water_width)*5/10),int(win_height*.4+8*txt_size),
             window=trade_button, tags="trade")
@@ -1306,8 +1306,8 @@ def draw_buttons(player):
     build_settlement_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Build Settlement",
         command=lambda : set_button_chosen(1))
-    build_settlement_button.configure(width=13, height=1, padx=0, pady=0,
-        background=inactive_button_color, activebackground=active_button_color)
+    build_settlement_button.configure(width=13, height=1, padx=0, pady=0)
+        #background=inactive_button_color, activebackground=active_button_color)
     build_settlement_button_window = board_canvas.create_window(
         int((hex_x_off-water_width)*3/10),int(win_height*.4),
         window=build_settlement_button, tags="button")
@@ -1318,8 +1318,8 @@ def draw_buttons(player):
     build_road_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Build Road",
         command=lambda : set_button_chosen(2))
-    build_road_button.configure(width=13, height=1, padx=0, pady=0,
-        background=inactive_button_color, activebackground=active_button_color)
+    build_road_button.configure(width=13, height=1, padx=0, pady=0)
+        #background=inactive_button_color, activebackground=active_button_color)
     build_road_button_window = board_canvas.create_window(
         int((hex_x_off-water_width)*7/10),int(win_height*.4),
         window=build_road_button, tags="button")
@@ -1330,8 +1330,8 @@ def draw_buttons(player):
     build_city_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Build City",
         command=lambda : set_button_chosen(3))
-    build_city_button.configure(width=13, height=1, padx=0, pady=0,
-        background=inactive_button_color, activebackground=active_button_color)
+    build_city_button.configure(width=13, height=1, padx=0, pady=0)
+        #background=inactive_button_color, activebackground=active_button_color)
     build_city_button_window = board_canvas.create_window(
         int((hex_x_off-water_width)*3/10),int(win_height*.4+3*txt_size),
         window=build_city_button, tags="button")
@@ -1342,8 +1342,8 @@ def draw_buttons(player):
     buy_dev_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Development",
         command=lambda : set_button_chosen(4))
-    buy_dev_button.configure(width=13, height=1, padx=0, pady=0,
-        background=inactive_button_color, activebackground=active_button_color)
+    buy_dev_button.configure(width=13, height=1, padx=0, pady=0)
+        #background=inactive_button_color, activebackground=active_button_color)
     buy_dev_button_window = board_canvas.create_window(
         int((hex_x_off-water_width)*7/10),int(win_height*.4+3*txt_size),
         window=buy_dev_button, tags="button")
@@ -1354,27 +1354,45 @@ def draw_buttons(player):
     maritime_trade_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Port Trade",
         command=lambda : set_button_chosen(5))
-    maritime_trade_button.configure(width=13, height=1, padx=0, pady=0,
-        background=inactive_button_color, activebackground=active_button_color)
+    maritime_trade_button.configure(width=13, height=1, padx=0, pady=0)
+        #background=inactive_button_color, activebackground=active_button_color)
     maritime_trade_button_window = board_canvas.create_window(
         int((hex_x_off-water_width)*3/10),int(win_height*.4+6*txt_size),
         window=maritime_trade_button, tags="button")
     trading_post_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="Player Trade",
         command=lambda : set_button_chosen(6))
-    trading_post_button.configure(width=13, height=1, padx=0, pady=0,
-        background=inactive_button_color, activebackground=active_button_color)
+    trading_post_button.configure(width=13, height=1, padx=0, pady=0)
+        #background=inactive_button_color, activebackground=active_button_color)
     trading_post_button_window = board_canvas.create_window(
         int((hex_x_off-water_width)*7/10),int(win_height*.4+6*txt_size),
         window=trading_post_button, tags="button")
     end_turn_button = Button(board_canvas,
         font=(txt_font, int(.8*txt_size)), text="End Turn",
         command=lambda : set_button_chosen(0))
-    end_turn_button.configure(width=10, height=1, padx=0, pady=0,
-        background=inactive_button_color, activebackground=active_button_color)
+    end_turn_button.configure(width=10, height=1, padx=0, pady=0)
+        #background=inactive_button_color, activebackground=active_button_color)
     end_turn_button_window = board_canvas.create_window(
         int((hex_x_off-water_width)*5/10),int(win_height*.4+8*txt_size),
         window=end_turn_button, tags="button")
+
+
+def disable_buttons(player,players):
+    """Disables buttons that a player cannot currently use"""
+    if player.wood<1 or player.brick<1 or player.sheep<1 or player.wheat<1 or \
+        len(legal_settlement_placements(player,players))==0 or \
+        len(player.settlements)>=player.settlement_max:
+        build_settlement_button.configure(state=DISABLED)
+    if player.wood<1 or player.brick<1 or \
+        len(legal_road_placements(player,players))==0 or \
+        len(player.roads)>=player.road_max:
+        build_road_button.configure(state=DISABLED)
+    if player.wheat<2 or player.stone<3 or \
+        len(player.settlements)==0 or \
+        len(player.cities)>=player.city_max:
+        build_city_button.configure(state=DISABLED)
+    if player.sheep<1 or player.wheat<1 or player.stone<1:
+        buy_dev_button.configure(state=DISABLED)
 
 
 def set_button_chosen(integer):
@@ -1474,6 +1492,7 @@ def turn_loop(player,players):
         while button_chosen.get()!=0:
             draw_stats(players)
             draw_resources(player)
+            disable_buttons(player,players)
             board_canvas.wait_variable(button_chosen)
             if button_chosen.get()==1:
                 build_settlement(player,players)
