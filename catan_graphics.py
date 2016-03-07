@@ -1383,16 +1383,36 @@ def disable_buttons(player,players):
         len(legal_settlement_placements(player,players))==0 or \
         len(player.settlements)>=player.settlement_max:
         build_settlement_button.configure(state=DISABLED)
+    else:
+        build_settlement_button.configure(state=NORMAL)
     if player.wood<1 or player.brick<1 or \
         len(legal_road_placements(player,players))==0 or \
         len(player.roads)>=player.road_max:
         build_road_button.configure(state=DISABLED)
+    else:
+        build_road_button.configure(state=NORMAL)
     if player.wheat<2 or player.stone<3 or \
         len(player.settlements)==0 or \
         len(player.cities)>=player.city_max:
         build_city_button.configure(state=DISABLED)
+    else:
+        build_city_button.configure(state=NORMAL)
     if player.sheep<1 or player.wheat<1 or player.stone<1:
         buy_dev_button.configure(state=DISABLED)
+    else:
+        buy_dev_button.configure(state=NORMAL)
+    if len(player.settlements)>=player.settlement_max:
+        build_settlement_button.configure(text="Max Built")
+    else:
+        build_settlement_button.configure(text="Build Settlement")
+    if len(player.roads)>=player.road_max:
+        build_road_button.configure(text="Max Built")
+    else:
+        build_road_button.configure(text="Build Road")
+    if len(player.cities)>=player.city_max:
+        build_city_button.configure(text="Max Built")
+    else:
+        build_city_button.configure(text="Build City")
 
 
 def set_button_chosen(integer):
