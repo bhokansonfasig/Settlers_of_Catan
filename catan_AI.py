@@ -12,6 +12,9 @@ def set_computer(name):
     # Template for adding new AI:
     # elif name.lower()=="AIname":
     #     return AIcode
+    elif name.lower()=="larry" or name.lower()=="larry the lumberjack" or \
+        name.lower()=="wood":
+        return 1
     elif name.lower()=="random":
         return 0
     else:
@@ -22,6 +25,7 @@ def computer_choose_settlement(computer,players):
     """Has computer place settlement. Returns tuple of the placed settlement"""
     from catan_logic import legal_settlement_placements
     # from AIname_file import AIname_choose_settlement
+    from larry_AI import larry_choose_settlement
 
     available_points = legal_settlement_placements(computer,players)
 
@@ -32,6 +36,8 @@ def computer_choose_settlement(computer,players):
     # elif computer.AI_code==AIcode:
     #     settlement = AIname_choose_settlement(computer,players,
     #         available_points)
+    elif computer.AI_code==1:
+        settlement = larry_choose_settlement(computer,players,available_points)
     else:
         # Randomly place settlement
         settlement = choice(available_points)
@@ -43,6 +49,7 @@ def computer_choose_road(computer,players):
     """Has computer place road. Returns tuples of the placed road"""
     from catan_logic import legal_road_placements
     # from AIname_file import AIname_choose_road
+    from larry_AI import larry_choose_road
 
     available_roads = legal_road_placements(computer,players)
 
@@ -52,6 +59,8 @@ def computer_choose_road(computer,players):
     # Template for adding new AI:
     # elif computer.AI_code==AIcode:
     #     road = AIname_choose_road(computer,players,available_roads)
+    elif computer.AI_code==1:
+        road = larry_choose_road(computer,players,available_roads)
     else:
         # Randomly place road
         road = choice(available_roads)
@@ -62,6 +71,7 @@ def computer_choose_road(computer,players):
 def computer_choose_city(computer,players):
     """Has computer place city. Returns tuple of the placed settlement"""
     # from AIname_file import AIname_choose_city
+    from larry_AI import larry_choose_city
 
     available_points = []
     for point in computer.settlements:
@@ -73,6 +83,8 @@ def computer_choose_city(computer,players):
     # Template for adding new AI:
     # elif computer.AI_code==AIcode:
     #     city = AIname_choose_city(computer,players,available_points)
+    elif computer.AI_code==1:
+        city = larry_choose_city(computer,players,available_points)
     else:
         # Randomly place city
         city = choice(available_points)
@@ -83,6 +95,8 @@ def computer_choose_city(computer,players):
 def computer_discard(computer,new_resource_count):
     """Computer must discard to get down to new_resource_count"""
     # from AIname_file import AIname_discard
+    from larry_AI import larry_discard
+
     starting_resource_count = computer.resource_count()
 
     if computer.AI_code==99:
@@ -95,6 +109,8 @@ def computer_discard(computer,new_resource_count):
     # Template for adding new AI:
     # elif computer.AI_code==AIcode:
     #     AIname_discard(computer,new_resource_count)
+    elif computer.AI_code==1:
+        larry_discard(computer,new_resource_count)
     else:
         # Radomly get rid of resources
         while computer.resource_count()>new_resource_count:
@@ -128,6 +144,8 @@ def computer_discard(computer,new_resource_count):
 def computer_place_robber(computer,tiles):
     """Has computer place robber. Returns tile where robber was placed"""
     # from AIname_file import AIname_place_robber
+    from larry_AI import larry_place_robber
+
     for tile in tiles:
         if tile.has_robber:
             original_tile = tile
@@ -138,6 +156,8 @@ def computer_place_robber(computer,tiles):
     # Template for adding new AI:
     # elif computer.AI_code==AIcode:
     #     robber_tile = AIname_place_robber(computer,tiles,original_tile)
+    elif computer.AI_code==1:
+        robber_tile = larry_place_robber(computer,tiles,original_tile)
     else:
         # Place robber randomly
         robber_tile = Tile(0)
@@ -153,6 +173,8 @@ def computer_steal_resource(computer,players,robber_tile):
     """Has computer select a player to steal from"""
     from catan_graphics import write_log
     # from AIname_file import AIname_choose_target
+    from larry_AI import larry_choose_target
+
     stealable_players = []
     for guy in players:
         guy_added = False
@@ -181,6 +203,8 @@ def computer_steal_resource(computer,players,robber_tile):
     # elif computer.AI_code==AIcode:
     #     target_player = \
     #         AIname_choose_target(computer,players,stealable_players)
+    elif computer.AI_code==1:
+        target_player = larry_choose_target(computer,players,stealable_players)
     else:
         target_player = choice(stealable_players)
 
@@ -220,7 +244,8 @@ def computer_take_turn(computer,players):
     """Defines what the computer does in its turn"""
     from catan_logic import legal_settlement_placements, legal_road_placements
     from catan_logic import build_settlement, build_road, build_city
-    # from AIname_file import AIname_choose_target
+    # from AIname_file import AIname_take_turn
+    from larry_AI import larry_take_turn
 
     available_settlement_points = legal_settlement_placements(computer,players)
     available_roads = legal_road_placements(computer,players)
@@ -232,6 +257,9 @@ def computer_take_turn(computer,players):
     # elif computer.AI_code==AIcode:
     #     action_string = AIname_take_turn(computer,players,
     #         available_settlement_points,available_roads,available_city_points)
+    elif computer.AI_code==1:
+        action_string = larry_take_turn(computer,players,
+            available_settlement_points,available_roads,available_city_points)
     else:
         action_options = []
         # If the computer can place a road, add that as an option
