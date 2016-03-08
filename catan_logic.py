@@ -473,7 +473,7 @@ def move_robber(player,players):
     if player.AI_code<0:
         robber_tile = player_place_robber(player,tiles)
     else:
-        robber_tile = computer_place_robber(player,tiles)
+        robber_tile = computer_place_robber(player,players,tiles)
     for tile in tiles:
         if tile.has_robber:
             tile.has_robber = False

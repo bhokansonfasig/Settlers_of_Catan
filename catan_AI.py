@@ -141,7 +141,7 @@ def computer_discard(computer,new_resource_count):
     return discard_count
 
 
-def computer_place_robber(computer,tiles):
+def computer_place_robber(computer,players,tiles):
     """Has computer place robber. Returns tile where robber was placed"""
     # from AIname_file import AIname_place_robber
     from larry_AI import larry_place_robber
@@ -155,9 +155,9 @@ def computer_place_robber(computer,tiles):
         robber_tile = Tile(7)
     # Template for adding new AI:
     # elif computer.AI_code==AIcode:
-    #     robber_tile = AIname_place_robber(computer,tiles,original_tile)
+    #     robber_tile = AIname_place_robber(computer,players,tiles,original_tile)
     elif computer.AI_code==1:
-        robber_tile = larry_place_robber(computer,tiles,original_tile)
+        robber_tile = larry_place_robber(computer,players,tiles,original_tile)
     else:
         # Place robber randomly
         robber_tile = Tile(0)

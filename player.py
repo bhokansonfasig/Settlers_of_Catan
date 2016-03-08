@@ -54,9 +54,9 @@ class Player:
 			self.wheat += 20
 			self.sheep += 20
 			self.stone += 20
-		else:
-			self.wood += 20
-			self.brick += 20
+		# else:
+		# 	self.wood += 20
+		# 	self.brick += 20
 
 		#longest road stuff
 		self.road_types = [[],[],[],[],[]] #the index corresponds to the number of connections
