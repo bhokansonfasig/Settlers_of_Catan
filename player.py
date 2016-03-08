@@ -17,6 +17,7 @@ class Player:
 			self.color = "#00CC00"  # Green
 		elif self.index==4:
 			self.color = "#FF8000"  # Orange
+			# self.color = "#FFFFFF"  # White
 
 		self.name = name
 
