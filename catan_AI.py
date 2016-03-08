@@ -22,15 +22,18 @@ def computer_choose_settlement(computer,players):
     """Has computer place settlement. Returns tuple of the placed settlement"""
     from catan_logic import legal_settlement_placements
     # from AIname_file import AIname_choose_settlement
+
+    available_points = legal_settlement_placements(computer,players)
+
     if computer.AI_code==99:
         # Place settlement in the ocean
         settlement = Point(0,1,7)
     # Template for adding new AI:
     # elif computer.AI_code==AIcode:
-    #     settlement = AIname_choose_settlement(computer,players)
+    #     settlement = AIname_choose_settlement(computer,players,
+    #         available_points)
     else:
         # Randomly place settlement
-        available_points = legal_settlement_placements(computer,players)
         settlement = choice(available_points)
 
     return settlement
@@ -40,15 +43,17 @@ def computer_choose_road(computer,players):
     """Has computer place road. Returns tuples of the placed road"""
     from catan_logic import legal_road_placements
     # from AIname_file import AIname_choose_road
+
+    available_roads = legal_road_placements(computer,players)
+
     if computer.AI_code==99:
         # Place road in the ocean
         road = Road(Point(0,1,7),Point(1,7,8))
     # Template for adding new AI:
     # elif computer.AI_code==AIcode:
-    #     road = AIname_choose_road(computer,players)
+    #     road = AIname_choose_road(computer,players,available_roads)
     else:
         # Randomly place road
-        available_roads = legal_road_placements(computer,players)
         road = choice(available_roads)
 
     return road
@@ -57,17 +62,19 @@ def computer_choose_road(computer,players):
 def computer_choose_city(computer,players):
     """Has computer place city. Returns tuple of the placed settlement"""
     # from AIname_file import AIname_choose_city
+
+    available_points = []
+    for point in computer.settlements:
+        available_points.append(point)
+
     if computer.AI_code==99:
         # Place city in the ocean
         city = Point(0,1,7)
     # Template for adding new AI:
     # elif computer.AI_code==AIcode:
-    #     city = AIname_choose_city(computer,players)
+    #     city = AIname_choose_city(computer,players,available_points)
     else:
         # Randomly place city
-        available_points = []
-        for point in computer.settlements:
-            available_points.append(point)
         city = choice(available_points)
 
     return city
@@ -223,7 +230,8 @@ def computer_take_turn(computer,players):
         pass
     # Template for adding new AI:
     # elif computer.AI_code==AIcode:
-    #     action_string = AIname_take_turn(computer,players)
+    #     action_string = AIname_take_turn(computer,players,
+    #         available_settlement_points,available_roads,available_city_points)
     else:
         action_options = []
         # If the computer can place a road, add that as an option
