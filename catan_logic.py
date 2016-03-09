@@ -462,6 +462,51 @@ def occupied_points_on_board(players):
 
 
 
+def perform_trade(player,give_resource,get_resource):
+    """For player, trades the necessary number of give_resource for
+        get_resource"""
+    from catan_graphics import write_log
+
+    if "any" in player.ports or "?" in player.ports:
+        trade_ratio = 3
+    else:
+        trade_ratio = 4
+
+    if give_resource in player.ports:
+        trade_ratio = 2
+
+    trade_allowed = False
+    if give_resource=="wood" and player.wood>=trade_ratio:
+        trade_allowed = True
+        player.wood -= trade_ratio
+    elif give_resource=="brick" and player.brick>=trade_ratio:
+        trade_allowed = True
+        player.brick -= trade_ratio
+    elif give_resource=="sheep" and player.sheep>=trade_ratio:
+        trade_allowed = True
+        player.sheep -= trade_ratio
+    elif give_resource=="wheat" and player.wheat>=trade_ratio:
+        trade_allowed = True
+        player.wheat -= trade_ratio
+    elif give_resource=="stone" and player.stone>=trade_ratio:
+        trade_allowed = True
+        player.stone -= trade_ratio
+
+    if trade_allowed:
+        if get_resource=="wood":
+            player.wood += 1
+        elif get_resource=="brick":
+            player.brick += 1
+        elif get_resource=="sheep":
+            player.sheep += 1
+        elif get_resource=="wheat":
+            player.wheat += 1
+        elif get_resource=="stone":
+            player.stone += 1
+        write_log(player.name,"traded",trade_ratio,give_resource,"for 1 ",
+            get_resource)
+
+
 def move_robber(player,players):
     """Depending on human or computer, should move robber to new space and steal
         random card from player on that space"""

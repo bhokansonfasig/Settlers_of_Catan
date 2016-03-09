@@ -1064,14 +1064,13 @@ def player_steal_resource(player,players,robber_tile):
 
 def maritime_trade(player,players):
     """Clears buttons and draws trading screen for player"""
+    from catan_logic import perform_trade
+
     undraw_buttons()
 
     res_give_options = []
     res_get_options = ["1 wood","1 brick","1 sheep","1 wheat","1 stone"]
 
-    # for res in res_get_options:
-    #     if res[2:] in player.ports:
-    #         res_give_options.append("2 "+res[2:])
     if "any" in player.ports or "?" in player.ports:
         trade_ratio = 3
     else:
@@ -1152,31 +1151,9 @@ def maritime_trade(player,players):
         if res_give.get()!="Choose a resource to give" and \
             res_get.get()!="Choose a resource to receive":
             given_resource = res_give.get()[2:]
-            given_number = int(res_give.get()[0])
             gotten_resource = res_get.get()[2:]
-            gotten_number = int(res_get.get()[0])
-            if given_resource=="wood":
-                player.wood -= given_number
-            if given_resource=="brick":
-                player.brick -= given_number
-            if given_resource=="sheep":
-                player.sheep -= given_number
-            if given_resource=="wheat":
-                player.wheat -= given_number
-            if given_resource=="stone":
-                player.stone -= given_number
-            if gotten_resource=="wood":
-                player.wood += gotten_number
-            if gotten_resource=="brick":
-                player.brick += gotten_number
-            if gotten_resource=="sheep":
-                player.sheep += gotten_number
-            if gotten_resource=="wheat":
-                player.wheat += gotten_number
-            if gotten_resource=="stone":
-                player.stone += gotten_number
-            write_log(player.name,"traded",given_number,given_resource,"for",
-                gotten_number,gotten_resource)
+            perform_trade(player,given_resource,gotten_resource)
+
         res_give_menu.destroy()
         res_get_menu.destroy()
 
