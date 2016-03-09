@@ -1,14 +1,16 @@
 class Road:
     def __init__(self, point1, point2):
-        from point import Point
         self.coordinates = sorted([point1.coordinate,point2.coordinate])
 
-        self.point1 = Point(self.coordinates[0][0],self.coordinates[0][1],
-                            self.coordinates[0][2])
-        self.point2 = Point(self.coordinates[1][0],self.coordinates[1][1],
-                            self.coordinates[1][2])
+        if point1.coordinate==self.coordinates[0]:
+            self.point1 = point1
+            self.point2 = point2
+        else:
+            self.point1 = point2
+            self.point2 = point1
+
         self.tiles = list(set(point1.coordinate).intersection(point2.coordinate))
-        
+
         self.tk_index = None  # Tkinter index of road
 
         self.connections = 0 #for calculating longest road
@@ -54,9 +56,3 @@ class Road:
 
     def common_tile(self,other):
         return(list(set(self.tiles).intersection(other.tiles)))
-
-
-
-
-            
-
