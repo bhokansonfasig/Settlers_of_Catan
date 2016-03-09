@@ -7,6 +7,7 @@ from tiles import Tile
 
 def larry_take_turn(computer,players,available_settlement_points,
     available_roads,available_city_points):
+    from catan_logic import perform_trade
     # Function is called to determine what action the computer should take
 
     # Should return "build settlement", "build road", "build city", or "ended turn"
@@ -24,40 +25,34 @@ def larry_take_turn(computer,players,available_settlement_points,
         len(computer.roads)<computer.road_max and \
         len(computer.settlements)<computer.settlement_max and \
         computer.brick==0 and computer.wood>=wood_trade_ratio+1:
-        computer.wood -= wood_trade_ratio
-        computer.brick += 1
+        perform_trade(computer,"wood","brick")
     # If building a settlement is possible and no wheat are available,
     #  trade for wheat if possible
     if len(available_settlement_points)!=0 and \
         len(computer.settlements)<computer.settlement_max and \
         computer.wheat==0 and computer.wood>=wood_trade_ratio+1:
-        computer.wood -= wood_trade_ratio
-        computer.wheat += 1
+        perform_trade(computer,"wood","wheat")
     # If building a settlement is possible and no sheep are available,
     #  trade for sheep if possible
     if len(available_settlement_points)!=0 and \
         len(computer.settlements)<computer.settlement_max and \
         computer.sheep==0 and computer.wood>=wood_trade_ratio+1:
-        computer.wood -= wood_trade_ratio
-        computer.sheep += 1
+        perform_trade(computer,"wood","sheep")
     # If building a road isn't possible but building a settlement is
     #  and no bricks are available, trade for brick if possible
     if (len(computer.roads)==computer.road_max or len(available_roads)==0) and \
         len(available_settlement_points)!=0 and \
         len(computer.settlements)<computer.settlement_max and \
         computer.brick==0 and computer.wood>=wood_trade_ratio+1:
-        computer.wood -= wood_trade_ratio
-        computer.brick += 1
+        perform_trade(computer,"wood","brick")
     # If building a city is possible and too little wheat/stone is available,
     #  trade for wheat/stone while it's possible
     if len(available_city_points)!=0 and \
         len(computer.cities)<computer.city_max:
         while computer.wheat<2 and computer.wood>=wood_trade_ratio+1:
-            computer.wood -= wood_trade_ratio
-            computer.wheat += 1
+            perform_trade(computer,"wood","wheat")
         while computer.stone<3 and computer.wood>=wood_trade_ratio+1:
-            computer.wood -= wood_trade_ratio
-            computer.stone += 1
+            perform_trade(computer,"wood","stone")
 
     # Assume the computer can't do anything and just passes
     action_string = "ended turn"
@@ -89,14 +84,15 @@ def larry_choose_settlement(computer,players,available_settlement_points):
     from catan_graphics import get_tiles
     tiles = get_tiles()
 
-    # Make a matrix of all the wood tiles, with their pseudo-probabilities
+    # Make a matrix of all the wood tiles, with their weighted probabilities
     wood_matrix = []
     for tile in tiles:
         if tile.resource=="wood":
-            wood_matrix.append([7-abs(tile.roll_number-7),tile.index])
+            wood_matrix.append([int((7-abs(tile.roll_number-7))**2),
+                tile.index])
 
     # If an available point is on a wood tile, add it to the options a number
-    #  of times indicated by the pseudo-probability from above
+    #  of times indicated by the probability from above
     settlement_options = []
     for element in wood_matrix:
         for point in available_settlement_points:
@@ -111,10 +107,10 @@ def larry_choose_settlement(computer,players,available_settlement_points):
             if point.port_resource=="wood":
                 for element in wood_matrix:
                     if element[1] in point.coordinate:
-                        for i in range(20):
+                        for i in range(50):
                             settlement_options.append(point)
                     else:
-                        for i in range(10):
+                        for i in range(20):
                             settlement_options.append(point)
 
     # If there are no wood tiles open to play on, play on a non-wood tile,
@@ -135,14 +131,15 @@ def larry_choose_city(computer,players,available_city_points):
     from catan_graphics import get_tiles
     tiles = get_tiles()
 
-    # Make a matrix of all the wood tiles, with their pseudo-probabilities
+    # Make a matrix of all the wood tiles, with their weighted probabilities
     wood_matrix = []
     for tile in tiles:
         if tile.resource=="wood":
-            wood_matrix.append([7-abs(tile.roll_number-7),tile.index])
+            wood_matrix.append([int((7-abs(tile.roll_number-7))**2),
+                tile.index])
 
     # If an available point is on a wood tile, add it to the options a number
-    #  of times indicated by the pseudo-probability from above
+    #  of times indicated by the probability from above
     city_options = []
     for element in wood_matrix:
         for point in available_city_points:
@@ -168,25 +165,27 @@ def larry_choose_road(computer,players,available_roads):
     from catan_graphics import get_tiles
     tiles = get_tiles()
 
-    # Make a matrix of all the wood tiles, with their pseudo-probabilities
+    # Make a matrix of all the wood tiles, with their weighted probabilities
     wood_matrix = []
     for tile in tiles:
         if tile.resource=="wood":
-            wood_matrix.append([7-abs(tile.roll_number-7),tile.index])
+            wood_matrix.append([int((7-abs(tile.roll_number-7))**2),
+                tile.index])
 
     # If an available road has both points on a wood tile, add it to the options
-    #  a number of times indicated by the pseudo-probability from above
+    #  a number of times indicated by the probability from above
     road_options = []
-    for element in wood_matrix:
-        for rd in available_roads:
-            if element[1] in rd.point1.coordinate and \
-                element[1] in rd.point2.coordinate:
-                for i in range(element[0]):
-                    road_options.append(rd)
+    for element1 in wood_matrix:
+        for element2 in wood_matrix:
+            for rd in available_roads:
+                if element1[1] in rd.point1.coordinate and \
+                    element2[1] in rd.point2.coordinate:
+                    for i in range(element1[0]+element2[0]):
+                        road_options.append(rd)
 
     # If no roads have both points on a wood tile, find roads with just one
     #  point on a wood tile and add it to the options a number of times
-    #  indicated by the pseudo-probability from above
+    #  indicated by the probability from above
     if len(road_options)==0:
         for element in wood_matrix:
             for rd in available_roads:

@@ -503,7 +503,7 @@ def perform_trade(player,give_resource,get_resource):
             player.wheat += 1
         elif get_resource=="stone":
             player.stone += 1
-        write_log(player.name,"traded",trade_ratio,give_resource,"for 1 ",
+        write_log(player.name,"traded",trade_ratio,give_resource,"for 1",
             get_resource)
 
 
