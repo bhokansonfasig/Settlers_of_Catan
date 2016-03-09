@@ -164,7 +164,7 @@ def brian_choose_city(computer,players,available_city_points):
 
     # If there are no brick tiles open to play on, play on a non-brick tile
     if len(city_options)==0:
-        city_options = available_settlement_points
+        city_options = available_city_points
 
     # Choose a point with the highest total probabilities to play on
     best_positions = []
@@ -314,32 +314,50 @@ def brian_place_robber(computer,players,tiles,original_tile):
                     occupied_tiles.append(tile)
 
     # Remove tiles that the computer is on from the list
+    tiles_to_remove = []
     for tile in occupied_tiles:
         for settlement in computer.settlements:
             if tile.index in settlement.coordinate and \
-                tile in occupied_tiles:
-                occupied_tiles.remove(tile)
+                not(tile in tiles_to_remove):
+                tiles_to_remove.append(tile)
         for city in computer.cities:
             if tile.index in city.coordinate and \
-                tile in occupied_tiles:
-                occupied_tiles.remove(tile)
+                not(tile in tiles_to_remove):
+                tiles_to_remove.append(tile)
+
+    for tile in tiles_to_remove:
+        occupied_tiles.remove(tile)
 
     if original_tile in occupied_tiles:
         occupied_tiles.remove(original_tile)
 
     robber_tile = Tile(0)
     # If there are no more tiles in the list, choose from all the tiles
-    #  Otherwise, choose from the list
+    #  Should only rarely happen!
     if len(occupied_tiles)==0:
-        while not(robber_tile.visible):
-            robber_tile = choice(tiles)
-            if robber_tile==original_tile:
-                robber_tile = Tile(0)
-    else:
-        while not(robber_tile.visible):
-            robber_tile = choice(occupied_tiles)
-            if robber_tile==original_tile:
-                robber_tile = Tile(0)
+        occupied_tiles = tiles
+
+    # Choose the tile(s) producing the most resources
+    best_positions = []
+    highest_resources = 36
+    while len(best_positions)==0:
+        for tile in occupied_tiles:
+            generation_count = 0
+            for player in players:
+                for settlement in player.settlements:
+                    if tile.index in settlement.coordinate:
+                        generation_count += 7-abs(tile.roll_number-7)
+                for city in player.cities:
+                    if tile.index in city.coordinate:
+                        generation_count += 2*(7-abs(tile.roll_number-7))
+            if generation_count>=highest_resources:
+                best_positions.append(tile)
+        highest_resources -= 1
+
+    while not(robber_tile.visible):
+        robber_tile = choice(best_positions)
+        if robber_tile==original_tile:
+            robber_tile = Tile(0)
 
     return robber_tile
 
