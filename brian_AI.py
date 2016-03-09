@@ -113,12 +113,27 @@ def brian_choose_settlement(computer,players,available_settlement_points):
                         for i in range(20):
                             settlement_options.append(point)
 
-    # If there are no brick tiles open to play on, play on a non-brick tile,
-    #  otherwise choose one of the brick tiles
+    # If there are no brick tiles open to play on, play on a non-brick tile
     if len(settlement_options)==0:
-        settlement = choice(available_settlement_points)
-    else:
-        settlement = choice(settlement_options)
+        settlement_options = available_settlement_points
+
+    # Choose a point with the highest total probabilities to play on
+    #  Brick port triples probabilities
+    best_positions = []
+    highest_probability = 18
+    while len(best_positions)==0:
+        for point in settlement_options:
+            point_probability = 0
+            for i in point.coordinate:
+                point_probability += 7-abs(tiles[i].roll_number-7)
+            if point.is_port:
+                if point.port_resource=="brick":
+                    point_probability = point_probability*3
+            if point_probability>=highest_probability:
+                best_positions.append(point)
+        highest_probability -= 1
+
+    settlement = choice(best_positions)
 
     return settlement
 
@@ -147,12 +162,23 @@ def brian_choose_city(computer,players,available_city_points):
                 for i in range(element[0]):
                     city_options.append(point)
 
-    # If there are no brick tiles open to play on, play on a non-brick tile,
-    #  otherwise choose one of the brick tiles
+    # If there are no brick tiles open to play on, play on a non-brick tile
     if len(city_options)==0:
-        city = choice(available_city_points)
-    else:
-        city = choice(city_options)
+        city_options = available_settlement_points
+
+    # Choose a point with the highest total probabilities to play on
+    best_positions = []
+    highest_probability = 18
+    while len(best_positions)==0:
+        for point in city_options:
+            point_probability = 0
+            for i in point.coordinate:
+                point_probability += 7-abs(tiles[i].roll_number-7)
+            if point_probability>=highest_probability:
+                best_positions.append(point)
+        highest_probability -= 1
+
+    city = choice(best_positions)
 
     return city
 
@@ -195,11 +221,40 @@ def brian_choose_road(computer,players,available_roads):
                         road_options.append(rd)
 
     # If there are no brick tiles open to play on, play on a non-brick tile,
-    #  otherwise choose one of the brick tiles
     if len(road_options)==0:
-        road = choice(available_roads)
-    else:
-        road = choice(road_options)
+        road_options = available_roads
+
+    # Choose a point with the highest total probabilities to build to
+    best_positions = []
+    highest_probability = 18
+    while len(best_positions)==0:
+        for road in road_options:
+            point_probability = 0
+            # Choose the point that the road is building towards
+            if not(road.point1 in computer.points):
+                for i in road.point1.coordinate:
+                    point_probability += 7-abs(tiles[i].roll_number-7)
+            elif not(road.point2 in computer.points):
+                for i in road.point2.coordinate:
+                    point_probability += 7-abs(tiles[i].roll_number-7)
+            # If the computer owns both points, choose the higher probability
+            #  to encourage connecting of roads
+            else:
+                point1_probability = 0
+                point2_probability = 0
+                for i in road.point1.coordinate:
+                    point1_probability += 7-abs(tiles[i].roll_number-7)
+                for i in road.point2.coordinate:
+                    point2_probability += 7-abs(tiles[i].roll_number-7)
+                if point1_probability<point2_probability:
+                    point_probability = point1_probability
+                else:
+                    point_probability = point2_probability
+            if point_probability>=highest_probability:
+                best_positions.append(road)
+        highest_probability -= 1
+
+    road = choice(best_positions)
 
     return road
 
