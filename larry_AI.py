@@ -333,6 +333,14 @@ def larry_place_robber(computer,players,tiles,original_tile):
     # Choose the tile(s) producing the most resources
     best_positions = []
     highest_resources = 36
+    # If there are wood tiles not occupied by computer, but by other players,
+    #  prioritize those
+    for tile in occupied_tiles:
+        if tile.resource=="wood":
+            best_positions.append(tile)
+    if len(best_positions)!=0:
+        occupied_tiles = list(best_positions)
+        best_positions = []
     while len(best_positions)==0:
         for tile in occupied_tiles:
             generation_count = 0
