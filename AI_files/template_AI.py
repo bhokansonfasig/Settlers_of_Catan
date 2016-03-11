@@ -5,6 +5,16 @@ from point import Point
 from road import Road
 from tiles import Tile
 
+
+def get_code():
+    # Should return the AI_code for this AI
+    return AI_code
+
+def get_aliases():
+    # Should return all names that initialize this AI
+    return aliases
+
+
 def take_turn(computer,players,available_settlement_points,
     available_roads,available_city_points):
     # Function is called to determine what action the computer should take
