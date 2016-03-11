@@ -12,6 +12,7 @@ def get_code():
 
 def get_aliases():
     # Should return all names that initialize this AI
+    #  Note the names should be in all lowercase letters
     return aliases
 
 

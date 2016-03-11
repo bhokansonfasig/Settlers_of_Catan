@@ -9,7 +9,9 @@ def get_code():
     return 2
 
 def get_aliases():
-    return ['brian','brian the bricklayer','brick']
+    return ['brian','brian the bricklayer',
+            'brenda','brenda the bricklayer',
+            'brick']
 
 
 def take_turn(computer,players,available_settlement_points,

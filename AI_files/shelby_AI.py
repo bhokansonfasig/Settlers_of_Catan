@@ -9,7 +9,9 @@ def get_code():
     return 3
 
 def get_aliases():
-    return ['shelby','shelby the shepherd','sheep']
+    return ['shelby','shelby the shepherd',
+            'shawn','shawn the shepherd',
+            'sheep']
 
 
 def take_turn(computer,players,available_settlement_points,
