@@ -5,7 +5,14 @@ from tiles import Tile
 
 # Larry the lumberjack focuses on monopolizing wood
 
-def larry_take_turn(computer,players,available_settlement_points,
+def get_code():
+    return 1
+
+def get_aliases():
+    return ['larry','larry the lumberjack','wood']
+
+
+def take_turn(computer,players,available_settlement_points,
     available_roads,available_city_points):
     from catan_logic import perform_trade
     # Function is called to determine what action the computer should take
@@ -76,7 +83,7 @@ def larry_take_turn(computer,players,available_settlement_points,
     return action_string
 
 
-def larry_choose_settlement(computer,players,available_settlement_points):
+def choose_settlement(computer,players,available_settlement_points):
     # Function is called to determine where the computer should place a settlement
 
     # Should return the point object where the settlement should be built
@@ -134,7 +141,7 @@ def larry_choose_settlement(computer,players,available_settlement_points):
     return settlement
 
 
-def larry_choose_city(computer,players,available_city_points):
+def choose_city(computer,players,available_city_points):
     # Function is called to determine where the computer should place a city
 
     # Should return the point object where the city should be built
@@ -176,7 +183,7 @@ def larry_choose_city(computer,players,available_city_points):
     return city
 
 
-def larry_choose_road(computer,players,available_roads):
+def choose_road(computer,players,available_roads):
     # Function is called to determine where the computer should place a road
 
     # Should return the road object where the road should be built
@@ -247,7 +254,7 @@ def larry_choose_road(computer,players,available_roads):
     return road
 
 
-def larry_discard(computer,new_resource_count):
+def discard(computer,new_resource_count):
     # Function is called for computer to discard resources down to new_resource_count
 
     # Doesn't return anything, just needs to update the computer's resources
@@ -282,7 +289,7 @@ def larry_discard(computer,new_resource_count):
             computer.stone -= 1
 
 
-def larry_place_robber(computer,players,tiles,original_tile):
+def place_robber(computer,players,tiles,original_tile):
     # Function is called to determine where the computer should place the robber tile
     #  Can't place the robber where he already is (original_tile)
 
@@ -358,7 +365,7 @@ def larry_place_robber(computer,players,tiles,original_tile):
     return robber_tile
 
 
-def larry_choose_target(computer,players,stealable_players):
+def choose_target(computer,players,stealable_players):
     # Function is called to pick a player from stealable_players to take a random resource from
 
     # Should return the player chosen

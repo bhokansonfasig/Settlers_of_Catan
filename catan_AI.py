@@ -2,55 +2,44 @@ from random import choice
 from point import Point
 from road import Road
 from tiles import Tile
+from importlib import import_module
 
 
 def set_computer(name):
     """Checks the name of the computer against known computer personalities.
         Returns AI level if known, or 0 if unknown."""
-    if name.lower()=="idiot" or name.lower()=="ocean":
-        return 99
-    # Template for adding new AI:
-    # elif name.lower()=="AIname":
-    #     return AIcode
-    elif name.lower()=="shelby" or name.lower()=="shelby the shepherd" or \
-        name.lower()=="sheep":
-        return 3
-    elif name.lower()=="brian" or name.lower()=="brian the bricklayer" or \
-        name.lower()=="brick":
-        return 2
-    elif name.lower()=="larry" or name.lower()=="larry the lumberjack" or \
-        name.lower()=="wood":
-        return 1
-    elif name.lower()=="random":
-        return 0
-    else:
-        return 0
+    from os import listdir
+    from os.path import isfile, join
+
+    AI_files = [f[:-3] for f in listdir('./AI_files') \
+        if isfile(join('./AI_files',f)) and 'AI' in f and not('template' in f)]
+    global AI_modules
+    AI_modules = []
+    for AI_file in AI_files:
+        AI_modules.append(import_module("AI_files."+AI_file))
+
+    for AI in AI_modules:
+        aliases = AI.get_aliases()
+        if name.lower() in aliases:
+            return AI.get_code()
+
+    print("Name",name,"unknown. Defaulting to random computer.")
+    return 0
 
 
 def computer_choose_settlement(computer,players):
     """Has computer place settlement. Returns tuple of the placed settlement"""
     from catan_logic import legal_settlement_placements
-    # from AIname_file import AIname_choose_settlement
-    from larry_AI import larry_choose_settlement
-    from brian_AI import brian_choose_settlement
-    from shelby_AI import shelby_choose_settlement
 
     available_points = legal_settlement_placements(computer,players)
 
-    if computer.AI_code==99:
-        # Place settlement in the ocean
-        settlement = Point(0,1,7)
-    # Template for adding new AI:
-    # elif computer.AI_code==AIcode:
-    #     settlement = AIname_choose_settlement(computer,players,
-    #         available_points)
-    elif computer.AI_code==3:
-        settlement = shelby_choose_settlement(computer,players,available_points)
-    elif computer.AI_code==2:
-        settlement = brian_choose_settlement(computer,players,available_points)
-    elif computer.AI_code==1:
-        settlement = larry_choose_settlement(computer,players,available_points)
-    else:
+    found = False
+    for AI in AI_modules:
+        if computer.AI_code==AI.get_code():
+            settlement = AI.choose_settlement(computer,players,available_points)
+            found = True
+            break
+    if not(found):
         # Randomly place settlement
         settlement = choice(available_points)
 
@@ -60,26 +49,16 @@ def computer_choose_settlement(computer,players):
 def computer_choose_road(computer,players):
     """Has computer place road. Returns tuples of the placed road"""
     from catan_logic import legal_road_placements
-    # from AIname_file import AIname_choose_road
-    from larry_AI import larry_choose_road
-    from brian_AI import brian_choose_road
-    from shelby_AI import shelby_choose_road
 
     available_roads = legal_road_placements(computer,players)
 
-    if computer.AI_code==99:
-        # Place road in the ocean
-        road = Road(Point(0,1,7),Point(1,7,8))
-    # Template for adding new AI:
-    # elif computer.AI_code==AIcode:
-    #     road = AIname_choose_road(computer,players,available_roads)
-    elif computer.AI_code==3:
-        road = shelby_choose_road(computer,players,available_roads)
-    elif computer.AI_code==2:
-        road = brian_choose_road(computer,players,available_roads)
-    elif computer.AI_code==1:
-        road = larry_choose_road(computer,players,available_roads)
-    else:
+    found = False
+    for AI in AI_modules:
+        if computer.AI_code==AI.get_code():
+            road = AI.choose_road(computer,players,available_roads)
+            found = True
+            break
+    if not(found):
         # Randomly place road
         road = choice(available_roads)
 
@@ -88,29 +67,19 @@ def computer_choose_road(computer,players):
 
 def computer_choose_city(computer,players):
     """Has computer place city. Returns tuple of the placed settlement"""
-    # from AIname_file import AIname_choose_city
-    from larry_AI import larry_choose_city
-    from brian_AI import brian_choose_city
-    from shelby_AI import shelby_choose_city
 
     available_points = []
     for point in computer.settlements:
         available_points.append(point)
 
-    if computer.AI_code==99:
-        # Place city in the ocean
-        city = Point(0,1,7)
-    # Template for adding new AI:
-    # elif computer.AI_code==AIcode:
-    #     city = AIname_choose_city(computer,players,available_points)
-    elif computer.AI_code==3:
-        city = shelby_choose_city(computer,players,available_points)
-    elif computer.AI_code==2:
-        city = brian_choose_city(computer,players,available_points)
-    elif computer.AI_code==1:
-        city = larry_choose_city(computer,players,available_points)
-    else:
-        # Randomly place city
+    found = False
+    for AI in AI_modules:
+        if computer.AI_code==AI.get_code():
+            city = AI.choose_city(computer,players,available_points)
+            found = True
+            break
+    if not(found):
+        # Randomly place road
         city = choice(available_points)
 
     return city
@@ -118,30 +87,16 @@ def computer_choose_city(computer,players):
 
 def computer_discard(computer,new_resource_count):
     """Computer must discard to get down to new_resource_count"""
-    # from AIname_file import AIname_discard
-    from larry_AI import larry_discard
-    from brian_AI import brian_discard
-    from shelby_AI import shelby_discard
 
     starting_resource_count = computer.resource_count()
 
-    if computer.AI_code==99:
-        # Get rid of all cards
-        computer.wood = 0
-        computer.brick = 0
-        computer.sheep = 0
-        computer.wheat = 0
-        computer.stone = 0
-    # Template for adding new AI:
-    # elif computer.AI_code==AIcode:
-    #     AIname_discard(computer,new_resource_count)
-    elif computer.AI_code==3:
-        shelby_discard(computer,new_resource_count)
-    elif computer.AI_code==2:
-        brian_discard(computer,new_resource_count)
-    elif computer.AI_code==1:
-        larry_discard(computer,new_resource_count)
-    else:
+    found = False
+    for AI in AI_modules:
+        if computer.AI_code==AI.get_code():
+            AI.discard(computer,new_resource_count)
+            found = True
+            break
+    if not(found):
         # Radomly get rid of resources
         while computer.resource_count()>new_resource_count:
             all_resources = []
@@ -173,28 +128,19 @@ def computer_discard(computer,new_resource_count):
 
 def computer_place_robber(computer,players,tiles):
     """Has computer place robber. Returns tile where robber was placed"""
-    # from AIname_file import AIname_place_robber
-    from larry_AI import larry_place_robber
-    from brian_AI import brian_place_robber
-    from shelby_AI import shelby_place_robber
 
     for tile in tiles:
         if tile.has_robber:
             original_tile = tile
             break
-    if computer.AI_code==99:
-        # Place robber in ocean
-        robber_tile = Tile(7)
-    # Template for adding new AI:
-    # elif computer.AI_code==AIcode:
-    #     robber_tile = AIname_place_robber(computer,players,tiles,original_tile)
-    elif computer.AI_code==3:
-        robber_tile = shelby_place_robber(computer,players,tiles,original_tile)
-    elif computer.AI_code==2:
-        robber_tile = brian_place_robber(computer,players,tiles,original_tile)
-    elif computer.AI_code==1:
-        robber_tile = larry_place_robber(computer,players,tiles,original_tile)
-    else:
+
+    found = False
+    for AI in AI_modules:
+        if computer.AI_code==AI.get_code():
+            robber_tile = AI.place_robber(computer,players,tiles,original_tile)
+            found = True
+            break
+    if not(found):
         # Place robber randomly
         robber_tile = Tile(0)
         while not(robber_tile.visible):
@@ -208,10 +154,6 @@ def computer_place_robber(computer,players,tiles):
 def computer_steal_resource(computer,players,robber_tile):
     """Has computer select a player to steal from"""
     from catan_graphics import write_log
-    # from AIname_file import AIname_choose_target
-    from larry_AI import larry_choose_target
-    from brian_AI import brian_choose_target
-    from shelby_AI import shelby_choose_target
 
     stealable_players = []
     for guy in players:
@@ -235,19 +177,14 @@ def computer_steal_resource(computer,players,robber_tile):
     if len(stealable_players)==0:
         return
 
-    if computer.AI_code==99:
-        return
-    # Template for adding new AI:
-    # elif computer.AI_code==AIcode:
-    #     target_player = \
-    #         AIname_choose_target(computer,players,stealable_players)
-    elif computer.AI_code==3:
-        target_player = shelby_choose_target(computer,players,stealable_players)
-    elif computer.AI_code==2:
-        target_player = brian_choose_target(computer,players,stealable_players)
-    elif computer.AI_code==1:
-        target_player = larry_choose_target(computer,players,stealable_players)
-    else:
+    found = False
+    for AI in AI_modules:
+        if computer.AI_code==AI.get_code():
+            target_player = AI.choose_target(computer,players,stealable_players)
+            found = True
+            break
+    if not(found):
+        # Choose target randomly
         target_player = choice(stealable_players)
 
     target_resources = []
@@ -286,31 +223,20 @@ def computer_take_turn(computer,players):
     """Defines what the computer does in its turn"""
     from catan_logic import legal_settlement_placements, legal_road_placements
     from catan_logic import build_settlement, build_road, build_city
-    # from AIname_file import AIname_take_turn
-    from larry_AI import larry_take_turn
-    from brian_AI import brian_take_turn
-    from shelby_AI import shelby_take_turn
 
     available_settlement_points = legal_settlement_placements(computer,players)
     available_roads = legal_road_placements(computer,players)
     available_city_points = computer.settlements
 
-    if computer.AI_code==99:
-        pass
-    # Template for adding new AI:
-    # elif computer.AI_code==AIcode:
-    #     action_string = AIname_take_turn(computer,players,
-    #         available_settlement_points,available_roads,available_city_points)
-    elif computer.AI_code==3:
-        action_string = shelby_take_turn(computer,players,
-            available_settlement_points,available_roads,available_city_points)
-    elif computer.AI_code==2:
-        action_string = brian_take_turn(computer,players,
-            available_settlement_points,available_roads,available_city_points)
-    elif computer.AI_code==1:
-        action_string = larry_take_turn(computer,players,
-            available_settlement_points,available_roads,available_city_points)
-    else:
+    found = False
+    for AI in AI_modules:
+        if computer.AI_code==AI.get_code():
+            action_string = AI.take_turn(computer,players,
+                available_settlement_points,available_roads,
+                available_city_points)
+            found = True
+            break
+    if not(found):
         action_options = []
         # If the computer can place a road, add that as an option
         if len(available_roads)>0 and \
@@ -354,8 +280,4 @@ def computer_take_turn(computer,players):
 ################################################################################
 # If this file is run itself, do the following
 if __name__ == '__main__':
-    from os import listdir
-    from os.path import isfile
-
-    AI_files = [f for f in listdir() if isfile(f) and 'AI' in f]
-    print(AI_files)
+    print(set_computer('Ben'))
