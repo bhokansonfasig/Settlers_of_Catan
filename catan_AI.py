@@ -12,6 +12,9 @@ def set_computer(name):
     # Template for adding new AI:
     # elif name.lower()=="AIname":
     #     return AIcode
+    elif name.lower()=="shelby" or name.lower()=="shelby the shepherd" or \
+        name.lower()=="sheep":
+        return 3
     elif name.lower()=="brian" or name.lower()=="brian the bricklayer" or \
         name.lower()=="brick":
         return 2
@@ -30,6 +33,7 @@ def computer_choose_settlement(computer,players):
     # from AIname_file import AIname_choose_settlement
     from larry_AI import larry_choose_settlement
     from brian_AI import brian_choose_settlement
+    from shelby_AI import shelby_choose_settlement
 
     available_points = legal_settlement_placements(computer,players)
 
@@ -40,6 +44,8 @@ def computer_choose_settlement(computer,players):
     # elif computer.AI_code==AIcode:
     #     settlement = AIname_choose_settlement(computer,players,
     #         available_points)
+    elif computer.AI_code==3:
+        settlement = shelby_choose_settlement(computer,players,available_points)
     elif computer.AI_code==2:
         settlement = brian_choose_settlement(computer,players,available_points)
     elif computer.AI_code==1:
@@ -57,6 +63,7 @@ def computer_choose_road(computer,players):
     # from AIname_file import AIname_choose_road
     from larry_AI import larry_choose_road
     from brian_AI import brian_choose_road
+    from shelby_AI import shelby_choose_road
 
     available_roads = legal_road_placements(computer,players)
 
@@ -66,6 +73,8 @@ def computer_choose_road(computer,players):
     # Template for adding new AI:
     # elif computer.AI_code==AIcode:
     #     road = AIname_choose_road(computer,players,available_roads)
+    elif computer.AI_code==3:
+        road = shelby_choose_road(computer,players,available_roads)
     elif computer.AI_code==2:
         road = brian_choose_road(computer,players,available_roads)
     elif computer.AI_code==1:
@@ -82,6 +91,7 @@ def computer_choose_city(computer,players):
     # from AIname_file import AIname_choose_city
     from larry_AI import larry_choose_city
     from brian_AI import brian_choose_city
+    from shelby_AI import shelby_choose_city
 
     available_points = []
     for point in computer.settlements:
@@ -93,6 +103,8 @@ def computer_choose_city(computer,players):
     # Template for adding new AI:
     # elif computer.AI_code==AIcode:
     #     city = AIname_choose_city(computer,players,available_points)
+    elif computer.AI_code==3:
+        city = shelby_choose_city(computer,players,available_points)
     elif computer.AI_code==2:
         city = brian_choose_city(computer,players,available_points)
     elif computer.AI_code==1:
@@ -109,6 +121,7 @@ def computer_discard(computer,new_resource_count):
     # from AIname_file import AIname_discard
     from larry_AI import larry_discard
     from brian_AI import brian_discard
+    from shelby_AI import shelby_discard
 
     starting_resource_count = computer.resource_count()
 
@@ -122,6 +135,8 @@ def computer_discard(computer,new_resource_count):
     # Template for adding new AI:
     # elif computer.AI_code==AIcode:
     #     AIname_discard(computer,new_resource_count)
+    elif computer.AI_code==3:
+        shelby_discard(computer,new_resource_count)
     elif computer.AI_code==2:
         brian_discard(computer,new_resource_count)
     elif computer.AI_code==1:
@@ -161,6 +176,7 @@ def computer_place_robber(computer,players,tiles):
     # from AIname_file import AIname_place_robber
     from larry_AI import larry_place_robber
     from brian_AI import brian_place_robber
+    from shelby_AI import shelby_place_robber
 
     for tile in tiles:
         if tile.has_robber:
@@ -172,6 +188,8 @@ def computer_place_robber(computer,players,tiles):
     # Template for adding new AI:
     # elif computer.AI_code==AIcode:
     #     robber_tile = AIname_place_robber(computer,players,tiles,original_tile)
+    elif computer.AI_code==3:
+        robber_tile = shelby_place_robber(computer,players,tiles,original_tile)
     elif computer.AI_code==2:
         robber_tile = brian_place_robber(computer,players,tiles,original_tile)
     elif computer.AI_code==1:
@@ -193,6 +211,7 @@ def computer_steal_resource(computer,players,robber_tile):
     # from AIname_file import AIname_choose_target
     from larry_AI import larry_choose_target
     from brian_AI import brian_choose_target
+    from shelby_AI import shelby_choose_target
 
     stealable_players = []
     for guy in players:
@@ -222,6 +241,8 @@ def computer_steal_resource(computer,players,robber_tile):
     # elif computer.AI_code==AIcode:
     #     target_player = \
     #         AIname_choose_target(computer,players,stealable_players)
+    elif computer.AI_code==3:
+        target_player = shelby_choose_target(computer,players,stealable_players)
     elif computer.AI_code==2:
         target_player = brian_choose_target(computer,players,stealable_players)
     elif computer.AI_code==1:
@@ -268,6 +289,7 @@ def computer_take_turn(computer,players):
     # from AIname_file import AIname_take_turn
     from larry_AI import larry_take_turn
     from brian_AI import brian_take_turn
+    from shelby_AI import shelby_take_turn
 
     available_settlement_points = legal_settlement_placements(computer,players)
     available_roads = legal_road_placements(computer,players)
@@ -279,6 +301,9 @@ def computer_take_turn(computer,players):
     # elif computer.AI_code==AIcode:
     #     action_string = AIname_take_turn(computer,players,
     #         available_settlement_points,available_roads,available_city_points)
+    elif computer.AI_code==3:
+        action_string = shelby_take_turn(computer,players,
+            available_settlement_points,available_roads,available_city_points)
     elif computer.AI_code==2:
         action_string = brian_take_turn(computer,players,
             available_settlement_points,available_roads,available_city_points)
