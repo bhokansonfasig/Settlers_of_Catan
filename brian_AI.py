@@ -84,41 +84,32 @@ def brian_choose_settlement(computer,players,available_settlement_points):
     from catan_graphics import get_tiles
     tiles = get_tiles()
 
-    # Make a matrix of all the brick tiles, with their weighted probabilities
+    # Make a matrix of all the brick tiles
     brick_matrix = []
     for tile in tiles:
         if tile.resource=="brick":
-            brick_matrix.append([int((7-abs(tile.roll_number-7))**2),
-                tile.index])
+            brick_matrix.append(tile.index)
 
-    # If an available point is on a brick tile, add it to the options a number
-    #  of times indicated by the probability from above
+    # If an available point is on a brick tile, add it to the options
     settlement_options = []
     for element in brick_matrix:
         for point in available_settlement_points:
-            if element[1] in point.coordinate:
-                for i in range(element[0]):
-                    settlement_options.append(point)
+            if element in point.coordinate:
+                settlement_options.append(point)
 
-    # If the brick port is one of the available points, add it a bunch of times
-    #  Especially if it's on a brick tile too!
+    # If the brick port is one of the available points, add it to the options
     for point in available_settlement_points:
         if point.is_port:
             if point.port_resource=="brick":
-                for element in brick_matrix:
-                    if element[1] in point.coordinate:
-                        for i in range(50):
-                            settlement_options.append(point)
-                    else:
-                        for i in range(20):
-                            settlement_options.append(point)
+                settlement_options.append(point)
 
     # If there are no brick tiles open to play on, play on a non-brick tile
     if len(settlement_options)==0:
         settlement_options = available_settlement_points
 
     # Choose a point with the highest total probabilities to play on
-    #  Brick port triples probabilities
+    #  Brick port adds 8, plus an extra 2 for each brick tile it's on
+    #  3:1 port adds 4
     best_positions = []
     highest_probability = 18
     while len(best_positions)==0:
@@ -128,7 +119,12 @@ def brian_choose_settlement(computer,players,available_settlement_points):
                 point_probability += 7-abs(tiles[i].roll_number-7)
             if point.is_port:
                 if point.port_resource=="brick":
-                    point_probability = point_probability*3
+                    point_probability += 8
+                    for i in point.coordinate:
+                        if tiles[i].resource=="brick":
+                            point_probability += 2
+                elif point.port_resource=="any" or point.port_resource=="?":
+                    point_probability += 4
             if point_probability>=highest_probability:
                 best_positions.append(point)
         highest_probability -= 1
@@ -146,21 +142,18 @@ def brian_choose_city(computer,players,available_city_points):
     from catan_graphics import get_tiles
     tiles = get_tiles()
 
-    # Make a matrix of all the brick tiles, with their weighted probabilities
+    # Make a matrix of all the brick tiles
     brick_matrix = []
     for tile in tiles:
         if tile.resource=="brick":
-            brick_matrix.append([int((7-abs(tile.roll_number-7))**2),
-                tile.index])
+            brick_matrix.append(tile.index)
 
-    # If an available point is on a brick tile, add it to the options a number
-    #  of times indicated by the probability from above
+    # If an available point is on a brick tile, add it to the options
     city_options = []
     for element in brick_matrix:
         for point in available_city_points:
-            if element[1] in point.coordinate:
-                for i in range(element[0]):
-                    city_options.append(point)
+            if element in point.coordinate:
+                city_options.append(point)
 
     # If there are no brick tiles open to play on, play on a non-brick tile
     if len(city_options)==0:
@@ -191,34 +184,29 @@ def brian_choose_road(computer,players,available_roads):
     from catan_graphics import get_tiles
     tiles = get_tiles()
 
-    # Make a matrix of all the brick tiles, with their weighted probabilities
+    # Make a matrix of all the brick tiles
     brick_matrix = []
     for tile in tiles:
         if tile.resource=="brick":
-            brick_matrix.append([int((7-abs(tile.roll_number-7))**2),
-                tile.index])
+            brick_matrix.append(tile.index)
 
-    # If an available road has both points on a brick tile, add it to the options
-    #  a number of times indicated by the probability from above
+    # If an available road has both points on a brick tile, add it to options
     road_options = []
     for element1 in brick_matrix:
         for element2 in brick_matrix:
             for rd in available_roads:
-                if element1[1] in rd.point1.coordinate and \
-                    element2[1] in rd.point2.coordinate:
-                    for i in range(element1[0]+element2[0]):
-                        road_options.append(rd)
+                if element1 in rd.point1.coordinate and \
+                    element2 in rd.point2.coordinate:
+                    road_options.append(rd)
 
     # If no roads have both points on a brick tile, find roads with just one
-    #  point on a brick tile and add it to the options a number of times
-    #  indicated by the probability from above
+    #  point on a brick tile and add it to the options
     if len(road_options)==0:
         for element in brick_matrix:
             for rd in available_roads:
-                if element[1] in rd.point1.coordinate or \
-                    element[1] in rd.point2.coordinate:
-                    for i in range(element[0]):
-                        road_options.append(rd)
+                if element in rd.point1.coordinate or \
+                    element in rd.point2.coordinate:
+                    road_options.append(rd)
 
     # If there are no brick tiles open to play on, play on a non-brick tile,
     if len(road_options)==0:
