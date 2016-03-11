@@ -349,3 +349,13 @@ def computer_take_turn(computer,players):
         return road_string
     else:
         return "ended turn"
+
+
+################################################################################
+# If this file is run itself, do the following
+if __name__ == '__main__':
+    from os import listdir
+    from os.path import isfile
+
+    AI_files = [f for f in listdir() if isfile(f) and 'AI' in f]
+    print(AI_files)
