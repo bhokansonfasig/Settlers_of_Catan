@@ -1,4 +1,12 @@
-Settlers of Catan game to be played among some mix of human players located remotely and AI.
+Settlers of Catan game to be played among some mix of human players located locally and AI.
 
 Running main.py should run the game
-  catan_graphics.py and catan_logic.py control graphics and game logic respectively
+
+New AI can be added by following the template in AI_files directory.
+
+
+Features not yet implemented (but in the works):
+  -Longest road
+  -Development cards
+  -Trading between players
+  -Playing between computers remotely
