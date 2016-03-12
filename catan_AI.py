@@ -28,9 +28,11 @@ def set_computer(name):
                 print("Caution: name",alias,"exists in two AI files.\n",
                         "May cause unexpected behavior")
                 break
+            all_aliases.append(alias)
         if code in all_codes:
             print("Caution: AI code",code,"refers to two different AI files.\n",
                     "May cause unexpected behavior")
+        all_codes.append(code)
         if name.lower() in aliases:
             return code
 
