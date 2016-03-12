@@ -18,10 +18,21 @@ def set_computer(name):
     for AI_file in AI_files:
         AI_modules.append(import_module("AI_files."+AI_file))
 
+    all_aliases = []
+    all_codes = []
     for AI in AI_modules:
         aliases = AI.get_aliases()
+        code = AI.get_code()
+        for alias in aliases:
+            if alias in all_aliases:
+                print("Caution: name",alias,"exists in two AI files.\n",
+                        "May cause unexpected behavior")
+                break
+        if code in all_codes:
+            print("Caution: AI code",code,"refers to two different AI files.\n",
+                    "May cause unexpected behavior")
         if name.lower() in aliases:
-            return AI.get_code()
+            return code
 
     print("Name",name,"unknown. Defaulting to random computer.")
     return 0
