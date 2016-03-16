@@ -128,19 +128,50 @@ class Player:
 		for road in self.roads:
 			self.scaler_points.append(road.coordinates[0])
 			self.scaler_points.append(road.coordinates[1])
-		print(self.name,":",len(self.scaler_points))
+		# print(self.name,":",len(self.scaler_points))
+
+	def find_graph_edge(self):
+		for x in range(0,len(self.scaler_points)):
+			is_edge = True
+			for y in range(x+1,len(self.scaler_points)):
+				if (self.scaler_points[x] == self.scaler_points[y]):
+					is_edge = False
+					break
+			if(is_edge):
+				return self.scaler_points[x]
+
+		return self.scaler_points[0] #the graph only consists of loops
+
+	def adjacent_point(self,p1,p2):
+		common_hex = len(p1+p2) - len(set(p1+p2))
+		if(common_hex == 2):
+			return True
+		else:
+			return False
+
+	def adjacent_point_in_list(self,p1,list_of_points):
+		for point in list_of_points:
+			if(self.adjacent_point(point,p1) and p1 != point):
+				return [True,point]
+		return [False,None]
+
+	def count_connections(self,point):
+		connections = 0
+		for p in self.scaler_points:
+			if(point == p):
+				connections += 1
+		return connections
 
 
-	# def only_branches_and_no_loops(self):
-	# 	import copy
-	# 	self.isolate_loops()
-	# 	road_types = copy.deepcopy(self.road_types)
-	# 	output = []
-	# 	if(len(loops)==0):
-	# 		for edge in road_types[1]:
-	# 			paths = []
-	# 			intermediate_road = edge
-	# 			while (len(road_types[1]) != 0):
-	# 				middle_roads = road_types[2]+road_types[3]+road_types[4]
-	# 	            intermediate_road = intermediate_road.find_connected(middle_roads)
-	# 	            self.road_types[2].remove(intermediate_road)
+	def travel_along_chain(self,point):
+		temp = point
+		s = ""
+		while(self.adjacent_point_in_list(temp,self.scaler_points)[0]):
+			print(self.scaler_points)
+			self.scaler_points.remove(temp)
+			s += "->"+str(temp)
+			temp = self.adjacent_point_in_list(temp,self.scaler_points)[1]
+		
+		s += "->"+str(temp)
+		print(self.name,s)
+

@@ -217,6 +217,8 @@ def build_road(player,players):
     player.calculate_score()
 
     player.generate_graph()
+    # print(player.find_graph_edge())
+    print(player.travel_along_chain(player.find_graph_edge()))
 
     return road
 
