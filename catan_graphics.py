@@ -1201,11 +1201,11 @@ def draw_intermediate_screen(player):
     intermediate_text_1 = board_canvas.create_text(
         int((hex_x_off-water_width)/2),int(win_height/3),
         text=text_string, font=(txt_font,int(1.5*txt_size)), fill=player.color,
-        width=int(.9*(hex_x_off-water_width)))
+        width=int(.9*(hex_x_off-water_width)), justify=CENTER)
     intermediate_text_2 = board_canvas.create_text(
         int((hex_x_off-water_width)/2),int(win_height/3)+2*txt_size,
         text="Click to continue", font=(txt_font,txt_size), fill= player.color,
-        width=int(.9*(hex_x_off-water_width)))
+        width=int(.9*(hex_x_off-water_width)), justify=CENTER)
     board_canvas.wait_variable(click_x)
     board_canvas.delete(intermediate_text_1)
     board_canvas.delete(intermediate_text_2)
@@ -1475,7 +1475,7 @@ def draw_winning_screen(player):
     winning_text = board_canvas.create_text(
         int((hex_x_off-water_width)/2),int(win_height/3),
         text=text_string, font=(txt_font,3*txt_size), fill=player.color,
-        width=int(.9*(hex_x_off-water_width)))
+        width=int(.9*(hex_x_off-water_width)), justify=CENTER)
     board_canvas.wait_window(board_canvas)
 
 
