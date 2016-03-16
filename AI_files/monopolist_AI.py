@@ -138,9 +138,19 @@ def choose_settlement(computer,players,available_settlement_points):
         resource_list = ["wood","brick","sheep","wheat","stone"]
         probability_list = [[],[],[],[],[]]
         for tile in tiles:
+            full_probability = (7-abs(tile.roll_number-7))**2
+            filled_vertex_count = 0
+            for player in players:
+                for point in player.points:
+                    if tile.index in point.coordinate:
+                        filled_vertex_count += 1
+            if filled_vertex_count>=3:
+                probability = 0
+            else:
+                probability = full_probability*(1-filled_vertex_count/3)
             for i in range(len(resource_list)):
                 if tile.resource==resource_list[i]:
-                    probability_list[i].append((7-abs(tile.roll_number-7))**2)
+                    probability_list[i].append(probability)
                     break
         # Find the resource(s) with the highest average roll number
         max_probability = 0
