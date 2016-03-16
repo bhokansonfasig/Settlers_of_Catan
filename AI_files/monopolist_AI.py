@@ -132,10 +132,9 @@ def choose_settlement(computer,players,available_settlement_points):
         for tile in tiles:
             for i in range(len(resource_list)):
                 if tile.resource==resource_list[i]:
-                    probability_list[i].append(7-abs(tile.roll_number-7))
+                    probability_list[i].append((7-abs(tile.roll_number-7))**2)
                     break
         # Find the resource(s) with the highest average roll number
-        print(probability_list)
         max_probability = 0
         resource_averages = []
         for values in probability_list:
