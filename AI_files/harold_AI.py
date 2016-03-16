@@ -9,9 +9,8 @@ def get_code():
     return 4
 
 def get_aliases():
-    return ['harold','harold the harvester',
-            'hayley','hayley the harvester',
-            'wheat']
+    return ['wheat','harold','harold the harvester',
+            'hayley','hayley the harvester']
 
 
 def take_turn(computer,players,available_settlement_points,

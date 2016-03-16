@@ -9,9 +9,8 @@ def get_code():
     return 1
 
 def get_aliases():
-    return ['larry','larry the lumberjack',
-            'laura','laura the lumberjack',
-            'wood']
+    return ['wood','larry','larry the lumberjack',
+            'laura','laura the lumberjack']
 
 
 def take_turn(computer,players,available_settlement_points,
