@@ -18,6 +18,17 @@ def set_computer(name):
     for AI_file in AI_files:
         AI_modules.append(import_module("AI_files."+AI_file))
 
+    if len(AI_modules)==0:
+        print("No AI modules found. All computers will play randomly.")
+        name = 'Random'
+
+    random_play_aliases = ["random","randy","randy the random",
+                            "rachel","rachel the random"]
+
+    # If the name is one of the random play names, set to random AI
+    if name.lower() in random_play_aliases:
+        return name,0
+
     all_aliases = []
     all_codes = []
     for AI in AI_modules:
@@ -36,21 +47,19 @@ def set_computer(name):
         if name.lower() in aliases:
             return name,code
 
-    if name.lower()=='random':
-        # If the name is 'random', give it a random AI personality
-        code = choice(all_codes)
-        # Print a note of which AI was chosen
-        for AI in AI_modules:
-            match = AI.get_code()
-            if match==code:
-                aliases = AI.get_aliases()
-                print("Computer with name",name,"set to AI",aliases[0])
-                break
-        return aliases[0].capitalize(),code
-
-    # If the name is not on the list, have it play randomly
-    print("Name",name,"unknown. Defaulting to random computer.")
-    return name,0
+    # If the name is not found, give it one of the known AI personalities
+    code = choice(all_codes)
+    # Print a note of which AI was chosen
+    for AI in AI_modules:
+        match = AI.get_code()
+        if match==code:
+            aliases = AI.get_aliases()
+            print("Computer with name",name,"set to AI",aliases[0])
+            break
+    # # Changes the name of the computer
+    # return aliases[0].capitalize(),code
+    # Doesn't change the name of the computer
+    return name,code
 
 
 def computer_choose_settlement(computer,players):
