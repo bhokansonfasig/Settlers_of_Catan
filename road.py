@@ -54,5 +54,10 @@ class Road:
 
         return connections
 
+    def return_connected_road(self,road_list):
+        for road in road_list:
+            if(self.connected(road)):
+                return road 
+
     def common_tile(self,other):
         return(list(set(self.tiles).intersection(other.tiles)))

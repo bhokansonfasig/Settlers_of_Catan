@@ -59,9 +59,11 @@ class Player:
 		# 	self.brick += 20
 
 		#longest road stuff
-		self.road_types = [[],[],[],[],[]] #the index corresponds to the number of connections
-		self.calculation_complete = False
-		self.longest_simple_chain = 0
+		self.scaler_points = []
+
+		# self.road_types = [[],[],[],[],[]] #the index corresponds to the number of connections
+		# self.calculation_complete = False
+		# self.longest_simple_chain = 0
 
 		#Development cards: lets leave these for now
 
@@ -121,109 +123,12 @@ class Player:
 		elif resource=="stone":
 			self.stone += 1
 
-	#alots a number to each road which corresponds to how many other roads its connected to
-	def classify_road(self):
-	    self.road_types = [[],[],[],[],[]]
-	    for road in self.roads:
-	        connections = 0
-	        for other_road in self.roads:
-	            # if(road == other_road):
-	            #     continue
-	            # else:
-	            if(road.connected(other_road)):
-	                connections += 1
-	        self.road_types[connections].append(road)
-
-
-	def isolate_simple_straight_chains(self):
-	    chain_lengths = []
-	    self.calculation_complete = False
-	    self.classify_road()
-	    for edge in self.road_types[1]:
-	        length = 0
-	        intermediate_road = edge
-	        self.road_types[1].remove(edge)
-	        while (len(intermediate_road.find_connected(self.road_types[2])) != 0):
-	            intermediate_road = intermediate_road.find_connected(self.road_types[2])[0]
-	            self.road_types[2].remove(intermediate_road)
-	            length += 1
-	        if(len(intermediate_road.find_connected(self.road_types[1]))==1):
-	            other_edge = intermediate_road.find_connected(self.road_types[1])[0]
-	            self.road_types[1].remove(other_edge)
-	            chain_lengths.append(length+2)
-	        # print(chain_lengths,self.name)
-
-	    if(len(chain_lengths) == 2): #there were two chains, and they were identified
-	        self.calculation_complete = True
-	    if(len(chain_lengths) == 1): #checking if whats left is too small to give the longest road
-	        leftover = len(self.roads)-chain_lengths[0]
-	        if (leftover < (chain_lengths[0]+1)): #the leftover _must_ have a longer chain, else no need to evaluate it
-	            self.calculation_complete = True
-
-	    if(self.calculation_complete):
-	        print("longest:",max(chain_lengths),self.name)
-
-	    #the length of the chain that we do have is useful for comparision while looking at the complex structure
-	    if(len(chain_lengths)!=0):
-	        longest_simple_chain = max(chain_lengths)
-	    else:
-	    	longest_simple_chain = 0
-
-	def isolate_loops(self):
-		self.isolate_simple_straight_chains()
-		occupied_edges = [0]*49
-		tiles_with_loops = []
-
-		for road in self.road_types[2]+self.road_types[3]+self.road_types[4]:
-			occupied_edges[road.tiles[0]] += 1
-			occupied_edges[road.tiles[1]] += 1
-
-		for tile in range(0,len(occupied_edges)):
-			if(occupied_edges[tile]==6):
-				tiles_with_loops.append(tile)
-
-		return tiles_with_loops
-
-		# for index in tiles_with_loops:
-		# 	print(self.name,index)
-
-	#a single road connected to a loop is an edge, but it has _two_ connections
-	def find_complex_edges(self):
-		self.isolate_simple_straight_chains()
-		complex_edges = []
-		for possible_edge in self.road_types[2]:
-			neighbors = possible_edge.find_connected(self.roads)
-
-			a = possible_edge.common_tile(neighbors[0])
-			b = possible_edge.common_tile(neighbors[1])
-			c = neighbors[0].common_tile(neighbors[1])
-
-			if(len(set(a+b+c))==3):
-				complex_edges.append(possible_edge)
-
-		print(self.name,"has",len(complex_edges),"complex edges")
-
-		return complex_edges
-
-
-
-
-
-	# def only_branches_and_no_loops(self):
-	# 	self.isolate_simple_straight_chains()
-	# 	if(len(self.isolate_loops)==0):
-	# 		complex_edges = find_complex_edges()
-	# 		all_edges = self.road_types[1]+complex_edges
-	# 		output = [[0 for x in range(len(all_edges)))] for x in range(len(all_edges))]
-
-	# 		for edge in all_edges:
-	# 			all_edges = self.road_types[1]+complex_edges
-	# 			paths = []
-	# 			intermediate_road = edge
-	# 			while (len(all_edges) != 0):
-	# 				middle_roads = road_types[2]+road_types[3]+road_types[4]
-	# 	            intermediate_road = intermediate_road.find_connected(middle_roads)
-	# 	            paths.append[intermediate_road]
+	def generate_graph(self):
+		self.scaler_points = []
+		for road in self.roads:
+			self.scaler_points.append(road.coordinates[0])
+			self.scaler_points.append(road.coordinates[1])
+		print(self.name,":",len(self.scaler_points))
 
 
 	# def only_branches_and_no_loops(self):

@@ -216,8 +216,7 @@ def build_road(player,players):
     # Recalculate the player's score
     player.calculate_score()
 
-    player.isolate_loops()
-    player.find_complex_edges()
+    player.generate_graph()
 
     return road
 
