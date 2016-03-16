@@ -34,10 +34,23 @@ def set_computer(name):
                     "May cause unexpected behavior")
         all_codes.append(code)
         if name.lower() in aliases:
-            return code
+            return name,code
 
+    if name.lower()=='random':
+        # If the name is 'random', give it a random AI personality
+        code = choice(all_codes)
+        # Print a note of which AI was chosen
+        for AI in AI_modules:
+            match = AI.get_code()
+            if match==code:
+                aliases = AI.get_aliases()
+                print("Computer with name",name,"set to AI",aliases[0])
+                break
+        return aliases[0].capitalize(),code
+
+    # If the name is not on the list, have it play randomly
     print("Name",name,"unknown. Defaulting to random computer.")
-    return 0
+    return name,0
 
 
 def computer_choose_settlement(computer,players):

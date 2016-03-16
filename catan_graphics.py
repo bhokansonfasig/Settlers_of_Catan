@@ -331,45 +331,6 @@ def close_all(splash,board):
 def set_players(board):
     """Gets the number and type of players and returns an array of player
         objects"""
-    # # Command line implementation; pretty broken honestly...
-    # playnum = 0
-    # compnum = 0
-    # while (playnum<=1 or playnum>=5) or (compnum<=-1 or compnum>=5):
-    #     playnum = eval(input("Total number of players: "))
-    #     compnum = eval(input("Number of computer players: "))
-    # if playnum==compnum:
-    #     level = eval(input("Computer 1 level: "))
-    #     player = Player(1,"Computer 1",level)
-    #     players.append(player)
-    # else:
-    #     name = input("Player 1 name: ")
-    #     player = Player(1,name,-1)
-    #     players.append(player)
-    # if playnum<=compnum+1:
-    #     level = eval(input("Computer 2 level: "))
-    #     player = Player(2,"Computer 2",level)
-    #     players.append(player)
-    # else:
-    #     name = input("Player 2 name: ")
-    #     player = Player(2,name,-1)
-    #     players.append(player)
-    # if playnum<=compnum+2 and playnum>=3:
-    #     level = eval(input("Computer 3 level: "))
-    #     player = Player(3,"Computer 3",level)
-    #     players.append(player)
-    # elif playnum>=3:
-    #     name = input("Player 3 name: ")
-    #     player = Player(3,name,-1)
-    #     players.append(player)
-    # if playnum<=compnum+3 and playnum==4:
-    #     level = eval(input("Computer 4 level: "))
-    #     player = Player(4,"Computer 4",level)
-    #     players.append(player)
-    # elif playnum==4:
-    #     name = input("Player 4 name: ")
-    #     player = Player(4,name,-1)
-    #     players.append(player)
-
     splash.withdraw()
     player_window.update()
     player_window.deiconify()
@@ -386,7 +347,7 @@ def set_players(board):
             comp_name = player_1_name.get()
             if comp_name=="Player 1":
                 comp_name = "Computer 1"
-            comp_level = set_computer(comp_name)
+            comp_name,comp_level = set_computer(comp_name)
             players.append(Player(1,comp_name,comp_level))
         if player_2_type.get()=="Human":
             players.append(Player(2,player_2_name.get(),-1))
@@ -394,7 +355,7 @@ def set_players(board):
             comp_name = player_2_name.get()
             if comp_name=="Player 2":
                 comp_name = "Computer 2"
-            comp_level = set_computer(comp_name)
+            comp_name,comp_level = set_computer(comp_name)
             players.append(Player(2,comp_name,comp_level))
         if player_3_type.get()=="Human":
             players.append(Player(3,player_3_name.get(),-1))
@@ -402,7 +363,7 @@ def set_players(board):
             comp_name = player_3_name.get()
             if comp_name=="Player 3":
                 comp_name = "Computer 3"
-            comp_level = set_computer(comp_name)
+            comp_name,comp_level = set_computer(comp_name)
             players.append(Player(3,comp_name,comp_level))
         if player_4_type.get()=="Human":
             players.append(Player(4,player_4_name.get(),-1))
@@ -410,7 +371,7 @@ def set_players(board):
             comp_name = player_4_name.get()
             if comp_name=="Player 4":
                 comp_name = "Computer 4"
-            comp_level = set_computer(comp_name)
+            comp_name,comp_level = set_computer(comp_name)
             players.append(Player(4,comp_name,comp_level))
 
     open_board_window(player_window,board)
