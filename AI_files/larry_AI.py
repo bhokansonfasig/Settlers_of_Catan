@@ -9,9 +9,13 @@ def get_code():
     return 1
 
 def get_aliases():
-    return ['larry','larry the lumberjack',
-            'laura','laura the lumberjack',
-            'wood']
+    return ['wood','larry','larry the lumberjack',
+            'laura','laura the lumberjack']
+
+def get_difficulty():
+    # Should return the difficulty level of this AI
+    #  Return 0 to not be included when an AI is randomly assigned
+    return 1
 
 
 def take_turn(computer,players,available_settlement_points,

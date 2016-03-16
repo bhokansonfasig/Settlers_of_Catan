@@ -9,9 +9,13 @@ def get_code():
     return 2
 
 def get_aliases():
-    return ['brian','brian the bricklayer',
-            'brenda','brenda the bricklayer',
-            'brick']
+    return ['brick','brian','brian the bricklayer',
+            'brenda','brenda the bricklayer']
+
+def get_difficulty():
+    # Should return the difficulty level of this AI
+    #  Return 0 to not be included when an AI is randomly assigned
+    return 1
 
 
 def take_turn(computer,players,available_settlement_points,

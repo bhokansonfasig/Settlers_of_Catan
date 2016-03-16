@@ -47,15 +47,20 @@ def set_computer(name):
         if name.lower() in aliases:
             return name,code
 
-    # If the name is not found, give it one of the known AI personalities
-    code = choice(all_codes)
-    # Print a note of which AI was chosen
-    for AI in AI_modules:
-        match = AI.get_code()
-        if match==code:
-            aliases = AI.get_aliases()
-            print("Computer with name",name,"set to AI",aliases[0])
-            break
+    valid_AI = False
+    while not(valid_AI):
+        # If the name is not found, give it one of the known AI personalities
+        code = choice(all_codes)
+        # Print a note of which AI was chosen
+        for AI in AI_modules:
+            match = AI.get_code()
+            if match==code:
+                # Ignore AIs with difficulty level 0
+                if AI.get_difficulty()>0:
+                    aliases = AI.get_aliases()
+                    print("Computer with name",name,"set to AI",aliases[0])
+                    valid_AI = True
+                break
     # # Changes the name of the computer
     # return aliases[0].capitalize(),code
     # Doesn't change the name of the computer
