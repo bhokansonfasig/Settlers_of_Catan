@@ -12,6 +12,11 @@ def get_aliases():
     return ['stone','marty','marty the mountaineer',
             'mary','mary the mountaineer']
 
+def get_difficulty():
+    # Should return the difficulty level of this AI
+    #  Return 0 to not be included when an AI is randomly assigned
+    return 1
+
 
 def take_turn(computer,players,available_settlement_points,
     available_roads,available_city_points):

@@ -7,10 +7,18 @@ from tiles import Tile
 #  desireable resource
 
 def get_code():
+    # Should return the AI_code for this AI
     return 7
 
 def get_aliases():
+    # Should return all names that initialize this AI
+    #  Note the names should be in all lowercase letters
     return ['monopolist','dhanush','rich uncle pennybags','pennybags']
+
+def get_difficulty():
+    # Should return the difficulty level of this AI
+    #  Return 0 to not be included when an AI is randomly assigned
+    return 2
 
 
 def take_turn(computer,players,available_settlement_points,
