@@ -40,11 +40,15 @@ class App(Frame):
             font=(txt_font,18), background=menu_color)
         version_label.pack(pady=30)
         # Buttons
-        play_button = Button(splash, font=(txt_font,16), text="New Game",
+        play_button = Button(splash, font=(txt_font,16), text="Local Game",
             command=lambda : new_game(splash, self.parent))
         play_button.configure(width=10, activebackground=active_button_color)
         play_button.pack(pady=10)
-        load_button = Button(splash, font=(txt_font,16), text="Load Game",
+        start_button = Button(splash, font=(txt_font,16), text="New Remote Game",
+            command=lambda : remote_game(splash, self.parent))
+        start_button.configure(width=10, activebackground=active_button_color)
+        start_button.pack(pady=10)
+        load_button = Button(splash, font=(txt_font,16), text="Load Remote Game",
             command=lambda : load_game(splash, self.parent))
         load_button.configure(width=10, activebackground=active_button_color)
         load_button.pack(pady=10)
@@ -1044,6 +1048,92 @@ def player_steal_resource(player,players,robber_tile):
     steal_button.destroy()
 
 
+def development_menu(player,players):
+    """Clears buttons and draws development screen for player"""
+    from catan_logic import perform_trade
+
+    undraw_buttons()
+
+    # # Create buttons on board window
+    # build_settlement_button = Button(board_canvas,
+    #     font=(txt_font, int(.8*txt_size)), text="Build Settlement",
+    #     command=lambda : set_button_chosen(1))
+    # build_settlement_button.configure(width=13, height=1, padx=0, pady=0)
+    #     #background=inactive_button_color, activebackground=active_button_color)
+    # build_settlement_button_window = board_canvas.create_window(
+    #     int((hex_x_off-water_width)*3/10),int(win_height*.4),
+    #     window=build_settlement_button, tags="button")
+    # settlement_cost_text = board_canvas.create_text(
+    #     int((hex_x_off-water_width)*3/10),int(win_height*.4+1.25*txt_size),
+    #     text="(1 wood, 1 brick, 1 sheep, 1 wheat)",
+    #     font=(txt_font, int(.5*txt_size)), tags="button")
+    # build_road_button = Button(board_canvas,
+    #     font=(txt_font, int(.8*txt_size)), text="Build Road",
+    #     command=lambda : set_button_chosen(2))
+    # build_road_button.configure(width=13, height=1, padx=0, pady=0)
+    #     #background=inactive_button_color, activebackground=active_button_color)
+    # build_road_button_window = board_canvas.create_window(
+    #     int((hex_x_off-water_width)*7/10),int(win_height*.4),
+    #     window=build_road_button, tags="button")
+    # road_cost_text = board_canvas.create_text(
+    #     int((hex_x_off-water_width)*7/10),int(win_height*.4+1.25*txt_size),
+    #     text="(1 wood, 1 brick)",
+    #     font=(txt_font, int(.5*txt_size)), tags="button")
+    # build_city_button = Button(board_canvas,
+    #     font=(txt_font, int(.8*txt_size)), text="Build City",
+    #     command=lambda : set_button_chosen(3))
+    # build_city_button.configure(width=13, height=1, padx=0, pady=0)
+    #     #background=inactive_button_color, activebackground=active_button_color)
+    # build_city_button_window = board_canvas.create_window(
+    #     int((hex_x_off-water_width)*3/10),int(win_height*.4+3*txt_size),
+    #     window=build_city_button, tags="button")
+    # city_cost_text = board_canvas.create_text(
+    #     int((hex_x_off-water_width)*3/10),int(win_height*.4+4.25*txt_size),
+    #     text="(2 wheat, 3 stone)",
+    #     font=(txt_font, int(.5*txt_size)), tags="button")
+    # buy_dev_button = Button(board_canvas,
+    #     font=(txt_font, int(.8*txt_size)), text="Development",
+    #     command=lambda : set_button_chosen(4))
+    # buy_dev_button.configure(width=13, height=1, padx=0, pady=0)
+    #     #background=inactive_button_color, activebackground=active_button_color)
+    # buy_dev_button_window = board_canvas.create_window(
+    #     int((hex_x_off-water_width)*7/10),int(win_height*.4+3*txt_size),
+    #     window=buy_dev_button, tags="button")
+    # dev_cost_text = board_canvas.create_text(
+    #     int((hex_x_off-water_width)*7/10),int(win_height*.4+4.25*txt_size),
+    #     text="(1 sheep, 1 wheat, 1 stone)",
+    #     font=(txt_font, int(.5*txt_size)), tags="button")
+    # maritime_trade_button = Button(board_canvas,
+    #     font=(txt_font, int(.8*txt_size)), text="Port Trade",
+    #     command=lambda : set_button_chosen(5))
+    # maritime_trade_button.configure(width=13, height=1, padx=0, pady=0)
+    #     #background=inactive_button_color, activebackground=active_button_color)
+    # maritime_trade_button_window = board_canvas.create_window(
+    #     int((hex_x_off-water_width)*3/10),int(win_height*.4+6*txt_size),
+    #     window=maritime_trade_button, tags="button")
+    # trading_post_button = Button(board_canvas,
+    #     font=(txt_font, int(.8*txt_size)), text="Player Trade",
+    #     command=lambda : set_button_chosen(6))
+    # trading_post_button.configure(width=13, height=1, padx=0, pady=0)
+    #     #background=inactive_button_color, activebackground=active_button_color)
+    # trading_post_button_window = board_canvas.create_window(
+    #     int((hex_x_off-water_width)*7/10),int(win_height*.4+6*txt_size),
+    #     window=trading_post_button, tags="button")
+    # end_turn_button = Button(board_canvas,
+    #     font=(txt_font, int(.8*txt_size)), text="End Turn",
+    #     command=lambda : set_button_chosen(0))
+    # end_turn_button.configure(width=10, height=1, padx=0, pady=0)
+    #     #background=inactive_button_color, activebackground=active_button_color)
+    # end_turn_button_window = board_canvas.create_window(
+    #     int((hex_x_off-water_width)*5/10),int(win_height*.4+8*txt_size),
+    #     window=end_turn_button, tags="button")
+
+    board_canvas.delete("development")
+    # trade_button.destroy()
+
+    draw_buttons(player)
+
+
 def maritime_trade(player,players):
     """Clears buttons and draws trading screen for player"""
     from catan_logic import perform_trade
@@ -1466,8 +1556,10 @@ def draw_resource_panel(player):
 def clear_resource_panel():
     """Clears out all resources from the resource panel of the board window.
     Also dims all button states."""
-
-    undraw_buttons()
+    try:
+        undraw_buttons()
+    except:
+        pass
     board_canvas.delete("resources")
 
 

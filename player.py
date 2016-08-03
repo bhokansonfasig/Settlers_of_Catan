@@ -59,7 +59,12 @@ class Player:
 		# 	self.wood += 20
 		# 	self.brick += 20
 
-		#Development cards: lets leave these for now
+		#Development cards
+		self.knights = 0 # Knight cards
+		self.structures = 0 # VP cards
+		self.carpenters = 0 # Road building cards
+		self.theives = 0 # Monopoly cards
+		self.harvesters = 0 # Year of plenty cards
 
 		# Score keeping
 		self.score = 0
@@ -164,11 +169,3 @@ class Player:
 			self.sheep += 1
 		elif resource=="stone":
 			self.stone += 1
-
-
-	def adjacent_point(self,p1,p2):
-		common_hex = len(p1+p2) - len(set(p1+p2))
-		if(common_hex == 2):
-			return True
-		else:
-			return False
