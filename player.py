@@ -68,6 +68,20 @@ class Player:
 		self.has_largest_army = False # For once we do development cards
 		
 		self.file_name = self.name + ".soc"
+		print (self.file_name, type(self.file_name))
+		player_file_exists = False
+		from os import remove
+		try:
+			player_file_exists = os.path.isfile(self.file_name)
+			# print ("STEP1")
+		except:
+			pass
+			# print ("STEP2")
+		if player_file_exists:
+			# print ("STEP3")
+			
+			remove(self.file_name)
+			print("Deleted old player file", self.file_name)
 
 
 	def __eq__(self,other):
@@ -76,6 +90,7 @@ class Player:
 	def deflate(self):
 		points = [p.coordinate for p in self.points]
 		roads  = [r.coordinates for r in self.roads]
+		print ('stored:',self.name,roads)
 		settlements = [s.coordinate for s in self.settlements]
 		cities = [c.coordinate for c in self.cities]
 		resources = [self.wood,self.brick,self.wheat,self.sheep,self.stone]
@@ -89,24 +104,30 @@ class Player:
 			data = pickle.load(f)
 		f.close()
 
+		# print (self.name)
 		for x in data[0]: 
 			if x not in [p.coordinate for p in self.points]:
+				print (self.name,'read point:',x)
 				self.points.append(Point(x[0],x[1],x[2]))
 
 		for x in data[1]: 
 			if x not in [r.coordinates for r in self.roads]:
+				print (self.name,' read road:',x)
 				p1 = Point(x[0][0],x[0][1],x[0][2])
 				p2 = Point(x[1][0],x[1][1],x[1][2])
-				self.roads.append(p1,p2)
+				self.roads.append(Road(p1,p2))
 
-		for x in data[2]: 
+		for x in data[2]:
+			# print (self.name,'new settlement: ',x) 
 			if x not in [s.coordinate for s in self.settlements]:
 				self.settlements.append(Point(x[0],x[1],x[2]))	
 
 		for x in data[3]: 
+			# print (self.name,'new city: ',x)
 			if x not in [s.coordinate for s in self.cities]:
 				self.cities.append(Point(x[0],x[1],x[2]))
 
+		# print (data[4],'\n')
 		# for x in data[4]:
 		# 	self.wood = x[0]
 		# 	self.brick = x[1]

@@ -669,6 +669,13 @@ def discard_resources(player,players):
 
     return discard_count
 
+def write_data(players):
+    for player in players:
+        player.deflate()
+
+def read_data(players):
+    for player in players:
+        player.inflate()
 
 ################################################################################
 # If this file is run itself, do the following
