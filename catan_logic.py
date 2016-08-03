@@ -669,7 +669,6 @@ def discard_resources(player,players):
 
     return discard_count
 
-
 ################################################################################
 # If this file is run itself, do the following
 if __name__ == '__main__':
