@@ -4,10 +4,11 @@ class Tile:
 
         self.tk_hex = None
         self.tk_number = None
+        self.tk_number_disk = None
         self.tk_dock = None
         self.tk_dock_ratio = None
         self.tk_robber = None
-        self.tk_robber_2 = None
+        # self.tk_robber_2 = None
         self.vertices = []  # Coordinates of vertices for GUI
 
         board_tiles = [9,10,11,
@@ -119,16 +120,23 @@ class Tile:
     def draw_number(self, canvas, txt_size):
         """Draws the roll number for the tile on canvas with font size
             txt_size"""
+        from catan_graphics import set_color
+        sand_color = set_color("sand")
         # Get position of center of tile
         pos_x = (self.vertices[0]+self.vertices[6])/2
         pos_y = (self.vertices[1]+self.vertices[7])/2
+        # Draw number disk based on text size
+        r = txt_size
+        if self.roll_number>0:
+            self.tk_number_disk = canvas.create_oval(pos_x-r,pos_y-r,
+                pos_x+r,pos_y+r, fill=sand_color, tags="hex")
         # Draw number in black, or red if a 6 or 8
         if (self.roll_number>0 and self.roll_number<6) or (self.roll_number>8):
             self.tk_number = canvas.create_text(pos_x, pos_y,
                 text=self.roll_number, font=("Helvetica", txt_size),
                 tags="hex")
         elif (self.roll_number==6 or self.roll_number==8):
-            self.tk_number = canvas.create_text(pos_x, pos_y, fill='red',
+            self.tk_number = canvas.create_text(pos_x, pos_y, fill="#F22222",
                 text=self.roll_number, font=("Helvetica", txt_size),
                 tags="hex")
 

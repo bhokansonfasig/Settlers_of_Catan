@@ -846,8 +846,8 @@ def player_discard(player,players,new_resource_count):
     for i in range(player.stone):
         stone_discard_options.append(str(i+1))
 
-    discard_string = "Choose "+str(starting_resource_count-new_resource_count)+\
-        " resources to give up:"
+    discards_needed = starting_resource_count-new_resource_count
+    discard_string = "Choose "+str(discards_needed)+" resources to give up:"
     discard_text = board_canvas.create_text(
         int((hex_x_off-water_width)*5/10),int(win_height*.4),
         text=discard_string, font=(txt_font, int(.8*txt_size)), tags="discard")
@@ -919,12 +919,19 @@ def player_discard(player,players,new_resource_count):
             stone_discard_count = int(stone_discard.get())
         except:
             stone_discard_count = 0
-        total_string = "Total: " + str(wood_discard_count+brick_discard_count+ \
-                   sheep_discard_count+wheat_discard_count+stone_discard_count)
+        total_discard_count = wood_discard_count+brick_discard_count+ \
+                   sheep_discard_count+wheat_discard_count+stone_discard_count
+        total_string = "Total: " + str(total_discard_count)
+        if total_discard_count>discards_needed:
+            total_string_color = "red"
+        elif total_discard_count==discards_needed:
+            total_string_color = "#309540"
+        else:
+            total_string_color = "black"
         total_text = board_canvas.create_text(
             int((hex_x_off-water_width)*7/10),int(win_height*.4+6*txt_size),
-            text=total_string, font=(txt_font, int(.8*txt_size)),
-            tags="discard")
+            text=total_string, fill=total_string_color,
+            font=(txt_font, int(.8*txt_size)), tags="discard")
         board_canvas.wait_variable(button_chosen)
     button_chosen.set(-1)
 
