@@ -216,8 +216,6 @@ def build_road(player,players):
     # Recalculate the player's score
     player.calculate_score()
 
-    player.generate_graph()
-
     player.road_length = check_road_length(player.roads)
     for guy in players:
         if guy.has_longest_road:

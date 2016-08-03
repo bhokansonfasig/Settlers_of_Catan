@@ -58,18 +58,11 @@ class Player:
 		# 	self.wood += 20
 		# 	self.brick += 20
 
-		#longest road stuff
-		self.scaler_points = []
-
-		# self.road_types = [[],[],[],[],[]] #the index corresponds to the number of connections
-		# self.calculation_complete = False
-		# self.longest_simple_chain = 0
-
 		#Development cards: lets leave these for now
 
 		# Score keeping
 		self.score = 0
-		self.road_length = 0 #we better deal with this from early on
+		self.road_length = 0 
 		self.has_longest_road = False
 		self.has_largest_army = False # For once we do development cards
 
@@ -123,24 +116,6 @@ class Player:
 		elif resource=="stone":
 			self.stone += 1
 
-	def generate_graph(self):
-		self.scaler_points = []
-		for road in self.roads:
-			self.scaler_points.append(road.coordinates[0])
-			self.scaler_points.append(road.coordinates[1])
-		# print(self.name,":",len(self.scaler_points))
-
-	def find_graph_edge(self):
-		for x in range(0,len(self.scaler_points)):
-			is_edge = True
-			for y in range(x+1,len(self.scaler_points)):
-				if (self.scaler_points[x] == self.scaler_points[y]):
-					is_edge = False
-					break
-			if(is_edge):
-				return self.scaler_points[x]
-
-		return self.scaler_points[0] #the graph only consists of loops
 
 	def adjacent_point(self,p1,p2):
 		common_hex = len(p1+p2) - len(set(p1+p2))
@@ -149,28 +124,4 @@ class Player:
 		else:
 			return False
 
-	def adjacent_point_in_list(self,p1,list_of_points):
-		for point in list_of_points:
-			if(self.adjacent_point(point,p1) and p1 != point):
-				return [True,point]
-		return [False,None]
 
-	def count_connections(self,point):
-		connections = 0
-		for p in self.scaler_points:
-			if(point == p):
-				connections += 1
-		return connections
-
-
-	def travel_along_chain(self,point):
-		temp = point
-		s = ""
-		while(self.adjacent_point_in_list(temp,self.scaler_points)[0]):
-			print(self.scaler_points)
-			self.scaler_points.remove(temp)
-			s += "->"+str(temp)
-			temp = self.adjacent_point_in_list(temp,self.scaler_points)[1]
-
-		s += "->"+str(temp)
-		print(self.name,s)
