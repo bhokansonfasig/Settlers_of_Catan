@@ -218,7 +218,18 @@ def build_road(player,players):
 
     player.generate_graph()
     # print(player.find_graph_edge())
-    print(player.travel_along_chain(player.find_graph_edge()))
+    # print(player.travel_along_chain(player.find_graph_edge()))
+    
+    print("--Checking road length of ",player.name,"---",sep="")
+    player.road_length = check_road_length(player.roads)
+    for guy in players:
+        if guy.has_longest_road:
+            break
+    if player.road_length>guy.road_length:
+        player.has_longest_road = True
+        guy.has_longest_road = False
+    player.calculate_score()
+    guy.calculate_score()
 
     return road
 
