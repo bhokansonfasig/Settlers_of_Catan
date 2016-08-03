@@ -37,32 +37,6 @@ class Road:
         # print(self.coordinates,other.coordinates)
         return(self.coordinates == other.coordinates)
 
-    #returns false if the two roads are the same
-    def connected(self,other):
-        if(self == other):
-            return False
-        if((self.point1.coordinate in other.coordinates) or (self.point2.coordinate in other.coordinates)):
-            return True
-        else:
-            return False
-
-    def find_connected(self,road_list):
-        connections = []
-        for road in road_list:
-            if(self.connected(road)):
-                connections.append(road)
-
-        return connections
-
-    def return_connected_road(self,road_list):
-        for road in road_list:
-            if(self.connected(road)):
-                return road
-
-    def common_tile(self,other):
-        return(list(set(self.tiles).intersection(other.tiles)))
-
-
 
 def check_road_length(roads):
     max_length = 0
