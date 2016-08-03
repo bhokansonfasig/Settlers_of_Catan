@@ -48,12 +48,12 @@ class Player:
 		self.stone = 0
 
 		# For testing, add resources to human players and fewer to computers
-		# if self.AI_code<0:
-		# 	self.wood += 20
-		# 	self.brick += 20
-		# 	self.wheat += 20
-		# 	self.sheep += 20
-		# 	self.stone += 20
+		if self.AI_code<0:
+			self.wood += 20
+			self.brick += 20
+			self.wheat += 20
+			self.sheep += 20
+			self.stone += 20
 		# else:
 		# 	self.wood += 20
 		# 	self.brick += 20
@@ -171,7 +171,6 @@ class Player:
 			self.scaler_points.remove(temp)
 			s += "->"+str(temp)
 			temp = self.adjacent_point_in_list(temp,self.scaler_points)[1]
-		
+
 		s += "->"+str(temp)
 		print(self.name,s)
-
