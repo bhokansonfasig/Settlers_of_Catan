@@ -854,35 +854,35 @@ def player_discard(player,players,new_resource_count):
     wood_discard = StringVar()
     wood_discard.set(wood_discard_options[0])
     wood_discard_menu = OptionMenu(board_canvas, wood_discard,
-        *wood_discard_options)
+        *wood_discard_options, command=lambda x: set_button_chosen(11))
     wood_discard_window = board_canvas.create_window(
         int((hex_x_off-water_width)*3/10),int(win_height*.4+2*txt_size),
         window=wood_discard_menu, tags="discard")
     brick_discard = StringVar()
     brick_discard.set(brick_discard_options[0])
     brick_discard_menu = OptionMenu(board_canvas, brick_discard,
-        *brick_discard_options)
+        *brick_discard_options, command=lambda x: set_button_chosen(12))
     brick_discard_window = board_canvas.create_window(
         int((hex_x_off-water_width)*7/10),int(win_height*.4+2*txt_size),
         window=brick_discard_menu, tags="discard")
     sheep_discard = StringVar()
     sheep_discard.set(sheep_discard_options[0])
     sheep_discard_menu = OptionMenu(board_canvas, sheep_discard,
-        *sheep_discard_options)
+        *sheep_discard_options, command=lambda x: set_button_chosen(13))
     sheep_discard_window = board_canvas.create_window(
         int((hex_x_off-water_width)*3/10),int(win_height*.4+4*txt_size),
         window=sheep_discard_menu, tags="discard")
     wheat_discard = StringVar()
     wheat_discard.set(wheat_discard_options[0])
     wheat_discard_menu = OptionMenu(board_canvas, wheat_discard,
-        *wheat_discard_options)
+        *wheat_discard_options, command=lambda x: set_button_chosen(14))
     wheat_discard_window = board_canvas.create_window(
         int((hex_x_off-water_width)*7/10),int(win_height*.4+4*txt_size),
         window=wheat_discard_menu, tags="discard")
     stone_discard = StringVar()
     stone_discard.set(stone_discard_options[0])
     stone_discard_menu = OptionMenu(board_canvas, stone_discard,
-        *stone_discard_options)
+        *stone_discard_options, command=lambda x: set_button_chosen(15))
     stone_discard_window = board_canvas.create_window(
         int((hex_x_off-water_width)*3/10),int(win_height*.4+6*txt_size),
         window=stone_discard_menu, tags="discard")
@@ -897,29 +897,42 @@ def player_discard(player,players,new_resource_count):
 
     button_chosen.set(-1)
     while button_chosen.get()!=0:
+        if button_chosen.get()!=-1:
+            board_canvas.delete(total_text)
+        try:
+            wood_discard_count = int(wood_discard.get())
+        except:
+            wood_discard_count = 0
+        try:
+            brick_discard_count = int(brick_discard.get())
+        except:
+            brick_discard_count = 0
+        try:
+            sheep_discard_count = int(sheep_discard.get())
+        except:
+            sheep_discard_count = 0
+        try:
+            wheat_discard_count = int(wheat_discard.get())
+        except:
+            wheat_discard_count = 0
+        try:
+            stone_discard_count = int(stone_discard.get())
+        except:
+            stone_discard_count = 0
+        total_string = "Total: " + str(wood_discard_count+brick_discard_count+ \
+                   sheep_discard_count+wheat_discard_count+stone_discard_count)
+        total_text = board_canvas.create_text(
+            int((hex_x_off-water_width)*7/10),int(win_height*.4+6*txt_size),
+            text=total_string, font=(txt_font, int(.8*txt_size)),
+            tags="discard")
         board_canvas.wait_variable(button_chosen)
     button_chosen.set(-1)
 
-    try:
-        player.wood -= eval(wood_discard.get())
-    except:
-        pass
-    try:
-        player.brick -= eval(brick_discard.get())
-    except:
-        pass
-    try:
-        player.sheep -= eval(sheep_discard.get())
-    except:
-        pass
-    try:
-        player.wheat -= eval(wheat_discard.get())
-    except:
-        pass
-    try:
-        player.stone -= eval(stone_discard.get())
-    except:
-        pass
+    player.wood -= wood_discard_count
+    player.brick -= brick_discard_count
+    player.sheep -= sheep_discard_count
+    player.wheat -= wheat_discard_count
+    player.stone -= stone_discard_count
 
     board_canvas.delete("discard")
     wood_discard_menu.destroy()
@@ -944,6 +957,7 @@ def player_steal_resource(player,players,robber_tile):
         for point in guy.cities:
             if robber_tile.index in point.coordinate:
                 stealable_players.append(guy)
+                break
     if player in stealable_players:
         stealable_players.remove(player)
     for guy in stealable_players:
