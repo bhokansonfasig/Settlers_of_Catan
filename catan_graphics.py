@@ -1209,9 +1209,16 @@ def draw_dice(die_1,die_2):
                 fill="black", tags="dice")
 
 
-def draw_intermediate_screen(player):
+def draw_intermediate_screen(player,reason="turn"):
     """Draws a screen with player name between turns"""
-    text_string = player.name+"'s turn!"
+    if reason=="turn":
+        text_string = player.name+"'s turn"
+    elif reason=="discard":
+        text_string = player.name+" must discard"
+    elif reason=="resume":
+        text_string = player.name+" resume turn"
+    else:
+        text_string = "I'm lost..."
     intermediate_text_1 = board_canvas.create_text(
         int((hex_x_off-water_width)/2),int(win_height/3),
         text=text_string, font=(txt_font,int(1.5*txt_size)), fill=player.color,

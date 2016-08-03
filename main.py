@@ -111,17 +111,24 @@ def new_game(splash,board):
         if die_1+die_2!=7:
             distribute_resources(die_1+die_2,tiles,players)
         else:
-            # Robber sequence. Start with the current player, and loop through
-            for player in players[whose_turn-1:]:
+            # Robber sequence. Start with the next player, and loop through
+            for player in players[whose_turn:]:
                 if player.robbable():
+                    if player.AI_code<0:
+                        clear_resource_panel()
+                        draw_intermediate_screen(player,"discard")
                     discard_count = discard_resources(player,players)
                     write_log(player.name,"was robbed of",discard_count,
                         "resources.")
-            for player in players[:whose_turn-1]:
+            for player in players[:whose_turn]:
                 if player.robbable():
+                    if player.AI_code<0:
+                        clear_resource_panel()
+                        draw_intermediate_screen(player,"discard")
                     discard_count = discard_resources(player,players)
                     write_log(player.name,"was robbed of",discard_count,
                         "resources.")
+            clear_resource_panel()
             draw_stats(players)
             move_robber(players[whose_turn-1],players)
 

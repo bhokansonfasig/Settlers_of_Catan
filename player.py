@@ -49,12 +49,12 @@ class Player:
 		self.stone = 0
 
 		# For testing, add resources to human players and fewer to computers
-		# if self.AI_code<0:
-		# 	self.wood += 20
-		# 	self.brick += 20
-		# 	self.wheat += 20
-		# 	self.sheep += 20
-		# 	self.stone += 20
+		if self.AI_code<0:
+			self.wood += 20
+			self.brick += 20
+			self.wheat += 20
+			self.sheep += 20
+			self.stone += 20
 		# else:
 		# 	self.wood += 20
 		# 	self.brick += 20
@@ -66,7 +66,7 @@ class Player:
 		self.road_length = 0
 		self.has_longest_road = False
 		self.has_largest_army = False # For once we do development cards
-		
+
 		self.file_name = self.name + ".soc"
 
 
@@ -83,27 +83,27 @@ class Player:
 		with open(self.file_name,'wb') as f:
 			pickle.dump(data,f)
 		f.close()
-	
+
 	def inflate(self):
 		with open(self.file_name,'rb') as f:
 			data = pickle.load(f)
 		f.close()
 
-		for x in data[0]: 
+		for x in data[0]:
 			if x not in [p.coordinate for p in self.points]:
 				self.points.append(Point(x[0],x[1],x[2]))
 
-		for x in data[1]: 
+		for x in data[1]:
 			if x not in [r.coordinates for r in self.roads]:
 				p1 = Point(x[0][0],x[0][1],x[0][2])
 				p2 = Point(x[1][0],x[1][1],x[1][2])
 				self.roads.append(p1,p2)
 
-		for x in data[2]: 
+		for x in data[2]:
 			if x not in [s.coordinate for s in self.settlements]:
-				self.settlements.append(Point(x[0],x[1],x[2]))	
+				self.settlements.append(Point(x[0],x[1],x[2]))
 
-		for x in data[3]: 
+		for x in data[3]:
 			if x not in [s.coordinate for s in self.cities]:
 				self.cities.append(Point(x[0],x[1],x[2]))
 
