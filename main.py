@@ -25,11 +25,13 @@ def new_game(splash,board):
     from catan_logic import point_resources, distribute_resources
     from catan_logic import build_settlement, build_road, build_city
     from catan_logic import move_robber, discard_resources
+    from catan_logic import write_data, read_data
     from catan_graphics import open_board_window, close_board_window, close_all
     from catan_graphics import set_players, get_tiles, draw_tiles, draw_stats
     from catan_graphics import draw_log, write_log, draw_dice, turn_loop
     from catan_graphics import draw_resource_panel, clear_resource_panel
     from catan_graphics import draw_intermediate_screen, draw_winning_screen
+    from catan_graphics import redraw_board
 
     # Set log file name and delete it if it already exists
     global log_file_name
@@ -96,6 +98,8 @@ def new_game(splash,board):
     whose_turn = 0
     # Additional condition that players can only win on their turn
     while not(players[whose_turn-1].index in check_winner(players)):
+        read_data(players)
+        redraw_board()
         if loop_index>=0:
             clear_resource_panel()
         draw_stats(players)
@@ -131,6 +135,9 @@ def new_game(splash,board):
             clear_resource_panel()
             draw_stats(players)
             move_robber(players[whose_turn-1],players)
+        
+        write_data(players)
+
 
         draw_stats(players)
         draw_resource_panel(players[whose_turn-1])
