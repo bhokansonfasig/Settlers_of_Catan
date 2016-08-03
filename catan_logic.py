@@ -130,6 +130,110 @@ def generate_points_and_roads(seed_points):
                 all_roads.append(r)
 
 
+
+def vague_location(obj):
+    """Returns a vague location string for a point, road, or tile given"""
+    coast_tiles = [2,3,4,5,8,9,10,11,12,
+                   15,16,19,20,21,22,26,27,29,30,33,34,
+                   36,37,38,39,40,44,45,46,47]
+
+    if str(type(obj))=="<class 'point.Point'>":
+        on_coast = True
+        for index in obj.coordinate:
+            on_coast = on_coast and index in coast_tiles
+        location = "here"
+        for index in obj.coordinate:
+            location = tile_location(index,location)
+            if location[0]=="c":
+                break
+
+    elif str(type(obj))=="<class 'road.Road'>":
+        on_coast = True
+        for coordinate in obj.coordinates:
+            for index in coordinate:
+                on_coast = on_coast and index in coast_tiles
+        location1 = "here"
+        location2 = "here"
+        for index in obj.coordinates[0]:
+            location1 = tile_location(index,location1)
+            if location1[0]=="c":
+                break
+        for index in obj.coordinates[1]:
+            location2 = tile_location(index,location2)
+            if location2[0]=="c":
+                break
+        if location1==location2:
+            location = location1
+        elif location1[2:4]=="st":
+            location = location1
+        elif location2[2:4]=="st":
+            location = location2
+        elif location1[-2:]=="st":
+            location = location1
+        elif location2[-2:]=="st":
+            location = location2
+        elif location1[0]=="c":
+            location = location2
+        else:
+            location = location1
+
+    elif str(type(obj))=="<class 'tiles.Tile'>":
+        on_coast = obj.index in coast_tiles
+        location = tile_location(obj.index)
+
+    else:
+        return ""
+
+    if on_coast:
+        location_string = "on the "
+    else:
+        location_string = "in the "
+    location_string += location
+    if on_coast:
+        location_string += " coast"
+
+    return location_string
+
+def tile_location(index,location="here"):
+    center_tiles = [24]
+    north_tiles = [2,3,4,5,8,9,10,11,12,17,18]
+    south_tiles = [31,32,36,37,38,39,40,44,45,46,47]
+    east_tiles = [12,19,20,25,26,27,33,34,40]
+    west_tiles = [8,13,16,21,22,23,29,30,36]
+    if index in center_tiles:
+        location = "center of the island"
+    if index in north_tiles:
+        if location[1]=="o":
+            pass
+        elif location[-2:]=="st":
+            location = "north"+location
+        else:
+            location = "north"
+    if index in east_tiles:
+        if location[-2:]=="st":
+            pass
+        elif location[1]=="o":
+            location = location+"east"
+        else:
+            location = "east"
+    if index in west_tiles:
+        if location[-2:]=="st":
+            pass
+        elif location[1]=="o":
+            location = location+"west"
+        else:
+            location = "west"
+    if index in south_tiles:
+        if location[1]=="o":
+            pass
+        elif location[-2:]=="st":
+            location = "south"+location
+        else:
+            location = "south"
+
+    return location
+
+
 def build_settlement(player,players):
     from catan_graphics import player_choose_settlement, draw_settlement
     from catan_graphics import write_log
@@ -170,7 +274,7 @@ def build_settlement(player,players):
     # Draw the settlement on the board
     draw_settlement(settlement,player)
     # Write to log where player built settlement
-    write_log(player.name,"built a settlement at",settlement.coordinate)
+    write_log(player.name,"built a settlement",vague_location(settlement))
     # Recalculate the player's score
     player.calculate_score()
 
@@ -212,7 +316,7 @@ def build_road(player,players):
     # Draw the road on the board
     draw_road(road,player)
     # Write to log where player built road
-    write_log(player.name,"built a road at",road.coordinates)
+    write_log(player.name,"built a road",vague_location(road))
     # Recalculate the player's score
     player.calculate_score()
 
@@ -266,7 +370,7 @@ def build_city(player,players):
     # Draw the city on the board
     draw_city(city,player)
     # Write to log where player built city
-    write_log(player.name,"built a city at",city.coordinate)
+    write_log(player.name,"built a city",vague_location(city))
     # Recalculate the player's score
     player.calculate_score()
 
@@ -538,7 +642,7 @@ def move_robber(player,players):
         if tile==robber_tile:
             tile.has_robber = True
     # Write to log where player put the robber
-    write_log(player.name,"placed the robber on tile",robber_tile.index)
+    write_log(player.name,"placed the robber",vague_location(robber_tile))
     # Redraw the robber on the board
     redraw_robber(tiles)
     # Take a resource from a player on the tile where the robber was placed
@@ -569,13 +673,8 @@ def discard_resources(player,players):
 ################################################################################
 # If this file is run itself, do the following
 if __name__ == '__main__':
-    # i=0
-    while(True):
-        print("Turn: ",i+1,"\n")
-        legal_road_placements(players[i%2],players)
-        for k in range[0,len(players)-1]:
-            print(players[k].name," has ",len(players[k].roads)," roads.")
-            # for l in [0,len(players[k].roads)-1]:
-            #     print(players[k].name,"\n",players[k].roads[l].coordinates,"\n")
-        i += 1
-    print(len(all_roads))
+    apoint = Point(2,5,6)
+    bpoint = Point(2,5,7)
+    aroad = Road(apoint,bpoint)
+    print(str(type(apoint)))
+    print(str(type(aroad)))

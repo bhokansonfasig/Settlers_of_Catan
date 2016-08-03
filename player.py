@@ -49,12 +49,12 @@ class Player:
 		self.stone = 0
 
 		# For testing, add resources to human players and fewer to computers
-		if self.AI_code<0:
-			self.wood += 20
-			self.brick += 20
-			self.wheat += 20
-			self.sheep += 20
-			self.stone += 20
+		# if self.AI_code<0:
+		# 	self.wood += 20
+		# 	self.brick += 20
+		# 	self.wheat += 20
+		# 	self.sheep += 20
+		# 	self.stone += 20
 		# else:
 		# 	self.wood += 20
 		# 	self.brick += 20
@@ -63,7 +63,7 @@ class Player:
 
 		# Score keeping
 		self.score = 0
-		self.road_length = 0 
+		self.road_length = 0
 		self.has_longest_road = False
 		self.has_largest_army = False # For once we do development cards
 		
@@ -172,5 +172,3 @@ class Player:
 			return True
 		else:
 			return False
-
-
