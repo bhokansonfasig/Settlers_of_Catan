@@ -66,6 +66,8 @@ class Player:
 		self.monopoly_card = 0 # Monopoly cards
 		self.year_of_plenty_card = 0 # Year of plenty cards
 
+		self.development_cards = {'knight':0,'victory point':0,'road building':0,'monopoly':0,'year of plenty':0}
+
 		# Score keeping
 		self.score = 0
 		self.road_length = 0
