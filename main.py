@@ -33,7 +33,7 @@ def new_game(app):
     from graphics_controller import open_board_window, close_board_window
     from graphics_controller import close_all, redraw_board, set_players
     from draw_elements import draw_tiles, draw_dice
-    from draw_menus import draw_stats, draw_log, write_log
+    from draw_menus import draw_stats, draw_log, write_log, draw_status_box
     from draw_menus import draw_resource_panel, clear_resource_panel
     from draw_menus import draw_intermediate_screen, draw_winning_screen
     from turn_manager import turn_loop
@@ -75,11 +75,13 @@ def new_game(app):
     # Draw player stats on board window
     playnum = len(app.pieces.players)
     draw_stats(app)
+    draw_status_box(app)
 
     # Place two settlements per player for the first turn
     app.pieces.turn_phase = "first placements"
     app.pieces.active_index = 0
     for player in app.pieces.players:
+        draw_status_box(app)
         write_log(app,player.name,"build first settlement")
         build_settlement(player,app)
         write_log(app,player.name,"build first road")
@@ -91,6 +93,7 @@ def new_game(app):
         # first_round = False
         app.pieces.active_index -= 1
         draw_stats(app)
+        draw_status_box(app)
         write_log(app,player.name,"build second settlement")
         point = build_settlement(player,app)
         write_log(app,player.name,"build second road")
@@ -110,6 +113,7 @@ def new_game(app):
         app.pieces.turn_index = app.pieces.loop_index%playnum
         app.pieces.active_index = app.pieces.turn_index
         app.pieces.turn_phase = "roll dice"
+        draw_status_box(app)
         write_log(app,"---",app.pieces.players[app.pieces.turn_index].name,
             "'s turn---", sep='')
         # Wait screen for human players, or if all computer players
@@ -126,7 +130,11 @@ def new_game(app):
         else:
             # Robber sequence. Start with the next player, and loop through
             app.pieces.turn_phase = "discard"
+            draw_status_box(app)
             for player in app.pieces.players[app.pieces.turn_index+1:]:
+                app.pieces.active_index += 1
+                draw_stats(app)
+                draw_status_box(app)
                 if player.robbable():
                     if player.AI_code<0:
                         clear_resource_panel(app)
@@ -134,7 +142,11 @@ def new_game(app):
                     discard_count = discard_resources(player,app)
                     write_log(app,player.name,"was robbed of",discard_count,
                         "resources.")
+            app.pieces.active_index = -1
             for player in app.pieces.players[:app.pieces.turn_index+1]:
+                app.pieces.active_index += 1
+                draw_stats(app)
+                draw_status_box(app)
                 if player.robbable():
                     if player.AI_code<0:
                         clear_resource_panel(app)
@@ -145,15 +157,18 @@ def new_game(app):
             clear_resource_panel(app)
             draw_stats(app)
             app.pieces.turn_phase = "place robber"
+            draw_status_box(app)
             move_robber(app.pieces.players[app.pieces.turn_index],app)
 
         draw_stats(app)
         draw_resource_panel(app.pieces.players[app.pieces.turn_index],app)
 
         app.pieces.turn_phase = "make decisions"
+        draw_status_box(app)
         turn_loop(app.pieces.players[app.pieces.turn_index],app)
 
     app.pieces.turn_phase = "end game"
+    draw_status_box(app)
     winner = app.pieces.turn_index
     write_log(app,"*****Congratulations ",app.pieces.players[winner].name,
         "!*****", sep='')
