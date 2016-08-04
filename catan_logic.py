@@ -359,9 +359,6 @@ def buy_development_card(player,app):
     player.development_cards[card] += 1
     app.pieces.development_cards.remove(card)
 
-    print (player.development_cards)
-    print (app.pieces.development_cards)
-
 #adds the point to the list of points that a player _already_ has access to via built roads
 def add_point(point,player):
     if (point not in player.points):
