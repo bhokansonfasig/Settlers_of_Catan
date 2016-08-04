@@ -7,8 +7,8 @@ def draw_log(app):
         font=(app.style.txt_font,int(app.style.txt_size*.8)))
     app.displays.log_text_window = app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)/2),
-        int(app.style.win_height*5/6),
-        height=int(app.style.win_height/3),
+        int(app.style.win_height*7/8),
+        height=int(app.style.win_height/4),
         width=app.style.hex_x_off-app.style.water_width,
         window=app.displays.log_text, tags="log")
     app.pieces.log_file = open(app.pieces.log_file_name,'a+')
@@ -37,6 +37,47 @@ def write_log(app,text,*args,sep=" ",end="\n"):
     app.displays.log_text.yview(MOVETO, 1)
     app.displays.log_text.config(state=DISABLED)
     app.pieces.log_file.write(write_text)
+
+
+def draw_status_box(app):
+    """Draws a status box indicating what's going on right now"""
+    app.board_canvas.delete("status")
+
+    border_width = int(.2*app.style.txt_size)
+    app.board_canvas.create_rectangle(
+        int((app.style.hex_x_off-app.style.water_width)*3/5),
+        0,#int((app.style.hex_y_off-app.style.water_width)*1/20),
+        int(app.style.hex_x_off-app.style.water_width)-border_width,
+        int(app.style.hex_y_off-app.style.water_width)-border_width,
+        outline='white', width=border_width, tags="status")
+
+    if app.pieces.phase_index()<3:
+        status_text = "Setting up game"
+    else:
+        active_player = app.pieces.players[app.pieces.active_index].name
+        if app.pieces.turn_phase=="first placements":
+            action = "is choosing initial position"
+        elif app.pieces.turn_phase=="second placements":
+            action = "is choosing second position"
+        elif app.pieces.turn_phase=="roll dice":
+            action = "is rolling the dice"
+        elif app.pieces.turn_phase=="discard":
+            action = "is getting robbed"
+        elif app.pieces.turn_phase=="place robber":
+            action = "is placing the robber"
+        elif app.pieces.turn_phase=="end game":
+            action = "has won!"
+        else:
+            action = "is thinking carefully"
+        status_text = active_player+" "+action
+
+    app.board_canvas.create_text(
+        int((app.style.hex_x_off-app.style.water_width)*4/5),
+        int((app.style.hex_y_off-app.style.water_width)*10/20),
+        text=status_text, font=(app.style.txt_font,int(app.style.txt_size)),
+        width=int((app.style.hex_x_off-app.style.water_width)*2/5)-4*border_width,
+        justify=CENTER, tags="status")
+
 
 
 def development_menu(player,app):
@@ -299,14 +340,14 @@ def draw_stats(app):
             int((app.style.hex_y_off-app.style.water_width)*19/20),
             outline=app.pieces.players[i].color,
             width=int(.2*app.style.txt_size), tags="stats")
-        if i!=j:
-            app.board_canvas.create_rectangle(
-                app.style.hex_x_off-app.style.water_width+int((j+.2)*portion),
-                int((app.style.hex_y_off-app.style.water_width)*4/20),
-                app.style.hex_x_off-app.style.water_width+int((j+.8)*portion),
-                int((app.style.hex_y_off-app.style.water_width)*16/20),
-                outline=app.pieces.players[i].color,
-                width=int(.2*app.style.txt_size), tags="stats")
+        # if i!=j:
+        #     app.board_canvas.create_rectangle(
+        #         app.style.hex_x_off-app.style.water_width+int((j+.2)*portion),
+        #         int((app.style.hex_y_off-app.style.water_width)*2/20),
+        #         app.style.hex_x_off-app.style.water_width+int((j+.8)*portion),
+        #         int((app.style.hex_y_off-app.style.water_width)*18/20),
+        #         outline=app.pieces.players[i].color,
+        #         width=int(.2*app.style.txt_size), tags="stats")
 
 
 def draw_buttons(player,app):
@@ -456,12 +497,12 @@ def draw_resources(player,app):
     """Undraws any current resources shown and draws resources of player"""
     app.board_canvas.delete("resources")
 
-    app.board_canvas.create_text(
-        int((app.style.hex_x_off-app.style.water_width)/2),
-        app.style.hex_y_off-app.style.water_width,
-        text=player.name, fill=player.color,
-        font=(app.style.txt_font, int(1.5*app.style.txt_size)),
-        tags="resources")
+    # app.board_canvas.create_text(
+    #     int((app.style.hex_x_off-app.style.water_width)/2),
+    #     app.style.hex_y_off-app.style.water_width,
+    #     text=player.name, fill=player.color,
+    #     font=(app.style.txt_font, int(1.5*app.style.txt_size)),
+    #     tags="resources")
 
     wood_text = "Wood: "+str(player.wood)
     brick_text = "Brick: "+str(player.brick)

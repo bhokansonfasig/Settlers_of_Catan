@@ -190,7 +190,7 @@ def draw_dice(app):
 
     die_height = int((app.style.hex_y_off-app.style.water_width)*.5)
     die_width = die_height
-    die_x_off = int((app.style.hex_x_off-app.style.water_width-2*die_width)*2/5)
+    die_x_off = int((app.style.hex_x_off-app.style.water_width-2*die_width)*1/5)
     die_y_off = int((app.style.hex_y_off-app.style.water_width-die_height)/3)
     die_sep = int(die_x_off/2)
     app.board_canvas.create_rectangle(die_x_off,die_y_off,
