@@ -434,7 +434,21 @@ def legal_road_placements(player,players,all_roads):
                 break
 
         if (new_road and connected): #its assumed that the first object the player puts on the board is a settlement
-            road_options.append(road)
+            
+            #check that the new road doesnt pass through opponents buildings, aka Alex-Alexis pact
+            constructions= []
+            for x in range(0,len(players)):
+                if players[x] != player:
+                    constructions += players[x].settlements+players[x].cities
+            
+            if (road.point1 in constructions) and (road.point2 not in player.points):
+                print (player.name,road.coordinates)
+                continue
+            elif (road.point2 in constructions) and (road.point1 not in player.points):
+                print (player.name,road.coordinates)
+                continue
+            else:
+                road_options.append(road)
 
     return road_options
 
