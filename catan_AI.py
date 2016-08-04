@@ -67,16 +67,12 @@ def set_computer(name):
     return name,code
 
 
-def computer_choose_settlement(computer,players):
+def computer_choose_settlement(computer,available_points,app):
     """Has computer place settlement. Returns tuple of the placed settlement"""
-    from catan_logic import legal_settlement_placements
-
-    available_points = legal_settlement_placements(computer,players)
-
     found = False
     for AI in AI_modules:
         if computer.AI_code==AI.get_code():
-            settlement = AI.choose_settlement(computer,players,available_points)
+            settlement = AI.choose_settlement(computer,available_points,app)
             found = True
             break
     if not(found):
@@ -86,16 +82,12 @@ def computer_choose_settlement(computer,players):
     return settlement
 
 
-def computer_choose_road(computer,players):
+def computer_choose_road(computer,available_roads,app):
     """Has computer place road. Returns tuples of the placed road"""
-    from catan_logic import legal_road_placements
-
-    available_roads = legal_road_placements(computer,players)
-
     found = False
     for AI in AI_modules:
         if computer.AI_code==AI.get_code():
-            road = AI.choose_road(computer,players,available_roads)
+            road = AI.choose_road(computer,available_roads,app)
             found = True
             break
     if not(found):
@@ -105,17 +97,12 @@ def computer_choose_road(computer,players):
     return road
 
 
-def computer_choose_city(computer,players):
+def computer_choose_city(computer,available_points,app):
     """Has computer place city. Returns tuple of the placed settlement"""
-
-    available_points = []
-    for point in computer.settlements:
-        available_points.append(point)
-
     found = False
     for AI in AI_modules:
         if computer.AI_code==AI.get_code():
-            city = AI.choose_city(computer,players,available_points)
+            city = AI.choose_city(computer,available_points,app)
             found = True
             break
     if not(found):
@@ -166,10 +153,10 @@ def computer_discard(computer,new_resource_count):
     return discard_count
 
 
-def computer_place_robber(computer,players,tiles):
+def computer_place_robber(computer,app):
     """Has computer place robber. Returns tile where robber was placed"""
 
-    for tile in tiles:
+    for tile in app.pieces.tiles:
         if tile.has_robber:
             original_tile = tile
             break
@@ -177,26 +164,26 @@ def computer_place_robber(computer,players,tiles):
     found = False
     for AI in AI_modules:
         if computer.AI_code==AI.get_code():
-            robber_tile = AI.place_robber(computer,players,tiles,original_tile)
+            robber_tile = AI.place_robber(computer,original_tile,app)
             found = True
             break
     if not(found):
         # Place robber randomly
         robber_tile = Tile(0)
         while not(robber_tile.visible):
-            robber_tile = choice(tiles)
+            robber_tile = choice(app.pieces.tiles)
             if robber_tile==original_tile:
                 robber_tile = Tile(0)
 
     return robber_tile
 
 
-def computer_steal_resource(computer,players,robber_tile):
+def computer_steal_resource(computer,robber_tile,app):
     """Has computer select a player to steal from"""
-    from catan_graphics import write_log
+    from draw_menus import write_log
 
     stealable_players = []
-    for guy in players:
+    for guy in app.pieces.players:
         guy_added = False
         for point in guy.settlements:
             if robber_tile.index in point.coordinate:
@@ -220,7 +207,7 @@ def computer_steal_resource(computer,players,robber_tile):
     found = False
     for AI in AI_modules:
         if computer.AI_code==AI.get_code():
-            target_player = AI.choose_target(computer,players,stealable_players)
+            target_player = AI.choose_target(computer,stealable_players)
             found = True
             break
     if not(found):
@@ -255,25 +242,23 @@ def computer_steal_resource(computer,players,robber_tile):
         target_player.stone -= 1
         computer.stone += 1
 
-    write_log(computer.name,"stole a resource from",target_player.name)
+    write_log(app,computer.name,"stole a resource from",target_player.name)
 
 
 
-def computer_take_turn(computer,players):
+def computer_take_turn(computer,available_settlement_points,available_roads,
+        app):
     """Defines what the computer does in its turn"""
-    from catan_logic import legal_settlement_placements, legal_road_placements
     from catan_logic import build_settlement, build_road, build_city
 
-    available_settlement_points = legal_settlement_placements(computer,players)
-    available_roads = legal_road_placements(computer,players)
     available_city_points = computer.settlements
 
     found = False
     for AI in AI_modules:
         if computer.AI_code==AI.get_code():
-            action_string = AI.take_turn(computer,players,
+            action_string = AI.take_turn(computer,
                 available_settlement_points,available_roads,
-                available_city_points)
+                available_city_points,app)
             found = True
             break
     if not(found):
@@ -302,15 +287,15 @@ def computer_take_turn(computer,players):
 
 
     if action_string.lower()=="build city":
-        city = build_city(computer,players)
+        city = build_city(computer,app)
         city_string = "built a city at "+str(city.coordinate)
         return city_string
     elif action_string.lower()=="build settlement":
-        settlement = build_settlement(computer,players)
+        settlement = build_settlement(computer,app)
         set_string = "built a settlement at "+str(settlement.coordinate)
         return set_string
     elif action_string.lower()=="build road":
-        road = build_road(computer,players)
+        road = build_road(computer,app)
         road_string = "built a road at "+str(road.coordinates)
         return road_string
     else:

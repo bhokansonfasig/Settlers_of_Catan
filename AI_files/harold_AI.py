@@ -18,8 +18,8 @@ def get_difficulty():
     return 1
 
 
-def take_turn(computer,players,available_settlement_points,
-    available_roads,available_city_points):
+def take_turn(computer,available_settlement_points,available_roads,
+        available_city_points,app):
     from catan_logic import perform_trade
     # Function is called to determine what action the computer should take
 
@@ -38,40 +38,40 @@ def take_turn(computer,players,available_settlement_points,
         len(computer.roads)<computer.road_max and \
         len(computer.settlements)<computer.settlement_max and \
         computer.wood==0 and computer.wheat>=wheat_trade_ratio+1:
-        perform_trade(computer,"wheat","wood")
+        perform_trade(computer,"wheat","wood",app)
     # If building a road or settlement is possible and no bricks are available,
     #  trade for brick if possible
     if (len(available_roads)!=0 or len(available_settlement_points)!=0) and \
         len(computer.roads)<computer.road_max and \
         len(computer.settlements)<computer.settlement_max and \
         computer.brick==0 and computer.wheat>=wheat_trade_ratio+1:
-        perform_trade(computer,"wheat","brick")
+        perform_trade(computer,"wheat","brick",app)
     # If building a settlement is possible and no sheep are available,
     #  trade for sheep if possible
     if len(available_settlement_points)!=0 and \
         len(computer.settlements)<computer.settlement_max and \
         computer.sheep==0 and computer.wheat>=wheat_trade_ratio+1:
-        perform_trade(computer,"wheat","sheep")
+        perform_trade(computer,"wheat","sheep",app)
     # If building a road isn't possible but building a settlement is
     #  and no wood is available, trade for wood if possible
     if (len(computer.roads)==computer.road_max or len(available_roads)==0) and \
         len(available_settlement_points)!=0 and \
         len(computer.settlements)<computer.settlement_max and \
         computer.wood==0 and computer.wheat>=wheat_trade_ratio+1:
-        perform_trade(computer,"wheat","wood")
+        perform_trade(computer,"wheat","wood",app)
     # If building a road isn't possible but building a settlement is
     #  and no brick is available, trade for brick if possible
     if (len(computer.roads)==computer.road_max or len(available_roads)==0) and \
         len(available_settlement_points)!=0 and \
         len(computer.settlements)<computer.settlement_max and \
         computer.brick==0 and computer.wheat>=wheat_trade_ratio+1:
-        perform_trade(computer,"wheat","brick")
+        perform_trade(computer,"wheat","brick",app)
     # If building a city is possible and too little stone is available,
     #  trade for stone while it's possible
     if len(available_city_points)!=0 and \
         len(computer.cities)<computer.city_max:
         while computer.stone<3 and computer.wheat>=wheat_trade_ratio+1:
-            perform_trade(computer,"wheat","stone")
+            perform_trade(computer,"wheat","stone",app)
 
     # Assume the computer can't do anything and just passes
     action_string = "ended turn"
@@ -95,13 +95,12 @@ def take_turn(computer,players,available_settlement_points,
     return action_string
 
 
-def choose_settlement(computer,players,available_settlement_points):
+def choose_settlement(computer,available_settlement_points,app):
     # Function is called to determine where the computer should place a settlement
 
     # Should return the point object where the settlement should be built
 
-    from catan_graphics import get_tiles
-    tiles = get_tiles()
+    tiles = app.pieces.tiles
 
     # Make a matrix of all the wheat tiles
     wheat_matrix = []
@@ -153,13 +152,12 @@ def choose_settlement(computer,players,available_settlement_points):
     return settlement
 
 
-def choose_city(computer,players,available_city_points):
+def choose_city(computer,available_city_points,app):
     # Function is called to determine where the computer should place a city
 
     # Should return the point object where the city should be built
 
-    from catan_graphics import get_tiles
-    tiles = get_tiles()
+    tiles = app.pieces.tiles
 
     # Make a matrix of all the wheat tiles
     wheat_matrix = []
@@ -195,13 +193,12 @@ def choose_city(computer,players,available_city_points):
     return city
 
 
-def choose_road(computer,players,available_roads):
+def choose_road(computer,available_roads,app):
     # Function is called to determine where the computer should place a road
 
     # Should return the road object where the road should be built
 
-    from catan_graphics import get_tiles
-    tiles = get_tiles()
+    tiles = app.pieces.tiles
 
     # Make a matrix of all the wheat tiles
     wheat_matrix = []
@@ -301,7 +298,7 @@ def discard(computer,new_resource_count):
             computer.stone -= 1
 
 
-def place_robber(computer,players,tiles,original_tile):
+def place_robber(computer,original_tile,app):
     # Function is called to determine where the computer should place the robber tile
     #  Can't place the robber where he already is (original_tile)
 
@@ -309,8 +306,8 @@ def place_robber(computer,players,tiles,original_tile):
 
     # Form a list of the tiles with players on them
     occupied_tiles = []
-    for tile in tiles:
-        for player in players:
+    for tile in app.pieces.tiles:
+        for player in app.pieces.players:
             for settlement in player.settlements:
                 if tile.index in settlement.coordinate and tile.visible and \
                     not(tile in occupied_tiles):
@@ -342,7 +339,7 @@ def place_robber(computer,players,tiles,original_tile):
     # If there are no more tiles in the list, choose from all the tiles
     #  Should only rarely happen!
     if len(occupied_tiles)==0:
-        occupied_tiles = tiles
+        occupied_tiles = app.pieces.tiles
 
     # Choose the tile(s) producing the most resources
     best_positions = []
@@ -358,7 +355,7 @@ def place_robber(computer,players,tiles,original_tile):
     while len(best_positions)==0:
         for tile in occupied_tiles:
             generation_count = 0
-            for player in players:
+            for player in app.pieces.players:
                 for settlement in player.settlements:
                     if tile.index in settlement.coordinate:
                         generation_count += 7-abs(tile.roll_number-7)
@@ -377,7 +374,7 @@ def place_robber(computer,players,tiles,original_tile):
     return robber_tile
 
 
-def choose_target(computer,players,stealable_players):
+def choose_target(computer,stealable_players):
     # Function is called to pick a player from stealable_players to take a random resource from
 
     # Should return the player chosen

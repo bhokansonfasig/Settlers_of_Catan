@@ -21,8 +21,8 @@ def get_difficulty():
     return difficulty
 
 
-def take_turn(computer,players,available_settlement_points,
-    available_roads,available_city_points):
+def take_turn(computer,available_settlement_points,available_roads,
+        available_city_points,app):
     # Function is called to determine what action the computer should take
 
     # Should return "build settlement", "build road", "build city", or "ended turn"
@@ -30,7 +30,7 @@ def take_turn(computer,players,available_settlement_points,
     return action_string
 
 
-def choose_settlement(computer,players,available_settlement_points):
+def choose_settlement(computer,available_settlement_points,app):
     # Function is called to determine where the computer should place a settlement
 
     # Should return the point object where the settlement should be built
@@ -38,7 +38,7 @@ def choose_settlement(computer,players,available_settlement_points):
     return settlement
 
 
-def choose_city(computer,players,available_city_points):
+def choose_city(computer,available_city_points,app):
     # Function is called to determine where the computer should place a city
 
     # Should return the point object where the city should be built
@@ -46,7 +46,7 @@ def choose_city(computer,players,available_city_points):
     return city
 
 
-def choose_road(computer,players,available_roads):
+def choose_road(computer,available_roads,app):
     # Function is called to determine where the computer should place a road
 
     # Should return the road object where the road should be built
@@ -60,7 +60,7 @@ def discard(computer,new_resource_count):
     # Doesn't return anything, just needs to update the computer's resources
 
 
-def place_robber(computer,tiles,original_tile):
+def place_robber(computer,original_tile,app):
     # Function is called to determine where the computer should place the robber tile
     #  Can't place the robber where he already is (original_tile)
 
@@ -69,7 +69,7 @@ def place_robber(computer,tiles,original_tile):
     return robber_tile
 
 
-def choose_target(computer,players,stealable_players):
+def choose_target(computer,stealable_players):
     # Function is called to pick a player from stealable_players to take a random resource from
 
     # Should return the player chosen

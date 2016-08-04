@@ -1,24 +1,31 @@
 from random import choice
 from road import *
 from point import Point
-from player import Player
+# from player import Player
+
+from turn_manager import player_choose_settlement, player_choose_road
+from turn_manager import player_choose_city, player_discard
+from turn_manager import player_place_robber, player_steal_resource
+from catan_AI import computer_choose_settlement, computer_choose_road
+from catan_AI import computer_choose_city, computer_discard
+from catan_AI import computer_place_robber, computer_steal_resource
+from draw_elements import draw_settlement, draw_road, draw_city, redraw_robber
+from draw_menus import write_log
 
 
 ################################################################################
 # Function definitions
 
-def set_tiles(tiles):
+def set_tiles(pieces):
     """Takes array of tiles and sets resources and dice roll numbers to the
     appropriate game board tiles"""
 
     # Prepare all_points and all_roads for later use
     #the leftmost points on the grid, which are used to generate the rest
-    seed_points = [[0,1,7],[1,7,8],[7,8,15],[7,14,15],[14,15,21],[15,21,22],[21,28,29],[21,22,29],[28,29,35],[29,35,36],[35,42,43],[35,36,43]]
-    global all_points, all_roads
-    all_points = []
-    all_roads = []
+    seed_points = [[0,1,7],[1,7,8],[7,8,15],[7,14,15],[14,15,21],[15,21,22],
+        [21,28,29],[21,22,29],[28,29,35],[29,35,36],[35,42,43],[35,36,43]]
 
-    generate_points_and_roads(seed_points)
+    pieces.all_points,pieces.all_roads = generate_points_and_roads(seed_points)
 
     # Suggested preset:
     # tiles[1][1] = "wood"
@@ -65,7 +72,7 @@ def set_tiles(tiles):
         "sheep","sheep","sheep","wheat","wheat","wheat","wheat","stone","stone",
         "stone","desert"]
 
-    for tile in tiles:
+    for tile in pieces.tiles:
         if tile.visible:
             # Pick a random resource
             tile.resource = choice(resources)
@@ -77,7 +84,7 @@ def set_tiles(tiles):
     while not(acceptable_placement):
         #print("Placing numbers")
         numbers = [2,3,3,4,4,5,5,6,6,8,8,9,9,10,10,11,11,12]
-        for tile in tiles:
+        for tile in pieces.tiles:
             # Pick a random dice value and remove it from the remaining choices
             #  unless the resource is "desert", then set dice value to 0 and put
             #  the robber there
@@ -90,8 +97,8 @@ def set_tiles(tiles):
         # Assume the placement is good
         acceptable_placement = True
         # Check each tile to be sure tiles with a 6 or 8 are not adjacent
-        for tile1 in tiles:
-            for tile2 in tiles:
+        for tile1 in pieces.tiles:
+            for tile2 in pieces.tiles:
                 # If the tiles are not both 6 or 8, just skip
                 if not((tile1.roll_number==6 or tile1.roll_number==8) and
                     (tile2.roll_number==6 or tile2.roll_number==8)):
@@ -101,19 +108,21 @@ def set_tiles(tiles):
 
     docks = ["wood","brick","sheep","wheat","stone","any","any","any","any"]
     # Assign ports randomly (positions are already fixed)
-    for tile in tiles:
+    for tile in pieces.tiles:
         if tile.dock:
             dock_resource = choice(docks)
             docks.remove(dock_resource)
-            for point in all_points:
+            for point in pieces.all_points:
                 if (tile.index in point.coordinate) and point.is_port:
                     point.make_port(dock_resource)
 
-    return tiles
+    return pieces.tiles
 
 
 def generate_points_and_roads(seed_points):
-    """Generates all the points on the grid and stores them in all_points"""
+    """Generates all the points and roads on the grid"""
+    all_points = []
+    all_roads = []
 
     for s in seed_points: #generate points
         i = 0
@@ -128,6 +137,8 @@ def generate_points_and_roads(seed_points):
             r = Road(p1,p2)
             if(r not in all_roads and r.valid):
                 all_roads.append(r)
+
+    return all_points, all_roads
 
 
 
@@ -234,12 +245,10 @@ def tile_location(index,location="here"):
     return location
 
 
-def build_settlement(player,players):
-    from catan_graphics import player_choose_settlement, draw_settlement
-    from catan_graphics import write_log
-    from catan_AI import computer_choose_settlement
+def build_settlement(player,app):
     # If the player can't build a settlement, exit without building anything
-    available_points = legal_settlement_placements(player,players)
+    available_points = legal_settlement_placements(player,app.pieces.players,
+        app.pieces.all_points)
     if len(available_points)==0:
         print("Nowhere to build a new settlement!")
         return
@@ -259,9 +268,9 @@ def build_settlement(player,players):
         player.sheep -= 1
     # Get the point for the settlement to be built
     if player.AI_code<0:
-        settlement = player_choose_settlement(player,players)
+        settlement = player_choose_settlement(player,available_points,app)
     else:
-        settlement = computer_choose_settlement(player,players)
+        settlement = computer_choose_settlement(player,available_points,app)
     # If the player didn't choose a settlement, refund resources and exit
     if not(settlement):
         player.wood += 1
@@ -270,22 +279,21 @@ def build_settlement(player,players):
         player.sheep += 1
         return
     # Update the player's building list
-    player_building_update(settlement,1,player)
+    player_building_update(settlement,1,player,app.pieces.all_points)
     # Draw the settlement on the board
-    draw_settlement(settlement,player)
+    draw_settlement(settlement,player,app)
     # Write to log where player built settlement
-    write_log(player.name,"built a settlement",vague_location(settlement))
+    write_log(app,player.name,"built a settlement",vague_location(settlement))
     # Recalculate the player's score
     player.calculate_score()
 
     return settlement
 
 
-def build_road(player,players):
-    from catan_graphics import player_choose_road, draw_road, write_log
-    from catan_AI import computer_choose_road
+def build_road(player,app):
     # If the player can't build a road, exit without building anything
-    available_roads = legal_road_placements(player,players)
+    available_roads = legal_road_placements(player,app.pieces.players,
+        app.pieces.all_roads)
     if len(available_roads)==0:
         print("Nowhere to build a new road!")
         return
@@ -303,43 +311,41 @@ def build_road(player,players):
         player.brick -= 1
     # Get the points for the road to be built
     if player.AI_code<0:
-        road = player_choose_road(player,players)
+        road = player_choose_road(player,available_roads,app)
     else:
-        road = computer_choose_road(player,players)
+        road = computer_choose_road(player,available_roads,app)
     # If the player didn't choose a road, refund resources and exit
     if not(road):
         player.wood += 1
         player.brick += 1
         return
     # Update the player's road and point lists
-    player_road_update(road,player)
+    player_road_update(road,player,app.pieces.all_points)
     # Draw the road on the board
-    draw_road(road,player)
+    draw_road(road,player,app)
     # Write to log where player built road
-    write_log(player.name,"built a road",vague_location(road))
+    write_log(app,player.name,"built a road",vague_location(road))
     # Recalculate the player's score
     player.calculate_score()
 
     player.road_length = check_road_length(player.roads)
-    for guy in players:
+    for guy in app.pieces.players:
         if guy.has_longest_road:
             break
     if player.road_length>guy.road_length and player.road_length>=5:
         player.has_longest_road = True
         guy.has_longest_road = False
         if player.road_length==5:
-            write_log(player.name,"got the longest road bonus")
+            write_log(app,player.name,"got the longest road bonus")
         elif player.road_length>5:
-            write_log(player.name,"took longest road from",guy.name)
+            write_log(app,player.name,"took longest road from",guy.name)
     player.calculate_score()
     guy.calculate_score()
 
     return road
 
 
-def build_city(player,players):
-    from catan_graphics import player_choose_city, draw_city, write_log
-    from catan_AI import computer_choose_city
+def build_city(player,app):
     # If the player can't build a city, exit without building anything
     available_points = player.settlements
     if len(available_points)==0:
@@ -357,20 +363,20 @@ def build_city(player,players):
     player.wheat -= 2
     # Get the point for the city to be built
     if player.AI_code<0:
-        city = player_choose_city(player,players)
+        city = player_choose_city(player,available_points,app)
     else:
-        city = computer_choose_city(player,players)
+        city = computer_choose_city(player,available_points,app)
     # If the player didn't choose a city, refund resources and exit
     if not(city):
         player.stone += 3
         player.wheat += 2
         return
     # Update the player's building list
-    player_building_update(city,2,player)
+    player_building_update(city,2,player,app.pieces.all_points)
     # Draw the city on the board
-    draw_city(city,player)
+    draw_city(city,player,app)
     # Write to log where player built city
-    write_log(player.name,"built a city",vague_location(city))
+    write_log(app,player.name,"built a city",vague_location(city))
     # Recalculate the player's score
     player.calculate_score()
 
@@ -383,7 +389,7 @@ def add_point(point,player):
         player.points.append(point)
 
 
-def legal_settlement_placements(player,players):
+def legal_settlement_placements(player,players,all_points):
     """Returns an array of points where the player can place a settlement"""
     points = []
     occupied_points = occupied_points_on_board(players)
@@ -408,7 +414,7 @@ def legal_settlement_placements(player,players):
 
 
 
-def legal_road_placements(player,players):
+def legal_road_placements(player,players,all_roads):
     road_options = []
 
     if(len(player.roads)==1):#force the second road with the second settlement when the game starts
@@ -460,13 +466,12 @@ def check_winner(players):
     return winners
 
 
-def roll_dice():
-    from catan_graphics import write_log
+def roll_dice(app):
     """Rolls two six sided dice and returns their values."""
     die_values = [1,2,3,4,5,6]
     die_1 = choice(die_values)
     die_2 = choice(die_values)
-    write_log("Rolled",die_1,"+",die_2,"=",die_1+die_2)
+    write_log(app,"Rolled",die_1,"+",die_2,"=",die_1+die_2)
     return die_1, die_2
 
 
@@ -505,7 +510,7 @@ def find_vertices(tile):
 
 
 #updates the player obj with the building info
-def player_building_update(point,build_type,player):
+def player_building_update(point,build_type,player,all_points):
     for a_point in all_points:
         if point==a_point:
             point = a_point
@@ -536,7 +541,7 @@ def player_building_update(point,build_type,player):
             player.settlements.remove(point)
 
 
-def player_road_update(road,player):
+def player_road_update(road,player,all_points):
     for a_point in all_points:
         if road.point1==a_point:
             point1 = a_point
@@ -577,10 +582,9 @@ def occupied_points_on_board(players):
 
 
 
-def perform_trade(player,give_resource,get_resource):
+def perform_trade(player,give_resource,get_resource,app):
     """For player, trades the necessary number of give_resource for
         get_resource"""
-    from catan_graphics import write_log
 
     if "any" in player.ports or "?" in player.ports:
         trade_ratio = 3
@@ -618,52 +622,46 @@ def perform_trade(player,give_resource,get_resource):
             player.wheat += 1
         elif get_resource=="stone":
             player.stone += 1
-        write_log(player.name,"traded",trade_ratio,give_resource,"for 1",
+        write_log(app,player.name,"traded",trade_ratio,give_resource,"for 1",
             get_resource)
 
 
-def move_robber(player,players):
+def move_robber(player,app):
     """Depending on human or computer, should move robber to new space and steal
         random card from player on that space"""
-    from catan_graphics import player_place_robber, redraw_robber, get_tiles
-    from catan_graphics import player_steal_resource, write_log
-    from catan_AI import computer_place_robber, computer_steal_resource
-    tiles = get_tiles()
     # Get the tile for the robber to be placed
     if player.AI_code<0:
-        robber_tile = player_place_robber(player,tiles)
+        robber_tile = player_place_robber(player,app)
     else:
-        robber_tile = computer_place_robber(player,players,tiles)
-    for tile in tiles:
+        robber_tile = computer_place_robber(player,app)
+    for tile in app.pieces.tiles:
         if tile.has_robber:
             tile.has_robber = False
             break
-    for tile in tiles:
+    for tile in app.pieces.tiles:
         if tile==robber_tile:
             tile.has_robber = True
     # Write to log where player put the robber
-    write_log(player.name,"placed the robber",vague_location(robber_tile))
+    write_log(app,player.name,"placed the robber",vague_location(robber_tile))
     # Redraw the robber on the board
-    redraw_robber(tiles)
+    redraw_robber(app)
     # Take a resource from a player on the tile where the robber was placed
     if player.AI_code<0:
-        player_steal_resource(player,players,robber_tile)
+        player_steal_resource(player,robber_tile,app)
     else:
-        computer_steal_resource(player,players,robber_tile)
+        computer_steal_resource(player,robber_tile,app)
 
 
-def discard_resources(player,players):
+def discard_resources(player,app):
     """Depending on human or computer, should discard resources to get down to
         half the current value (rounded up; e.g. player with 9 cards dicards to
         get down to 5)"""
-    from catan_graphics import player_discard
-    from catan_AI import computer_discard
     # Find out the number of resources the player needs to get down to
     new_resource_count = int((player.resource_count()+1)/2)
     # Just in case, loop through until the player discards enough resources
     while player.resource_count()>new_resource_count:
         if player.AI_code<0:
-            discard_count = player_discard(player,players,new_resource_count)
+            discard_count = player_discard(player,new_resource_count,app)
         else:
             discard_count = computer_discard(player,new_resource_count)
 

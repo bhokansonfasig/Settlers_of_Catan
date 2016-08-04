@@ -42,15 +42,15 @@ class App(Frame):
         # Buttons
         play_button = Button(splash, font=(txt_font,16), text="Local Game",
             command=lambda : new_game(splash, self.parent))
-        play_button.configure(width=10, activebackground=active_button_color)
+        play_button.configure(width=20, activebackground=active_button_color)
         play_button.pack(pady=10)
         start_button = Button(splash, font=(txt_font,16), text="New Remote Game",
             command=lambda : remote_game(splash, self.parent))
-        start_button.configure(width=10, activebackground=active_button_color)
+        start_button.configure(width=20, activebackground=active_button_color)
         start_button.pack(pady=10)
         load_button = Button(splash, font=(txt_font,16), text="Load Remote Game",
             command=lambda : load_game(splash, self.parent))
-        load_button.configure(width=10, activebackground=active_button_color)
+        load_button.configure(width=20, activebackground=active_button_color)
         load_button.pack(pady=10)
         quit_button = Button(splash, font=(txt_font,16), text="Quit",
             command=self.quit)
