@@ -16,7 +16,7 @@ Features not yet implemented (but in the works):
 Small things that could be improved (not in order of importance):
 
 1) For each player, display the number of settlements and cities that are unused for each player.
-2) If the player clicks on "build x" by mistake, let him click anywhere else to revert.
+2) [DONE]If the player clicks on "build x" by mistake, let him click anywhere else to revert.
 3) Add dots for each number indicating the odds that number showing up, like in the game. How about making the size of the circle proportional to dots as well? That would be really informative just at a glance, or maybe it wouldn't look nice.
 4) Add a box around the player whose turn it is (would be specially convenient in remote play).
 5) Resizing the board in the middle of the game takes away the buttons.

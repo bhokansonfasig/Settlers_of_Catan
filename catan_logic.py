@@ -27,46 +27,6 @@ def set_tiles(pieces):
 
     pieces.all_points,pieces.all_roads = generate_points_and_roads(seed_points)
 
-    # Suggested preset:
-    # tiles[1][1] = "wood"
-    # tiles[1][2] = 11
-    # tiles[2][1] = "sheep"
-    # tiles[2][2] = 12
-    # tiles[3][1] = "wheat"
-    # tiles[3][2] = 9
-    # tiles[5][1] = "brick"
-    # tiles[5][2] = 4
-    # tiles[6][1] = "stone"
-    # tiles[6][2] = 6
-    # tiles[7][1] = "brick"
-    # tiles[7][2] = 5
-    # tiles[8][1] = "sheep"
-    # tiles[8][2] = 10
-    # tiles[10][1] = "desert"
-    # tiles[10][2] = 0
-    # tiles[11][1] = "wood"
-    # tiles[11][2] = 3
-    # tiles[12][1] = "wheat"
-    # tiles[12][2] = 11
-    # tiles[13][1] = "wood"
-    # tiles[13][2] = 4
-    # tiles[14][1] = "wheat"
-    # tiles[14][2] = 8
-    # tiles[15][1] = "brick"
-    # tiles[15][2] = 8
-    # tiles[16][1] = "sheep"
-    # tiles[16][2] = 10
-    # tiles[17][1] = "sheep"
-    # tiles[17][2] = 9
-    # tiles[18][1] = "stone"
-    # tiles[18][2] = 3
-    # tiles[21][1] = "stone"
-    # tiles[21][2] = 5
-    # tiles[22][1] = "wheat"
-    # tiles[22][2] = 2
-    # tiles[23][1] = "wood"
-    # tiles[23][2] = 6
-
     # Random layout
     resources = ["wood","wood","wood","wood","brick","brick","brick","sheep",
         "sheep","sheep","sheep","wheat","wheat","wheat","wheat","stone","stone",
@@ -442,10 +402,8 @@ def legal_road_placements(player,players,all_roads):
                     constructions += players[x].settlements+players[x].cities
             
             if (road.point1 in constructions) and (road.point2 not in player.points):
-                print (player.name,road.coordinates)
                 continue
             elif (road.point2 in constructions) and (road.point1 not in player.points):
-                print (player.name,road.coordinates)
                 continue
             else:
                 road_options.append(road)

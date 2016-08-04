@@ -76,53 +76,6 @@ class Player:
 	def __eq__(self,other):
 		return((self.index == other.index) and (self.name == other.name))
 
-	# def deflate(self):
-	# 	points = [p.coordinate for p in self.points]
-	# 	roads  = [r.coordinates for r in self.roads]
-	# 	# print ('stored:',self.name,roads)
-	# 	settlements = [s.coordinate for s in self.settlements]
-	# 	cities = [c.coordinate for c in self.cities]
-	# 	resources = [self.wood,self.brick,self.wheat,self.sheep,self.stone]
-	# 	data = [points,roads,settlements,cities,resources,self.score]
-	# 	with open(self.file_name,'wb') as f:
-	# 		pickle.dump(data,f)
-	# 	f.close()
-
-	# def inflate(self):
-	# 	with open(self.file_name,'rb') as f:
-	# 		data = pickle.load(f)
-	# 	f.close()
-
-	# 	for x in data[0]:
-	# 		if x not in [p.coordinate for p in self.points]:
-	# 			# print (self.name,'read point:',x)
-	# 			self.points.append(Point(x[0],x[1],x[2]))
-
-	# 	for x in data[1]:
-	# 		if x not in [r.coordinates for r in self.roads]:
-	# 			print (self.name,' read road:',x)
-	# 			p1 = Point(x[0][0],x[0][1],x[0][2])
-	# 			p2 = Point(x[1][0],x[1][1],x[1][2])
-	# 			self.roads.append(Road(p1,p2))
-
-	# 	for x in data[2]:
-	# 		if x not in [s.coordinate for s in self.settlements]:
-	# 			self.settlements.append(Point(x[0],x[1],x[2]))
-
-	# 	for x in data[3]:
-	# 		if x not in [s.coordinate for s in self.cities]:
-	# 			self.cities.append(Point(x[0],x[1],x[2]))
-
-		# print (data[4],'\n')
-		# for x in data[4]:
-		# 	self.wood = x[0]
-		# 	self.brick = x[1]
-		# 	self.wheat = x[2]
-		# 	self.sheep = x[3]
-		# 	self.stone = x[4]
-
-		# self.score = data[5]
-
 	def resource_count(self):
 		return self.wood + self.brick + self.wheat + self.sheep + self.stone
 
