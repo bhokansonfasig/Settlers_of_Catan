@@ -234,7 +234,7 @@ def maritime_trade(player,app):
 def draw_intermediate_screen(player,app,reason="turn"):
     """Draws a screen with player name between turns"""
     if reason=="turn":
-        text_string = player.name+"'s turn"
+        text_string = player.name+" plays next"
     elif reason=="discard":
         text_string = player.name+" must discard"
     elif reason=="resume":
@@ -286,6 +286,27 @@ def draw_stats(app):
             int(3*(app.style.hex_y_off-app.style.water_width)/4),
             text=resource_string, fill=player.color,
             font=(app.style.txt_font,int(.7*app.style.txt_size)), tags="stats")
+
+    i = app.pieces.turn_index
+    j = app.pieces.active_index
+    if i==-1:
+        i = j
+    if i>-1 and i<len(app.pieces.players):
+        app.board_canvas.create_rectangle(
+            app.style.hex_x_off-app.style.water_width+int((i+.1)*portion),
+            int((app.style.hex_y_off-app.style.water_width)/20),
+            app.style.hex_x_off-app.style.water_width+int((i+.9)*portion),
+            int((app.style.hex_y_off-app.style.water_width)*19/20),
+            outline=app.pieces.players[i].color,
+            width=int(.2*app.style.txt_size), tags="stats")
+        if i!=j:
+            app.board_canvas.create_rectangle(
+                app.style.hex_x_off-app.style.water_width+int((j+.2)*portion),
+                int((app.style.hex_y_off-app.style.water_width)*4/20),
+                app.style.hex_x_off-app.style.water_width+int((j+.8)*portion),
+                int((app.style.hex_y_off-app.style.water_width)*16/20),
+                outline=app.pieces.players[i].color,
+                width=int(.2*app.style.txt_size), tags="stats")
 
 
 def draw_buttons(player,app):
