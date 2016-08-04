@@ -118,13 +118,3 @@ if __name__ == '__main__':
         # p2 = Point(x2,y2,z2)
 
         print(p1.adjacent_point(Point(x2,y2,z2)))
-
-        # if(adjacent_points(p1,p2)):
-        #     print("adjacent")
-        # else:
-        #     print("non adjacent")
-        # z = int(input("hex3: "))
-        # if(neighbor_tile(x,y)):
-        #   print("They are neighbors.\n")
-        # else:
-        #   print("Not neighbors.\n")
