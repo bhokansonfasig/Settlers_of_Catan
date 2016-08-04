@@ -78,15 +78,19 @@ def new_game(app):
 
     # Place two settlements per player for the first turn
     app.pieces.turn_phase = "first placements"
+    app.pieces.active_index = 0
     for player in app.pieces.players:
         write_log(app,player.name,"build first settlement")
         build_settlement(player,app)
         write_log(app,player.name,"build first road")
         build_road(player,app)
+        app.pieces.active_index += 1
         draw_stats(app)
     app.pieces.turn_phase = "second placements"
     for player in reversed(app.pieces.players):
         # first_round = False
+        app.pieces.active_index -= 1
+        draw_stats(app)
         write_log(app,player.name,"build second settlement")
         point = build_settlement(player,app)
         write_log(app,player.name,"build second road")
@@ -94,7 +98,6 @@ def new_game(app):
         resources = point_resources(point,app.pieces.tiles)
         for resource in resources:
             player.give_resource(resource)
-        draw_stats(app)
 
     # Loop through player turns until someone wins!
     # Additional condition that players can only win on their turn
@@ -105,6 +108,7 @@ def new_game(app):
         draw_stats(app)
         app.pieces.loop_index += 1
         app.pieces.turn_index = app.pieces.loop_index%playnum
+        app.pieces.active_index = app.pieces.turn_index
         app.pieces.turn_phase = "roll dice"
         write_log(app,"---",app.pieces.players[app.pieces.turn_index].name,
             "'s turn---", sep='')
