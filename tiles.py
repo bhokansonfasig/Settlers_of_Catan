@@ -126,7 +126,7 @@ class Tile:
         pos_x = (self.vertices[0]+self.vertices[6])/2
         pos_y = (self.vertices[1]+self.vertices[7])/2
         # Draw number disk based on text size
-        r = txt_size
+        r = txt_size*4/5
         if self.roll_number>0:
             self.tk_number_disk = canvas.create_oval(pos_x-r,pos_y-r,
                 pos_x+r,pos_y+r, fill=sand_color, tags="hex")

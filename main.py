@@ -56,6 +56,7 @@ def new_game(app):
 
     write_log(app,"*****New game started*****")
 
+    app.pieces.turn_phase = "player selection"
     # Set the number of players, their names, and levels of AI
     set_players(app)
     # Randomize player order
@@ -66,6 +67,7 @@ def new_game(app):
         if guy.AI_code<0:
             app.pieces.all_computers = False
 
+    app.pieces.turn_phase = "setup"
     # Arange the tiles, then draw them to the board window
     app.pieces.tiles = set_tiles(app.pieces)
     draw_tiles(app)
@@ -75,12 +77,14 @@ def new_game(app):
     draw_stats(app)
 
     # Place two settlements per player for the first turn
+    app.pieces.turn_phase = "first placements"
     for player in app.pieces.players:
         write_log(app,player.name,"build first settlement")
         build_settlement(player,app)
         write_log(app,player.name,"build first road")
         build_road(player,app)
         draw_stats(app)
+    app.pieces.turn_phase = "second placements"
     for player in reversed(app.pieces.players):
         # first_round = False
         write_log(app,player.name,"build second settlement")
@@ -101,6 +105,7 @@ def new_game(app):
         draw_stats(app)
         app.pieces.loop_index += 1
         app.pieces.turn_index = app.pieces.loop_index%playnum
+        app.pieces.turn_phase = "roll dice"
         write_log(app,"---",app.pieces.players[app.pieces.turn_index].name,
             "'s turn---", sep='')
         # Wait screen for human players, or if all computer players
@@ -109,13 +114,14 @@ def new_game(app):
             draw_intermediate_screen(app.pieces.players[app.pieces.turn_index],
                 app)
 
-        app.pieces.die = roll_dice(app)
+        app.pieces.dice = roll_dice(app)
         draw_dice(app)
-        if sum(app.pieces.die)!=7:
-            distribute_resources(sum(app.pieces.die),
+        if sum(app.pieces.dice)!=7:
+            distribute_resources(sum(app.pieces.dice),
                 app.pieces.tiles,app.pieces.players)
         else:
             # Robber sequence. Start with the next player, and loop through
+            app.pieces.turn_phase = "discard"
             for player in app.pieces.players[app.pieces.turn_index+1:]:
                 if player.robbable():
                     if player.AI_code<0:
@@ -134,13 +140,16 @@ def new_game(app):
                         "resources.")
             clear_resource_panel(app)
             draw_stats(app)
+            app.pieces.turn_phase = "place robber"
             move_robber(app.pieces.players[app.pieces.turn_index],app)
 
         draw_stats(app)
         draw_resource_panel(app.pieces.players[app.pieces.turn_index],app)
 
+        app.pieces.turn_phase = "make decisions"
         turn_loop(app.pieces.players[app.pieces.turn_index],app)
 
+    app.pieces.turn_phase = "end game"
     winner = app.pieces.turn_index
     write_log(app,"*****Congratulations ",app.pieces.players[winner].name,
         "!*****", sep='')

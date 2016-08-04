@@ -14,10 +14,10 @@ def redraw_board(app):
         for city in player.cities:
             draw_city(city,player,app)
     draw_stats(app)
-    if app.pieces.loop_index>=0:
+    if app.pieces.phase_index()>5:
         draw_dice(app)
-        if not(app.pieces.all_computers):
-            draw_resource_panel(app,app.turn_index)
+    if app.pieces.turn_phase=="make decisions":
+        draw_resource_panel(app.pieces.players[app.pieces.turn_index],app)
 
 
 def draw_tile_skeleton(app):
@@ -203,7 +203,7 @@ def draw_dice(app):
     dot_r = int(die_height/10)
     for i in range(2):
         # Top left and bottom right dots
-        if app.pieces.die[i]!=1:
+        if app.pieces.dice[i]!=1:
             app.board_canvas.create_oval(
                 die_x_off+i*(die_width+die_sep)+int(die_width/4)-dot_r,
                 die_y_off+int(die_width/4)-dot_r,
@@ -217,7 +217,7 @@ def draw_dice(app):
                 die_y_off+int(3*die_width/4)+dot_r,
                 fill="black", tags="dice")
         # Center left and right dots
-        if app.pieces.die[i]==6:
+        if app.pieces.dice[i]==6:
             app.board_canvas.create_oval(
                 die_x_off+i*(die_width+die_sep)+int(die_width/4)-dot_r,
                 die_y_off+int(2*die_width/4)-dot_r,
@@ -231,7 +231,7 @@ def draw_dice(app):
                 die_y_off+int(2*die_width/4)+dot_r,
                 fill="black", tags="dice")
         # Bottom left and top right dots
-        if app.pieces.die[i]>=4:
+        if app.pieces.dice[i]>=4:
             app.board_canvas.create_oval(
                 die_x_off+i*(die_width+die_sep)+int(die_width/4)-dot_r,
                 die_y_off+int(3*die_width/4)-dot_r,
@@ -245,7 +245,7 @@ def draw_dice(app):
                 die_y_off+int(die_width/4)+dot_r,
                 fill="black", tags="dice")
         # Center dot
-        if app.pieces.die[i]%2==1:
+        if app.pieces.dice[i]%2==1:
             app.board_canvas.create_oval(
                 die_x_off+i*(die_width+die_sep)+int(2*die_width/4)-dot_r,
                 die_y_off+int(2*die_width/4)-dot_r,

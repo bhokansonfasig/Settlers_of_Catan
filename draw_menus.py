@@ -485,6 +485,7 @@ def draw_resource_panel(player,app):
     of the board window. Also activates buttons available to player."""
 
     draw_buttons(player,app)
+    disable_buttons(player,app)
 
     draw_resources(player,app)
 
