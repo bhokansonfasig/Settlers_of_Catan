@@ -442,10 +442,8 @@ def legal_road_placements(player,players,all_roads):
                     constructions += players[x].settlements+players[x].cities
             
             if (road.point1 in constructions) and (road.point2 not in player.points):
-                print (player.name,road.coordinates)
                 continue
             elif (road.point2 in constructions) and (road.point1 not in player.points):
-                print (player.name,road.coordinates)
                 continue
             else:
                 road_options.append(road)
