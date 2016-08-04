@@ -60,11 +60,11 @@ class Player:
 		# 	self.brick += 20
 
 		#Development cards
-		self.knights = 0 # Knight cards
-		self.structures = 0 # VP cards
-		self.carpenters = 0 # Road building cards
-		self.theives = 0 # Monopoly cards
-		self.harvesters = 0 # Year of plenty cards
+		self.knight_card = 0 # Knight cards
+		self.victory_point_card = 0 # VP cards
+		self.road_building_card = 0 # Road building cards
+		self.monopoly_card = 0 # Monopoly cards
+		self.year_of_plenty_card = 0 # Year of plenty cards
 
 		# Score keeping
 		self.score = 0
