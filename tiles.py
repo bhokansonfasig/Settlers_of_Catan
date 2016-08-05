@@ -137,7 +137,7 @@ class Tile:
                 text=self.roll_number, font=("Helvetica", style.txt_size),
                 tags="hex")
 
-    def draw_robber(self, canvas):
+    def draw_robber(self, canvas, style):
         """Draws the robber at the center of the tile"""
         # Get position of center of tile
         pos_x = (self.vertices[0]+self.vertices[6])/2
@@ -147,6 +147,10 @@ class Tile:
         # Draw the robber circle
         self.tk_robber = canvas.create_oval(pos_x-r,pos_y-r, pos_x+r,pos_y+r,
             fill="black", tags="robber")
+        if self.roll_number>0:
+            self.tk_number = canvas.create_text(pos_x, pos_y, fill="white",
+                text=self.roll_number, font=("Helvetica", style.txt_size),
+                tags="robber")
         # Draw a smaller circle with the color given
         # self.tk_robber_2 = canvas.create_oval(int(pos_x-r/2),int(pos_y-r/2),
         #     int(pos_x+r/2),int(pos_y+r/2), fill=extra_color, tags="robber")
