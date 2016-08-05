@@ -135,10 +135,17 @@ def trade_menu(player,app):
         if app.button_chosen.get()==1:
             given_resource = port_give_text.get()
             gotten_resource = port_get_text.get()
-            trade_successful, mul = evaluate_port_trade(given_resource,
-                gotten_resource,player)
+
+            sell_resource_type = given_resource.split()[1]
+            sell_resource_copies = int(given_resource.split()[0])
+            buy_resource_type = gotten_resource.split()[1]
+            buy_resource_copies = int(gotten_resource.split()[0])
+            
+            trade_successful, mul, trade_ratio = evaluate_port_trade(player,sell_resource_copies,
+                sell_resource_type,buy_resource_copies,buy_resource_type)
+
             if trade_successful:
-                perform_trade(player,given_resource,gotten_resource,app,mul)
+                perform_trade(player,sell_resource_type,buy_resource_type,app,mul,False,trade_ratio)
 
     app.button_chosen.set(-1)
 
