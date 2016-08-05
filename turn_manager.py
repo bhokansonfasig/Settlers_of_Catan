@@ -9,8 +9,9 @@ from draw_elements import draw_circle
 from draw_menus import draw_stats, draw_resources, disable_buttons, write_log
 
 def turn_loop(player,app):
-    from catan_logic import build_settlement, build_road, build_city, buy_development_card
-    from draw_menus import maritime_trade
+    from catan_logic import build_settlement, build_road, build_city
+    from catan_logic import buy_development_card
+    from draw_menus import trade_menu
     from catan_logic import legal_settlement_placements, legal_road_placements
     from catan_AI import computer_take_turn
 
@@ -31,7 +32,7 @@ def turn_loop(player,app):
             elif app.button_chosen.get()==4:
                 buy_development_card(player,app)
             elif app.button_chosen.get()==5:
-                maritime_trade(player,app)
+                trade_menu(player,app)
     # For computer players, reference AI file
     else:
         computer_action = "none"
