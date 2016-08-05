@@ -32,15 +32,15 @@ def draw_tile_skeleton(app):
         tile.set_vertices(app.style.hex_width, app.style.hex_height,
             app.style.hex_x_off, app.style.hex_y_off)
         if tile.visible:
-            tile.draw_skeleton(app.board_canvas)
+            tile.draw_skeleton(app.board_canvas,app.style)
 
 
 def draw_tiles(app):
     """Draws tiles on game board window"""
     for tile in app.pieces.tiles:
         if tile.visible:
-            tile.draw(app.board_canvas)
-            tile.draw_number(app.board_canvas,app.style.txt_size)
+            tile.draw(app.board_canvas,app.style)
+            tile.draw_number(app.board_canvas,app.style)
 
     draw_ports(app)
     redraw_robber(app)
@@ -64,8 +64,7 @@ def draw_ports(app):
                 dock_resource = point.port_resource
                 dock_ratio = point.port_ratio
         if tile.dock:
-            tile.draw_dock(app.board_canvas, int(.8*app.style.txt_size),
-                dock_resource, dock_ratio)
+            tile.draw_dock(app.board_canvas,app.style,dock_resource,dock_ratio)
     app.board_canvas.tag_raise("hex")
 
 
