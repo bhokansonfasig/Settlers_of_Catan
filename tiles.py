@@ -87,23 +87,21 @@ class Tile:
                 int(hex_width*(x_i-2)/10)+hex_x_off,
                 int(hex_height*(y_i-2)/16)+hex_y_off]
 
-    def draw_skeleton(self, canvas):
+    def draw_skeleton(self, canvas, style):
         """Draws the outline for the tile on canvas"""
-        from catan_graphics import set_color
-        sand_color = set_color("sand")
+        sand_color = style.get_color("sand")
 
         self.tk_hex = canvas.create_polygon(self.vertices, outline=sand_color,
             width=4, fill='white', tags="hex")
 
-    def draw(self, canvas):
+    def draw(self, canvas, style):
         """Draws the tile with appropriate fill color on canvas"""
-        from catan_graphics import set_color
-        sand_color = set_color("sand")
-        wood_color = set_color("wood")
-        brick_color = set_color("brick")
-        sheep_color = set_color("sheep")
-        wheat_color = set_color("wheat")
-        stone_color = set_color("stone")
+        sand_color = style.get_color("sand")
+        wood_color = style.get_color("wood")
+        brick_color = style.get_color("brick")
+        sheep_color = style.get_color("sheep")
+        wheat_color = style.get_color("wheat")
+        stone_color = style.get_color("stone")
         if self.resource=="wood":
             canvas.itemconfig(self.tk_hex,fill=wood_color)
         elif self.resource=="brick":
@@ -117,27 +115,26 @@ class Tile:
         else:
             canvas.itemconfig(self.tk_hex,fill=sand_color)
 
-    def draw_number(self, canvas, txt_size):
+    def draw_number(self, canvas, style):
         """Draws the roll number for the tile on canvas with font size
             txt_size"""
-        from catan_graphics import set_color
-        sand_color = set_color("sand")
+        sand_color = style.get_color("sand")
         # Get position of center of tile
         pos_x = (self.vertices[0]+self.vertices[6])/2
         pos_y = (self.vertices[1]+self.vertices[7])/2
         # Draw number disk based on text size
-        r = txt_size*4/5
+        r = style.txt_size*4/5
         if self.roll_number>0:
             self.tk_number_disk = canvas.create_oval(pos_x-r,pos_y-r,
                 pos_x+r,pos_y+r, fill=sand_color, tags="hex")
         # Draw number in black, or red if a 6 or 8
         if (self.roll_number>0 and self.roll_number<6) or (self.roll_number>8):
             self.tk_number = canvas.create_text(pos_x, pos_y,
-                text=self.roll_number, font=("Helvetica", txt_size),
+                text=self.roll_number, font=("Helvetica", style.txt_size),
                 tags="hex")
         elif (self.roll_number==6 or self.roll_number==8):
             self.tk_number = canvas.create_text(pos_x, pos_y, fill="#F22222",
-                text=self.roll_number, font=("Helvetica", txt_size),
+                text=self.roll_number, font=("Helvetica", style.txt_size),
                 tags="hex")
 
     def draw_robber(self, canvas):
@@ -155,11 +152,10 @@ class Tile:
         #     int(pos_x+r/2),int(pos_y+r/2), fill=extra_color, tags="robber")
 
 
-    def draw_dock(self, canvas, txt_size, resource, ratio):
+    def draw_dock(self, canvas, style, resource, ratio):
         """Draws a dock on the tile for trading resource at ratio"""
-        from catan_graphics import set_color
         # Get the color for the dock
-        dock_color = set_color(resource)
+        dock_color = style.get_color(resource)
         # Get position of center of tile
         pos_x = (self.vertices[0]+self.vertices[6])/2
         pos_y = (self.vertices[1]+self.vertices[7])/2
@@ -172,7 +168,7 @@ class Tile:
         ratio_text = str(ratio)+":1"
         # Draw the ratio
         self.tk_dock_ratio = canvas.create_text(pos_x,pos_y,
-            text=ratio_text, font=("Helvetica", txt_size),
+            text=ratio_text, font=("Helvetica", int(.8*style.txt_size)),
             tags="dock")
 
     def has_neighbor(self,neighbor):

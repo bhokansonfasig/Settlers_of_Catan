@@ -23,7 +23,7 @@ class Pieces():
 
     def phase_index(self):
         phases = ["prelim","player selection","setup",
-            "first placements","second placements",
-            "roll dice","discard","place robber","make decisions",
+            "first placements","second placements","change turns",
+            "roll dice","discard","trade","place robber","make decisions",
             "build settlement","build road","build city","end game"]
         return phases.index(self.turn_phase.lower())

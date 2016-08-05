@@ -82,9 +82,9 @@ def new_game(app):
     app.pieces.active_index = 0
     for player in app.pieces.players:
         draw_status_box(app)
-        write_log(app,player.name,"build first settlement")
+        # write_log(app,player.name,"build first settlement")
         build_settlement(player,app)
-        write_log(app,player.name,"build first road")
+        # write_log(app,player.name,"build first road")
         build_road(player,app)
         app.pieces.active_index += 1
         draw_stats(app)
@@ -94,9 +94,9 @@ def new_game(app):
         app.pieces.active_index -= 1
         draw_stats(app)
         draw_status_box(app)
-        write_log(app,player.name,"build second settlement")
+        # write_log(app,player.name,"build second settlement")
         point = build_settlement(player,app)
-        write_log(app,player.name,"build second road")
+        # write_log(app,player.name,"build second road")
         build_road(player,app)
         resources = point_resources(point,app.pieces.tiles)
         for resource in resources:
@@ -108,11 +108,11 @@ def new_game(app):
             in check_winner(app.pieces.players)):
         if app.pieces.loop_index>=0:
             clear_resource_panel(app)
-        draw_stats(app)
         app.pieces.loop_index += 1
         app.pieces.turn_index = app.pieces.loop_index%playnum
         app.pieces.active_index = app.pieces.turn_index
-        app.pieces.turn_phase = "roll dice"
+        app.pieces.turn_phase = "change turns"
+        draw_stats(app)
         draw_status_box(app)
         write_log(app,"---",app.pieces.players[app.pieces.turn_index].name,
             "'s turn---", sep='')
@@ -122,6 +122,7 @@ def new_game(app):
             draw_intermediate_screen(app.pieces.players[app.pieces.turn_index],
                 app)
 
+        app.pieces.turn_phase = "roll dice"
         app.pieces.dice = roll_dice(app)
         draw_dice(app)
         if sum(app.pieces.dice)!=7:
