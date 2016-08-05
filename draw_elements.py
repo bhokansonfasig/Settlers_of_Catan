@@ -1,4 +1,5 @@
-from draw_menus import draw_log, undraw_log, draw_stats, draw_resource_panel
+from draw_menus import draw_log, undraw_log, draw_stats, draw_status_box
+from draw_menus import draw_resource_panel, trade_menu
 
 def redraw_board(app):
     app.board_canvas.delete('all')
@@ -14,10 +15,20 @@ def redraw_board(app):
         for city in player.cities:
             draw_city(city,player,app)
     draw_stats(app)
+    draw_status_box(app)
     if app.pieces.phase_index()>5:
         draw_dice(app)
     if app.pieces.turn_phase=="make decisions":
         draw_resource_panel(app.pieces.players[app.pieces.turn_index],app)
+    elif app.pieces.turn_phase=="discard":
+        # Draw discard screen in a nice way...
+        pass
+    elif app.pieces.turn_phase=="trade":
+        # Draw trade info in a nice way...
+        # Just using trade_menu causes it to stall since it has to wait for the
+        # button press
+        #trade_menu(app.pieces.players[app.pieces.turn_index],app)
+        pass
 
 
 def draw_tile_skeleton(app):

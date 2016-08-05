@@ -19,6 +19,7 @@ def turn_loop(player,app):
     if player.AI_code<0:
         app.button_chosen.set(-1)
         while app.button_chosen.get()!=0:
+            app.pieces.turn_phase = "make decisions"
             draw_stats(app)
             draw_resources(player,app)
             disable_buttons(player,app)
@@ -32,6 +33,7 @@ def turn_loop(player,app):
             elif app.button_chosen.get()==4:
                 buy_development_card(player,app)
             elif app.button_chosen.get()==5:
+                app.pieces.turn_phase = "trade"
                 trade_menu(player,app)
     # For computer players, reference AI file
     else:

@@ -85,7 +85,6 @@ def trade_menu(player,app):
 
     undraw_buttons(app)
 
-
     port_give_text = StringVar()
     port_get_text = StringVar()
     port_give_text.set("4 wood")
@@ -114,7 +113,6 @@ def trade_menu(player,app):
         int(app.style.win_height*.4+4*app.style.txt_size),
         window=port_trade_button, tags="trade")
 
-
     cancel_button = Button(app.board_canvas,
         font=(app.style.txt_font,int(.8*app.style.txt_size)),
         text="Stop Trading",
@@ -126,8 +124,10 @@ def trade_menu(player,app):
         int(app.style.win_height*.4+10*app.style.txt_size),
         window=cancel_button, tags="trade")
 
+
     app.button_chosen.set(-1)
     while app.button_chosen.get()!=0:
+        print("In trade menu")
         draw_stats(app)
         draw_resources(player,app)
         app.board_canvas.wait_variable(app.button_chosen)
@@ -141,7 +141,6 @@ def trade_menu(player,app):
                 perform_trade(player,given_resource,gotten_resource,app,mul)
 
     app.button_chosen.set(-1)
-
 
     app.board_canvas.delete("trade")
     port_trade_button.destroy()
