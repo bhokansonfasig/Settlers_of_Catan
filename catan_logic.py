@@ -570,7 +570,7 @@ def occupied_points_on_board(players):
 
 
 
-def perform_trade(player,give_resource,get_resource,app):
+def perform_trade(player,give_resource,get_resource,app,mul = 1):
     """For player, trades the necessary number of give_resource for
         get_resource"""
 
@@ -583,34 +583,34 @@ def perform_trade(player,give_resource,get_resource,app):
         trade_ratio = 2
 
     trade_allowed = False
-    if give_resource=="wood" and player.wood>=trade_ratio:
+    if give_resource=="wood" and player.wood>=mul:
         trade_allowed = True
-        player.wood -= trade_ratio
-    elif give_resource=="brick" and player.brick>=trade_ratio:
+        player.wood -= mul*trade_ratio
+    elif give_resource=="brick" and player.brick>=mul:
         trade_allowed = True
-        player.brick -= trade_ratio
-    elif give_resource=="sheep" and player.sheep>=trade_ratio:
+        player.brick -= mul*trade_ratio
+    elif give_resource=="sheep" and player.sheep>=mul:
         trade_allowed = True
-        player.sheep -= trade_ratio
-    elif give_resource=="wheat" and player.wheat>=trade_ratio:
+        player.sheep -= mul*trade_ratio
+    elif give_resource=="wheat" and player.wheat>=mul:
         trade_allowed = True
-        player.wheat -= trade_ratio
-    elif give_resource=="stone" and player.stone>=trade_ratio:
+        player.wheat -= mul*trade_ratio
+    elif give_resource=="stone" and player.stone>=mul:
         trade_allowed = True
-        player.stone -= trade_ratio
+        player.stone -= mul*trade_ratio
 
     if trade_allowed:
         if get_resource=="wood":
-            player.wood += 1
+            player.wood += mul
         elif get_resource=="brick":
-            player.brick += 1
+            player.brick += mul
         elif get_resource=="sheep":
-            player.sheep += 1
+            player.sheep += mul
         elif get_resource=="wheat":
-            player.wheat += 1
+            player.wheat += mul
         elif get_resource=="stone":
-            player.stone += 1
-        write_log(app,player.name,"traded",trade_ratio,give_resource,"for 1",
+            player.stone += mul
+        write_log(app,player.name,"traded",trade_ratio*mul,give_resource,"for ",mul,
             get_resource)
 
 

@@ -172,33 +172,40 @@ def maritime_trade(player,app):
     undraw_buttons(app)
 
     res_give_options = []
-    res_get_options = ["1 wood","1 brick","1 sheep","1 wheat","1 stone"]
+    res_get_options = ["wood","brick","sheep","wheat","stone"]
 
     if "any" in player.ports or "?" in player.ports:
         trade_ratio = 3
     else:
         trade_ratio = 4
 
+    mul = {"wood":trade_ratio,"brick":trade_ratio,"sheep":trade_ratio,"wheat":trade_ratio,"stone":trade_ratio}
+
     if ("wood" in player.ports) and player.wood>=2:
-        res_give_options.append("2 wood")
+        res_give_options += [str(2*x)+" wood" for x in range(1,int(player.wood/2)+1)]
+        mul["wood"] = 2
     elif player.wood>=trade_ratio:
-        res_give_options.append(str(trade_ratio)+" wood")
+        res_give_options += [str(x*trade_ratio)+" wood" for x in range(1,int(player.wood/trade_ratio)+1)]
     if ("brick" in player.ports) and player.brick>=2:
-        res_give_options.append("2 brick")
+        res_give_options += [str(2*x)+"  brick" for x in range(1,int(player.brick/2)+1)]
+        mul["brick"] = 2
     elif player.brick>=trade_ratio:
-        res_give_options.append(str(trade_ratio)+" brick")
+        res_give_options += [str(x*trade_ratio)+" brick" for x in range(1,int(player.brick/trade_ratio)+1)]
     if ("sheep" in player.ports) and player.sheep>=2:
-        res_give_options.append("2 sheep")
+        res_give_options += [str(2*x)+"  sheep" for x in range(1,int(player.sheep/2)+1)]
+        mul["sheep"] = 2
     elif player.sheep>=trade_ratio:
-        res_give_options.append(str(trade_ratio)+" sheep")
+        res_give_options += [str(x*trade_ratio)+" sheep" for x in range(1,int(player.sheep/trade_ratio)+1)]
     if ("wheat" in player.ports) and player.wheat>=2:
-        res_give_options.append("2 wheat")
+        res_give_options += [str(2*x)+" wheat" for x in range(1,int(player.wheat/2)+1)]
+        mul["wheat"] = 2
     elif player.wheat>=trade_ratio:
-        res_give_options.append(str(trade_ratio)+" wheat")
+        res_give_options += [str(x*trade_ratio)+" wheat" for x in range(1,int(player.wheat/trade_ratio)+1)]
     if ("stone" in player.ports) and player.stone>=2:
-        res_give_options.append("2 stone")
+        res_give_options += [str(2*x)+" stone" for x in range(1,int(player.stone/2)+1)]
+        mul["stone"] = 2
     elif player.stone>=trade_ratio:
-        res_give_options.append(str(trade_ratio)+" stone")
+        res_give_options += [str(x*trade_ratio)+" stone" for x in range(1,int(player.stone/trade_ratio)+1)]
 
     if len(res_give_options)!=0:
         res_give_text = app.board_canvas.create_text(
@@ -259,9 +266,10 @@ def maritime_trade(player,app):
     if len(res_give_options)!=0:
         if res_give.get()!="Choose a resource to give" and \
             res_get.get()!="Choose a resource to receive":
-            given_resource = res_give.get()[2:]
-            gotten_resource = res_get.get()[2:]
-            perform_trade(player,given_resource,gotten_resource,app)
+            given_resource = res_give.get().split()[1]
+            number = int(res_give.get().split()[0])
+            gotten_resource = res_get.get()
+            perform_trade(player,given_resource,gotten_resource,app,int(number/(mul[given_resource])))
 
         res_give_menu.destroy()
         res_get_menu.destroy()
