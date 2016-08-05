@@ -84,7 +84,7 @@ def redraw_robber(app):
     app.board_canvas.delete("robber")
     for tile in app.pieces.tiles:
         if tile.has_robber:
-            tile.draw_robber(app.board_canvas)
+            tile.draw_robber(app.board_canvas,app.style)
             break
 
 
