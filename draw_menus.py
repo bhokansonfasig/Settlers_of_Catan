@@ -85,10 +85,34 @@ def trade_menu(player,app):
 
     undraw_buttons(app)
 
+    # Attempt to predict what the player will trade for
+    if app.pieces.loop_index<20:
+        resources = ["sheep","stone","wheat","wood","brick"]
+        totals = [player.sheep,player.stone,player.wheat,
+            player.wood,player.brick]
+        fullest_resource = resources[totals.index(max(totals))]
+        resources.reverse()
+        totals.reverse()
+        emptiest_resource = resources[totals.index(min(totals))]
+    else:
+        resources = ["wood","brick","sheep","wheat","stone"]
+        totals = [player.wood,player.brick,player.sheep,
+            player.wheat,player.stone]
+        fullest_resource = resources[totals.index(max(totals))]
+        resources.reverse()
+        totals.reverse()
+        emptiest_resource = resources[totals.index(min(totals))]
+    if fullest_resource in player.ports:
+        trade_ratio = 2
+    elif "any" in player.ports or "?" in player.ports:
+        trade_ratio = 3
+    else:
+        trade_ratio = 4
+
     port_give_text = StringVar()
     port_get_text = StringVar()
-    port_give_text.set("4 wood")
-    port_get_text.set("1 brick")
+    port_give_text.set(str(trade_ratio)+" "+fullest_resource)
+    port_get_text.set("1 "+emptiest_resource)
     port_give_entry = Entry(app.board_canvas, width=8,
         textvariable=port_give_text)
     port_give_window = app.board_canvas.create_window(
@@ -127,7 +151,6 @@ def trade_menu(player,app):
 
     app.button_chosen.set(-1)
     while app.button_chosen.get()!=0:
-        print("In trade menu")
         draw_stats(app)
         draw_resources(player,app)
         app.board_canvas.wait_variable(app.button_chosen)
