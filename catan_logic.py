@@ -579,11 +579,9 @@ def evaluate_port_trade(player,sell_resource_copies,sell_resource_type,buy_resou
 
 
     if (sell_resource_type not in resources) or (buy_resource_type not in resources):
-        print ("mistype")
         return False, 0, 0
 
     if sell_resource_copies > resources[sell_resource_type]:
-        print ("not enough copies with you")
         return False, 0, 0
 
     trade_ratio = [4]
@@ -592,14 +590,11 @@ def evaluate_port_trade(player,sell_resource_copies,sell_resource_type,buy_resou
     if sell_resource_type in player.ports:
         trade_ratio.append(2)
 
-    print (sell_resource_type,sell_resource_copies,buy_resource_type,buy_resource_copies, trade_ratio)
-
     for ratio in trade_ratio:
         # print 
         if sell_resource_copies == buy_resource_copies*ratio:
             return True, int(sell_resource_copies/ratio), ratio
 
-    print ("this is not a valid trade")
     return False, 0, 0
 
     
