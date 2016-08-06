@@ -73,7 +73,8 @@ class Player:
 		self.road_length = 0
 		self.has_longest_road = False
 		self.knight_count = 0
-		self.has_largest_army = False # For once we do development cards
+		self.has_largest_army = False 
+		self.revealed_vp = 0
 
 
 	def __eq__(self,other):
@@ -119,6 +120,8 @@ class Player:
 		# Two points for largest army
 		if self.has_largest_army:
 			self.score += 2
+		#vp dev card
+		self.score += self.revealed_vp
 
 	def give_resource(self,resource):
 		if resource=="wood":
