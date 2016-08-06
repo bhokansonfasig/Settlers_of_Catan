@@ -739,18 +739,13 @@ def largest_army(player,app):
     if player.knight_count<3:
         player.has_largest_army = False
     elif player.knight_count==3 and other_army<3:
-        print("p1")
         player.has_largest_army = True
     elif player.knight_count>other_army and player.knight_count>3:
-        print("p2")
         player.has_largest_army = True
     elif player.has_largest_army and player.knight_count==other_army:
-        print("p3")
         player.has_largest_army = True
     else:
         player.has_largest_army = False
-
-    print([[p.name,p.knight_count,p.has_largest_army] for p in players if p.AI_code<0])
 
 ################################################################################
 # If this file is run itself, do the following
