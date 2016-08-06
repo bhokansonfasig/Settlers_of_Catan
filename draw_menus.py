@@ -244,6 +244,82 @@ def draw_discard_screen(player,app):
         font=(app.style.txt_font,int(.8*app.style.txt_size)),tags="discard")
 
 
+def draw_development_screen(player,app):
+    draw_resources(player,app)
+
+    vp_button = Button(app.board_canvas,
+        font=(app.style.txt_font,int(.8*app.style.txt_size)),
+        text="Reveal Victory Point Card",
+        command=lambda : app.set_button_chosen(1))
+    vp_button.configure(width=25, height=1, padx=0, pady=0)
+        #background=inactive_button_color, activebackground=active_button_color)
+    app.displays.add_object(vp_button)
+    app.board_canvas.create_window(
+        int((app.style.hex_x_off-app.style.water_width)*5/10),
+        int(app.style.win_height*.4+0*app.style.txt_size),
+        window=vp_button, tags="development")
+
+    knight_button = Button(app.board_canvas,
+        font=(app.style.txt_font,int(.8*app.style.txt_size)),
+        text="Use Knight Card",
+        command=lambda : app.set_button_chosen(2))
+    knight_button.configure(width=25, height=1, padx=0, pady=0)
+        #background=inactive_button_color, activebackground=active_button_color)
+    app.displays.add_object(knight_button)
+    app.board_canvas.create_window(
+        int((app.style.hex_x_off-app.style.water_width)*5/10),
+        int(app.style.win_height*.4+2*app.style.txt_size),
+        window=knight_button, tags="development")
+
+    road_builder_button = Button(app.board_canvas,
+        font=(app.style.txt_font,int(.8*app.style.txt_size)),
+        text="Use Road Builder Card",
+        command=lambda : app.set_button_chosen(3))
+    road_builder_button.configure(width=25, height=1, padx=0, pady=0)
+        #background=inactive_button_color, activebackground=active_button_color)
+    app.displays.add_object(road_builder_button)
+    app.board_canvas.create_window(
+        int((app.style.hex_x_off-app.style.water_width)*5/10),
+        int(app.style.win_height*.4+4*app.style.txt_size),
+        window=road_builder_button, tags="development")
+
+    plenty_button = Button(app.board_canvas,
+        font=(app.style.txt_font,int(.8*app.style.txt_size)),
+        text="Use Year of Plenty Card",
+        command=lambda : app.set_button_chosen(4))
+    plenty_button.configure(width=25, height=1, padx=0, pady=0)
+        #background=inactive_button_color, activebackground=active_button_color)
+    app.displays.add_object(plenty_button)
+    app.board_canvas.create_window(
+        int((app.style.hex_x_off-app.style.water_width)*5/10),
+        int(app.style.win_height*.4+6*app.style.txt_size),
+        window=plenty_button, tags="development")
+
+    monopoly_button = Button(app.board_canvas,
+        font=(app.style.txt_font,int(.8*app.style.txt_size)),
+        text="Use Monopoly Card",
+        command=lambda : app.set_button_chosen(1))
+    monopoly_button.configure(width=25, height=1, padx=0, pady=0)
+        #background=inactive_button_color, activebackground=active_button_color)
+    app.displays.add_object(monopoly_button)
+    app.board_canvas.create_window(
+        int((app.style.hex_x_off-app.style.water_width)*5/10),
+        int(app.style.win_height*.4+8*app.style.txt_size),
+        window=monopoly_button, tags="development")
+
+    cancel_button = Button(app.board_canvas,
+        font=(app.style.txt_font,int(.8*app.style.txt_size)),
+        text="Go Back",
+        command=lambda : app.set_button_chosen(0))
+    cancel_button.configure(width=10, height=1, padx=0, pady=0)
+        #background=inactive_button_color, activebackground=active_button_color)
+    app.displays.add_object(cancel_button)
+    app.board_canvas.create_window(
+        int((app.style.hex_x_off-app.style.water_width)*5/10),
+        int(app.style.win_height*.4+10*app.style.txt_size),
+        window=cancel_button, tags="development")
+
+
 def draw_intermediate_screen(player,app,reason="turn"):
     """Draws a screen with player name between turns"""
     if reason=="turn":
@@ -285,19 +361,31 @@ def draw_stats(app):
             app.style.hex_x_off-app.style.water_width+int((i+.5)*portion),
             int((app.style.hex_y_off-app.style.water_width)/4),
             text=player.name, fill=player.color,
-            font=(app.style.txt_font,int(.9*app.style.txt_size)), tags="stats")
-        vp_string = "Victory points: "+str(player.score)
+            font=(app.style.txt_font,int(app.style.txt_size)), tags="stats")
+        app.board_canvas.create_line(
+            app.style.hex_x_off-app.style.water_width+int((i+.15)*portion),
+            int((app.style.hex_y_off-app.style.water_width)/4 + \
+                .7*app.style.txt_size),
+            app.style.hex_x_off-app.style.water_width+int((i+.85)*portion),
+            int((app.style.hex_y_off-app.style.water_width)/4 + \
+                .7*app.style.txt_size),
+            fill=player.color, tags="stats")
         app.board_canvas.create_text(
-            app.style.hex_x_off-app.style.water_width+int((i+.5)*portion),
-            int(2*(app.style.hex_y_off-app.style.water_width)/4),
-            text=vp_string, fill=player.color,
-            font=(app.style.txt_font,int(.7*app.style.txt_size)), tags="stats")
-        resource_string = "Resources: "+str(player.wood+player.brick+ \
-            player.wheat+player.sheep+player.stone)
+            app.style.hex_x_off-app.style.water_width+int((i+.32)*portion),
+            int((app.style.hex_y_off-app.style.water_width)*7/10),
+            text=str(player.score), fill=player.color,
+            font=(app.style.txt_font,int(2*app.style.txt_size)), tags="stats")
+        resource_string = "Res: "+str(player.resource_count())
         app.board_canvas.create_text(
-            app.style.hex_x_off-app.style.water_width+int((i+.5)*portion),
-            int(3*(app.style.hex_y_off-app.style.water_width)/4),
+            app.style.hex_x_off-app.style.water_width+int((i+.63)*portion),
+            int((app.style.hex_y_off-app.style.water_width)*6/10),
             text=resource_string, fill=player.color,
+            font=(app.style.txt_font,int(.7*app.style.txt_size)), tags="stats")
+        development_string = "Dev: "+str(player.dev_card_count())
+        app.board_canvas.create_text(
+            app.style.hex_x_off-app.style.water_width+int((i+.63)*portion),
+            int((app.style.hex_y_off-app.style.water_width)*8/10),
+            text=development_string, fill=player.color,
             font=(app.style.txt_font,int(.7*app.style.txt_size)), tags="stats")
 
     i = app.pieces.turn_index
@@ -459,8 +547,9 @@ def draw_main_screen(player,app):
     # else:
     #     build_city_button.configure(text="Build City")
 
-    if player.dev_card_count()==0:
-        use_dev_button.configure(state=DISABLED)
+    # if player.dev_card_count()==0:
+    #     use_dev_button.configure(state=DISABLED)
+
 
 
 # def undraw_buttons(app):
@@ -492,34 +581,97 @@ def draw_resources(player,app):
     wheat_text = "Wheat: "+str(player.wheat)
     stone_text = "Stone: "+str(player.stone)
 
+    vp_text = "Victory Point: "+str(player.development_cards['victory point'])
+    knight_text = "Knight: "+str(player.development_cards['knight'])
+    road_builder_text = "Road Builder: " + \
+        str(player.development_cards['road building'])
+    plenty_text = "Year of Plenty: "+str(player.development_cards['year of plenty'])
+    monopoly_text = "Monopoly: "+str(player.development_cards['monopoly'])
+
+    line_length = int((app.style.hex_x_off-app.style.water_width)*3/10)
     app.board_canvas.create_text(
-        int((app.style.hex_x_off-app.style.water_width)/2),
-        app.style.hex_y_off-app.style.water_width+int(1.8*app.style.txt_size),
+        int((app.style.hex_x_off-app.style.water_width)*3/10),
+        app.style.hex_y_off-app.style.water_width+int(.8*app.style.txt_size),
+        text="Resources",# anchor=NW,
+        font=(app.style.txt_font,int(app.style.txt_size)), #fill=wood_color,
+        tags="resources")
+    app.board_canvas.create_line(
+        int((app.style.hex_x_off-app.style.water_width)*3/10 - line_length/2),
+        app.style.hex_y_off-app.style.water_width+int(1.4*app.style.txt_size),
+        int((app.style.hex_x_off-app.style.water_width)*3/10 + line_length/2),
+        app.style.hex_y_off-app.style.water_width+int(1.4*app.style.txt_size),
+        tags="resources")
+    app.board_canvas.create_text(
+        int((app.style.hex_x_off-app.style.water_width)*3/10),
+        app.style.hex_y_off-app.style.water_width+int(2.0*app.style.txt_size),
         text=wood_text,# anchor=NW,
         font=(app.style.txt_font,int(.8*app.style.txt_size)), #fill=wood_color,
         tags="resources")
     app.board_canvas.create_text(
-        int((app.style.hex_x_off-app.style.water_width)/2),
-        app.style.hex_y_off-app.style.water_width+int(2.9*app.style.txt_size),
+        int((app.style.hex_x_off-app.style.water_width)*3/10),
+        app.style.hex_y_off-app.style.water_width+int(3.1*app.style.txt_size),
         text=brick_text,# anchor=NW,
         font=(app.style.txt_font,int(.8*app.style.txt_size)), #fill=brick_color,
         tags="resources")
     app.board_canvas.create_text(
-        int((app.style.hex_x_off-app.style.water_width)/2),
-        app.style.hex_y_off-app.style.water_width+int(4.0*app.style.txt_size),
+        int((app.style.hex_x_off-app.style.water_width)*3/10),
+        app.style.hex_y_off-app.style.water_width+int(4.2*app.style.txt_size),
         text=sheep_text,# anchor=NW,
         font=(app.style.txt_font,int(.8*app.style.txt_size)), #fill=sheep_color,
         tags="resources")
     app.board_canvas.create_text(
-        int((app.style.hex_x_off-app.style.water_width)/2),
-        app.style.hex_y_off-app.style.water_width+int(5.1*app.style.txt_size),
+        int((app.style.hex_x_off-app.style.water_width)*3/10),
+        app.style.hex_y_off-app.style.water_width+int(5.3*app.style.txt_size),
         text=wheat_text,# anchor=NW,
         font=(app.style.txt_font,int(.8*app.style.txt_size)), #fill=wheat_color,
         tags="resources")
     app.board_canvas.create_text(
-        int((app.style.hex_x_off-app.style.water_width)/2),
-        app.style.hex_y_off-app.style.water_width+int(6.2*app.style.txt_size),
+        int((app.style.hex_x_off-app.style.water_width)*3/10),
+        app.style.hex_y_off-app.style.water_width+int(6.4*app.style.txt_size),
         text=stone_text,# anchor=NW,
+        font=(app.style.txt_font,int(.8*app.style.txt_size)), #fill=stone_color,
+        tags="resources")
+
+    app.board_canvas.create_text(
+        int((app.style.hex_x_off-app.style.water_width)*7/10),
+        app.style.hex_y_off-app.style.water_width+int(.8*app.style.txt_size),
+        text="Dev Cards",# anchor=NW,
+        font=(app.style.txt_font,int(app.style.txt_size)), #fill=wood_color,
+        tags="resources")
+    app.board_canvas.create_line(
+        int((app.style.hex_x_off-app.style.water_width)*7/10 - line_length/2),
+        app.style.hex_y_off-app.style.water_width+int(1.4*app.style.txt_size),
+        int((app.style.hex_x_off-app.style.water_width)*7/10 + line_length/2),
+        app.style.hex_y_off-app.style.water_width+int(1.4*app.style.txt_size),
+        tags="resources")
+    app.board_canvas.create_text(
+        int((app.style.hex_x_off-app.style.water_width)*7/10),
+        app.style.hex_y_off-app.style.water_width+int(2.0*app.style.txt_size),
+        text=vp_text,# anchor=NW,
+        font=(app.style.txt_font,int(.8*app.style.txt_size)), #fill=wood_color,
+        tags="resources")
+    app.board_canvas.create_text(
+        int((app.style.hex_x_off-app.style.water_width)*7/10),
+        app.style.hex_y_off-app.style.water_width+int(3.1*app.style.txt_size),
+        text=knight_text,# anchor=NW,
+        font=(app.style.txt_font,int(.8*app.style.txt_size)), #fill=brick_color,
+        tags="resources")
+    app.board_canvas.create_text(
+        int((app.style.hex_x_off-app.style.water_width)*7/10),
+        app.style.hex_y_off-app.style.water_width+int(4.2*app.style.txt_size),
+        text=road_builder_text,# anchor=NW,
+        font=(app.style.txt_font,int(.8*app.style.txt_size)), #fill=sheep_color,
+        tags="resources")
+    app.board_canvas.create_text(
+        int((app.style.hex_x_off-app.style.water_width)*7/10),
+        app.style.hex_y_off-app.style.water_width+int(5.3*app.style.txt_size),
+        text=plenty_text,# anchor=NW,
+        font=(app.style.txt_font,int(.8*app.style.txt_size)), #fill=wheat_color,
+        tags="resources")
+    app.board_canvas.create_text(
+        int((app.style.hex_x_off-app.style.water_width)*7/10),
+        app.style.hex_y_off-app.style.water_width+int(6.4*app.style.txt_size),
+        text=monopoly_text,# anchor=NW,
         font=(app.style.txt_font,int(.8*app.style.txt_size)), #fill=stone_color,
         tags="resources")
 
@@ -547,6 +699,8 @@ def draw_resource_panel(player,app):
         draw_main_screen(player,app)
     elif app.pieces.turn_phase=="build city":
         draw_main_screen(player,app)
+    elif app.pieces.turn_phase=="development":
+        draw_development_screen(player,app)
     elif app.pieces.turn_phase=="end turn":
         pass
 
@@ -558,6 +712,7 @@ def clear_resource_panel(app):
     app.board_canvas.delete("button")
     app.board_canvas.delete("trade")
     app.board_canvas.delete("discard")
+    app.board_canvas.delete("development")
     app.displays.destroy_objects()
 
 

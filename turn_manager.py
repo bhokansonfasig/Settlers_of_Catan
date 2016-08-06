@@ -28,7 +28,7 @@ def turn_loop(player,app):
             draw_stats(app)
             clear_resource_panel(app)
             draw_resource_panel(app.pieces.players[app.pieces.turn_index],app)
-            
+
             app.board_canvas.wait_variable(app.button_chosen)
             if app.button_chosen.get()==1:
                 build_settlement(player,app)
@@ -41,6 +41,9 @@ def turn_loop(player,app):
             elif app.button_chosen.get()==5:
                 app.pieces.turn_phase = "trade"
                 trade_menu(player,app)
+            elif app.button_chosen.get()==6:
+                app.pieces.turn_phase = "development"
+                development_menu(player,app)
     # For computer players, reference AI file
     else:
         computer_action = "none"
@@ -457,5 +460,23 @@ def trade_menu(player,app):
             if trade_successful:
                 perform_trade(player,sell_resource_type,buy_resource_type,
                     app,mul,False,trade_ratio)
+
+    app.button_chosen.set(-1)
+
+
+def development_menu(player,app):
+    """Runs development card screen for player"""
+
+    app.button_chosen.set(-1)
+    while app.button_chosen.get()!=0:
+        clear_resource_panel(app)
+        draw_resource_panel(player,app)
+
+        app.board_canvas.wait_variable(app.button_chosen)
+
+        # Implement use of development cards here
+        #if app.button_chosen.get()==1:
+            #Do VP Card stuff
+        #etc...
 
     app.button_chosen.set(-1)

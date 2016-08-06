@@ -60,11 +60,11 @@ class Player:
 		# 	self.brick += 20
 
 		#Development cards
-		self.knight_card = 0 # Knight cards
-		self.victory_point_card = 0 # VP cards
-		self.road_building_card = 0 # Road building cards
-		self.monopoly_card = 0 # Monopoly cards
-		self.year_of_plenty_card = 0 # Year of plenty cards
+		# self.knight_card = 0 # Knight cards
+		# self.victory_point_card = 0 # VP cards
+		# self.road_building_card = 0 # Road building cards
+		# self.monopoly_card = 0 # Monopoly cards
+		# self.year_of_plenty_card = 0 # Year of plenty cards
 
 		self.development_cards = {'knight':0,'victory point':0,'road building':0,'monopoly':0,'year of plenty':0}
 
@@ -82,9 +82,10 @@ class Player:
 		return self.wood + self.brick + self.wheat + self.sheep + self.stone
 
 	def dev_card_count(self):
-		return self.knight_card + self.victory_point_card + \
-			self.road_building_card + self.monopoly_card + \
-			self.year_of_plenty_card
+		total = 0
+		for key, value in self.development_cards.items():
+			total += value
+		return value
 
 	def single_resource_count(self,check_resource):
 		if check_resource.lower()=="wood":

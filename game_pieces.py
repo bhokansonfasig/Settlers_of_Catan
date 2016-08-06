@@ -26,5 +26,5 @@ class Pieces():
             "first placements","second placements","change turns",
             "roll dice","discard","trade","place robber","steal resource",
             "make decisions","build settlement","build road","build city",
-            "end game"]
+            "development","end game"]
         return phases.index(self.turn_phase.lower())
