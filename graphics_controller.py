@@ -239,6 +239,8 @@ def close_all(app):
 def set_players(app):
     """Gets the number and type of players and returns an array of player
         objects"""
+    app.pieces.turn_phase = "player selection"
+    
     app.splash.withdraw()
     app.player_window.update()
     app.player_window.deiconify()

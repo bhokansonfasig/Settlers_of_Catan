@@ -19,6 +19,7 @@ from draw_menus import write_log
 def set_tiles(pieces):
     """Takes array of tiles and sets resources and dice roll numbers to the
     appropriate game board tiles"""
+    pieces.turn_phase = "setup"
 
     # Prepare all_points and all_roads for later use
     #the leftmost points on the grid, which are used to generate the rest
@@ -226,6 +227,9 @@ def build_settlement(player,app):
         player.brick -= 1
         player.wheat -= 1
         player.sheep -= 1
+
+        app.pieces.turn_phase = "build settlement"
+
     # Get the point for the settlement to be built
     if player.AI_code<0:
         settlement = player_choose_settlement(player,available_points,app)
@@ -269,6 +273,9 @@ def build_road(player,app):
             return
         player.wood -= 1
         player.brick -= 1
+
+        app.pieces.turn_phase = "build road"
+
     # Get the points for the road to be built
     if player.AI_code<0:
         road = player_choose_road(player,available_roads,app)
@@ -306,6 +313,8 @@ def build_road(player,app):
 
 
 def build_city(player,app):
+    app.pieces.turn_phase = "build city"
+
     # If the player can't build a city, exit without building anything
     available_points = player.settlements
     if len(available_points)==0:
@@ -459,9 +468,9 @@ def roll_dice(app):
     die_values = [1,2,3,4,5,6]
     die_1 = choice(die_values)
     die_2 = choice(die_values)
-    while die_1+die_2 == 7:
-        die_1 = choice(die_values)
-        die_2 = choice(die_values)
+    # while die_1+die_2 == 7:
+    #     die_1 = choice(die_values)
+    #     die_2 = choice(die_values)
     write_log(app,"Rolled",die_1,"+",die_2,"=",die_1+die_2)
     return die_1, die_2
 
@@ -694,6 +703,8 @@ def perform_trade(player,give_resource,get_resource,app,mul = 1,AI=True,ratio=4)
 def move_robber(player,app):
     """Depending on human or computer, should move robber to new space and steal
         random card from player on that space"""
+    app.pieces.turn_phase = "place robber"
+
     # Get the tile for the robber to be placed
     if player.AI_code<0:
         robber_tile = player_place_robber(player,app)
@@ -710,6 +721,8 @@ def move_robber(player,app):
     write_log(app,player.name,"placed the robber",vague_location(robber_tile))
     # Redraw the robber on the board
     redraw_robber(app)
+
+    app.pieces.turn_phase = "steal resource"
     # Take a resource from a player on the tile where the robber was placed
     if player.AI_code<0:
         player_steal_resource(player,robber_tile,app)
@@ -721,6 +734,8 @@ def discard_resources(player,app):
     """Depending on human or computer, should discard resources to get down to
         half the current value (rounded up; e.g. player with 9 cards dicards to
         get down to 5)"""
+    app.pieces.turn_phase = "discard"
+
     # Find out the number of resources the player needs to get down to
     new_resource_count = player.resource_count() - player.rob_count()
     # Just in case, loop through until the player discards enough resources
@@ -735,7 +750,7 @@ def discard_resources(player,app):
 def largest_army(player,app):
     players = app.pieces.players
     other_army = max([p.knight_count for p in players if p!=player])
-    
+
     if player.knight_count<3:
         player.has_largest_army = False
     elif player.knight_count==3 and other_army<3:

@@ -55,7 +55,6 @@ def new_game(app):
 
     write_log(app,"*****New game started*****")
 
-    app.pieces.turn_phase = "player selection"
     # Set the number of players, their names, and levels of AI
     set_players(app)
     # Randomize player order
@@ -66,7 +65,6 @@ def new_game(app):
         if guy.AI_code<0:
             app.pieces.all_computers = False
 
-    app.pieces.turn_phase = "setup"
     # Arange the tiles, then draw them to the board window
     app.pieces.tiles = set_tiles(app.pieces)
     draw_tiles(app)
@@ -155,7 +153,6 @@ def new_game(app):
                         "resources.")
             clear_resource_panel(app)
             draw_stats(app)
-            app.pieces.turn_phase = "place robber"
             draw_status_box(app)
             move_robber(app.pieces.players[app.pieces.turn_index],app)
 

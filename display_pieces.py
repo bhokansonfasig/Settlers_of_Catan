@@ -16,6 +16,8 @@ class Displays():
         self.wheat_discard = StringVar()
         self.stone_discard = StringVar()
 
+        self.steal_choice = StringVar()
+
         self.total_text = -1
 
 

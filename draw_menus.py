@@ -45,8 +45,7 @@ def draw_status_box(app):
 
     border_width = int(.2*app.style.txt_size)
     app.board_canvas.create_rectangle(
-        int((app.style.hex_x_off-app.style.water_width)*3/5),
-        0,#int((app.style.hex_y_off-app.style.water_width)*1/20),
+        int((app.style.hex_x_off-app.style.water_width)*3/5),0,
         int(app.style.hex_x_off-app.style.water_width)-border_width,
         int(app.style.hex_y_off-app.style.water_width)-border_width,
         outline='white', width=border_width, tags="status")
@@ -59,12 +58,26 @@ def draw_status_box(app):
             action = "is choosing initial position"
         elif app.pieces.turn_phase=="second placements":
             action = "is choosing second position"
+        elif app.pieces.turn_phase=="change turns":
+            action = "is starting their turn"
         elif app.pieces.turn_phase=="roll dice":
             action = "is rolling the dice"
         elif app.pieces.turn_phase=="discard":
             action = "is getting robbed"
+        # elif app.pieces.turn_phase=="trade":
+        #     action = "is looking for a trade"
+        # elif app.pieces.turn_phase=="development":
+        #     action = "is playing a dev card"
         elif app.pieces.turn_phase=="place robber":
             action = "is placing the robber"
+        elif app.pieces.turn_phase=="steal resource":
+            action = "is stealing a resource"
+        elif app.pieces.turn_phase=="build settlement":
+            action = "is building a settlement"
+        elif app.pieces.turn_phase=="build road":
+            action = "is building a road"
+        elif app.pieces.turn_phase=="build city":
+            action = "is building a city"
         elif app.pieces.turn_phase=="end game":
             action = "has won!"
         else:
@@ -134,7 +147,7 @@ def draw_trade_screen(player,app):
     app.displays.add_object(cancel_button)
     app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*5/10),
-        int(app.style.win_height*.4+10*app.style.txt_size),
+        int(app.style.win_height*.4+11*app.style.txt_size),
         window=cancel_button, tags="trade")
 
 
@@ -186,7 +199,7 @@ def draw_discard_screen(player,app):
     app.displays.add_object(sheep_discard_menu)
     app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*3/10),
-        int(app.style.win_height*.4+4*app.style.txt_size),
+        int(app.style.win_height*.4+4.5*app.style.txt_size),
         window=sheep_discard_menu, tags="discard")
     app.displays.wheat_discard.set(wheat_discard_options[0])
     wheat_discard_menu = OptionMenu(app.board_canvas,app.displays.wheat_discard,
@@ -194,7 +207,7 @@ def draw_discard_screen(player,app):
     app.displays.add_object(wheat_discard_menu)
     app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*7/10),
-        int(app.style.win_height*.4+4*app.style.txt_size),
+        int(app.style.win_height*.4+4.5*app.style.txt_size),
         window=wheat_discard_menu, tags="discard")
     app.displays.stone_discard.set(stone_discard_options[0])
     stone_discard_menu = OptionMenu(app.board_canvas,app.displays.stone_discard,
@@ -202,7 +215,7 @@ def draw_discard_screen(player,app):
     app.displays.add_object(stone_discard_menu)
     app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*3/10),
-        int(app.style.win_height*.4+6*app.style.txt_size),
+        int(app.style.win_height*.4+7*app.style.txt_size),
         window=stone_discard_menu, tags="discard")
     give_button = Button(app.board_canvas,
         font=(app.style.txt_font,int(.8*app.style.txt_size)),
@@ -212,7 +225,7 @@ def draw_discard_screen(player,app):
     app.displays.add_object(give_button)
     app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*5/10),
-        int(app.style.win_height*.4+8*app.style.txt_size),
+        int(app.style.win_height*.4+11*app.style.txt_size),
         window=give_button, tags="discard")
 
     total_discard_count = app.displays.get_wood_discard() + \
@@ -227,9 +240,67 @@ def draw_discard_screen(player,app):
         total_string_color = "black"
     app.displays.total_text = app.board_canvas.create_text(
         int((app.style.hex_x_off-app.style.water_width)*7/10),
-        int(app.style.win_height*.4+6*app.style.txt_size),
+        int(app.style.win_height*.4+7*app.style.txt_size),
         text=total_string, fill=total_string_color,
         font=(app.style.txt_font,int(.8*app.style.txt_size)),tags="discard")
+
+
+def draw_steal_screen(player,app):
+    draw_resources(player,app)
+
+    for tile in app.pieces.tiles:
+        if tile.has_robber:
+            robber_tile = tile
+            break
+    stealable_players = []
+    for guy in app.pieces.players:
+        guy_added = False
+        for point in guy.settlements:
+            if robber_tile.index in point.coordinate:
+                stealable_players.append(guy)
+                guy_added = True
+                break
+        if guy_added:
+            continue
+        for point in guy.cities:
+            if robber_tile.index in point.coordinate:
+                stealable_players.append(guy)
+                break
+    if player in stealable_players:
+        stealable_players.remove(player)
+    for guy in stealable_players:
+        if guy.resource_count()==0:
+            stealable_players.remove(guy)
+    if len(stealable_players)==0:
+        return
+    player_options = []
+    for guy in stealable_players:
+        player_options.append(guy.name)
+
+    app.board_canvas.create_text(
+        int((app.style.hex_x_off-app.style.water_width)*5/10),
+        int(app.style.win_height*.4+4*app.style.txt_size),
+        text="Take a resource from:",
+        font=(app.style.txt_font,int(.8*app.style.txt_size)), tags="steal")
+    app.displays.steal_choice.set("Choose a player to steal from")
+    player_choice_menu = OptionMenu(app.board_canvas, app.displays.steal_choice,
+        *player_options)
+    app.displays.add_object(player_choice_menu)
+    app.board_canvas.create_window(
+        int((app.style.hex_x_off-app.style.water_width)*5/10),
+        int(app.style.win_height*.4+6*app.style.txt_size),
+        window=player_choice_menu, tags="steal")
+    steal_button = Button(app.board_canvas,
+        font=(app.style.txt_font,int(.8*app.style.txt_size)), text="Steal",
+        command=lambda : app.set_button_chosen(0))
+    steal_button.configure(width=10, height=1, padx=0, pady=0)
+        #background=inactive_button_color, activebackground=active_button_color)
+    app.displays.add_object(steal_button)
+    app.board_canvas.create_window(
+        int((app.style.hex_x_off-app.style.water_width)*5/10),
+        int(app.style.win_height*.4+9*app.style.txt_size),
+        window=steal_button, tags="steal")
+
 
 
 def draw_development_screen(player,app):
@@ -314,7 +385,7 @@ def draw_development_screen(player,app):
     app.displays.add_object(cancel_button)
     app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*5/10),
-        int(app.style.win_height*.4+10*app.style.txt_size),
+        int(app.style.win_height*.4+11*app.style.txt_size),
         window=cancel_button, tags="development")
 
 
@@ -408,6 +479,41 @@ def draw_stats(app):
         #         width=int(.2*app.style.txt_size), tags="stats")
 
 
+def draw_placement_screen(player,app,variety):
+    """Draws screen with information about how to place things"""
+    if variety=="settlement":
+        placement_text = "Click on a vertex to place a settlement"
+    elif variety=="city":
+        placement_text = "Click on a vertex to place a city"
+    elif variety=="road":
+        placement_text = "Click on two vertices to place a road"
+    elif variety=="robber":
+        placement_text = "Click on a tile to place the robber"
+    elif variety=="first":
+        placement_text = "Click on a vertex to place your first settlement, "+\
+            "then click on two vertices to place a connected road"
+    elif variety=="second":
+        placement_text = "Click on a vertex to place your second settlement, "+\
+            "then click on two vertices to place a connected road"
+    else:
+        placement_text = "Click on the board, I think..."
+
+    app.board_canvas.create_text(
+        int((app.style.hex_x_off-app.style.water_width)/2),
+        int(app.style.win_height/3), text=placement_text,
+        font=(app.style.txt_font,int(1.25*app.style.txt_size)),
+        justify=CENTER, tags="placement", #fill=player.color,
+        width=int(.9*(app.style.hex_x_off-app.style.water_width)))
+
+    if variety!="robber" and variety!="first" and variety!="second":
+        app.board_canvas.create_text(
+            int((app.style.hex_x_off-app.style.water_width)/2),
+            int(app.style.win_height*2/3), text="Click here to cancel",
+            font=(app.style.txt_font,int(1.25*app.style.txt_size)),
+            justify=CENTER, tags="placement", #fill=player.color,
+            width=int(.9*(app.style.hex_x_off-app.style.water_width)))
+
+
 def draw_main_screen(player,app):
     """Draws buttons for player actions on the board window and sets their
     status according to the player's resource availability."""
@@ -431,6 +537,11 @@ def draw_main_screen(player,app):
         int(app.style.win_height*.4+1.25*app.style.txt_size),
         text="(1 wood, 1 brick, 1 sheep, 1 wheat)",
         font=(app.style.txt_font,int(.5*app.style.txt_size)), tags="button")
+    app.board_canvas.create_text(
+        int((app.style.hex_x_off-app.style.water_width)*3/10),
+        int(app.style.win_height*.4+2*app.style.txt_size),
+        text=str(player.settlement_max-len(player.settlements))+" remaining",
+        font=(app.style.txt_font,int(.7*app.style.txt_size)), tags="button")
     build_road_button = Button(app.board_canvas,
         font=(app.style.txt_font,int(.8*app.style.txt_size)),
         text="Build Road", command=lambda : app.set_button_chosen(2))
@@ -446,6 +557,11 @@ def draw_main_screen(player,app):
         int(app.style.win_height*.4+1.25*app.style.txt_size),
         text="(1 wood, 1 brick)",
         font=(app.style.txt_font,int(.5*app.style.txt_size)), tags="button")
+    app.board_canvas.create_text(
+        int((app.style.hex_x_off-app.style.water_width)*7/10),
+        int(app.style.win_height*.4+2*app.style.txt_size),
+        text=str(player.road_max-len(player.roads))+" remaining",
+        font=(app.style.txt_font,int(.7*app.style.txt_size)), tags="button")
     build_city_button = Button(app.board_canvas,
         font=(app.style.txt_font,int(.8*app.style.txt_size)),
         text="Build City", command=lambda : app.set_button_chosen(3))
@@ -454,13 +570,18 @@ def draw_main_screen(player,app):
     app.displays.add_object(build_city_button)
     app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*3/10),
-        int(app.style.win_height*.4+3*app.style.txt_size),
+        int(app.style.win_height*.4+4*app.style.txt_size),
         window=build_city_button, tags="button")
     app.board_canvas.create_text(
         int((app.style.hex_x_off-app.style.water_width)*3/10),
-        int(app.style.win_height*.4+4.25*app.style.txt_size),
+        int(app.style.win_height*.4+5.25*app.style.txt_size),
         text="(2 wheat, 3 stone)",
         font=(app.style.txt_font,int(.5*app.style.txt_size)), tags="button")
+    app.board_canvas.create_text(
+        int((app.style.hex_x_off-app.style.water_width)*3/10),
+        int(app.style.win_height*.4+6*app.style.txt_size),
+        text=str(player.city_max-len(player.cities))+" remaining",
+        font=(app.style.txt_font,int(.7*app.style.txt_size)), tags="button")
     buy_dev_button = Button(app.board_canvas,
         font=(app.style.txt_font,int(.8*app.style.txt_size)),
         text="Buy Dev Card", command=lambda : app.set_button_chosen(4))
@@ -469,13 +590,18 @@ def draw_main_screen(player,app):
     app.displays.add_object(buy_dev_button)
     app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*7/10),
-        int(app.style.win_height*.4+3*app.style.txt_size),
+        int(app.style.win_height*.4+4*app.style.txt_size),
         window=buy_dev_button, tags="button")
     app.board_canvas.create_text(
         int((app.style.hex_x_off-app.style.water_width)*7/10),
-        int(app.style.win_height*.4+4.25*app.style.txt_size),
+        int(app.style.win_height*.4+5.25*app.style.txt_size),
         text="(1 sheep, 1 wheat, 1 stone)",
         font=(app.style.txt_font,int(.5*app.style.txt_size)), tags="button")
+    app.board_canvas.create_text(
+        int((app.style.hex_x_off-app.style.water_width)*7/10),
+        int(app.style.win_height*.4+6*app.style.txt_size),
+        text=str(len(app.pieces.development_cards))+" remaining",
+        font=(app.style.txt_font,int(.7*app.style.txt_size)), tags="button")
     trade_button = Button(app.board_canvas,
         font=(app.style.txt_font,int(.8*app.style.txt_size)),
         text="Trade", command=lambda : app.set_button_chosen(5))
@@ -484,7 +610,7 @@ def draw_main_screen(player,app):
     app.displays.add_object(trade_button)
     app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*3/10),
-        int(app.style.win_height*.4+6*app.style.txt_size),
+        int(app.style.win_height*.4+8*app.style.txt_size),
         window=trade_button, tags="button")
     use_dev_button = Button(app.board_canvas,
         font=(app.style.txt_font,int(.8*app.style.txt_size)),
@@ -496,7 +622,7 @@ def draw_main_screen(player,app):
     app.displays.add_object(use_dev_button)
     app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*7/10),
-        int(app.style.win_height*.4+6*app.style.txt_size),
+        int(app.style.win_height*.4+8*app.style.txt_size),
         window=use_dev_button, tags="button")
     end_turn_button = Button(app.board_canvas,
         font=(app.style.txt_font,int(.8*app.style.txt_size)),
@@ -506,7 +632,7 @@ def draw_main_screen(player,app):
     app.displays.add_object(end_turn_button)
     app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*5/10),
-        int(app.style.win_height*.4+8*app.style.txt_size),
+        int(app.style.win_height*.4+11*app.style.txt_size),
         window=end_turn_button, tags="button")
 
     # Disable unusable buttons
@@ -680,28 +806,36 @@ def draw_resource_panel(player,app):
     """Draws resources available to player and other context-dependent items in
     the resource panel of the board window."""
 
-    if app.pieces.phase_index()<=5:
+    if app.pieces.phase_index()<3:
         return
 
-    if app.pieces.turn_phase=="roll dice":
+    if app.pieces.turn_phase=="first placements":
+        draw_placement_screen(player,app,"first")
+    elif app.pieces.turn_phase=="second placements":
+        draw_placement_screen(player,app,"second")
+    elif app.pieces.turn_phase=="change turns":
+        draw_intermediate_screen(player,app)
+    elif app.pieces.turn_phase=="roll dice":
         pass
     elif app.pieces.turn_phase=="discard":
         draw_discard_screen(player,app)
     elif app.pieces.turn_phase=="trade":
         draw_trade_screen(player,app)
     elif app.pieces.turn_phase=="place robber":
-        draw_main_screen(player,app)
+        draw_placement_screen(player,app,"robber")
+    elif app.pieces.turn_phase=="steal resource":
+        draw_steal_screen(player,app)
     elif app.pieces.turn_phase=="make decisions":
         draw_main_screen(player,app)
     elif app.pieces.turn_phase=="build settlement":
-        draw_main_screen(player,app)
+        draw_placement_screen(player,app,"settlement")
     elif app.pieces.turn_phase=="build road":
-        draw_main_screen(player,app)
+        draw_placement_screen(player,app,"road")
     elif app.pieces.turn_phase=="build city":
-        draw_main_screen(player,app)
+        draw_placement_screen(player,app,"city")
     elif app.pieces.turn_phase=="development":
         draw_development_screen(player,app)
-    elif app.pieces.turn_phase=="end turn":
+    else:
         pass
 
 
@@ -712,6 +846,8 @@ def clear_resource_panel(app):
     app.board_canvas.delete("button")
     app.board_canvas.delete("trade")
     app.board_canvas.delete("discard")
+    app.board_canvas.delete("steal")
+    app.board_canvas.delete("placement")
     app.board_canvas.delete("development")
     app.displays.destroy_objects()
 

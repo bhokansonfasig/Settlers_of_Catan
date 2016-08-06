@@ -16,6 +16,8 @@ def turn_loop(player,app):
     from catan_logic import legal_settlement_placements, legal_road_placements
     from catan_AI import computer_take_turn
 
+    app.pieces.turn_phase = "make decisions"
+
     draw_stats(app)
     clear_resource_panel(app)
     draw_resource_panel(app.pieces.players[app.pieces.turn_index],app)
@@ -39,10 +41,8 @@ def turn_loop(player,app):
             elif app.button_chosen.get()==4:
                 buy_development_card(player,app)
             elif app.button_chosen.get()==5:
-                app.pieces.turn_phase = "trade"
                 trade_menu(player,app)
             elif app.button_chosen.get()==6:
-                app.pieces.turn_phase = "development"
                 development_menu(player,app)
     # For computer players, reference AI file
     else:
@@ -103,10 +103,8 @@ def placement_loop(player,available_points,app):
 def player_choose_settlement(player,available_points,app):
     """Asks player to click hex point on board to place settlement.
     Returns tuple of the placed settlement"""
-    # # Watch for click events
-    # board_canvas.bind("<Button-1>", click_set)
-
-    #print("Choose a vertex to place a settlement")
+    clear_resource_panel(app)
+    draw_resource_panel(player,app)
 
     coordinate = placement_loop(player,available_points,app)
 
@@ -114,41 +112,23 @@ def player_choose_settlement(player,available_points,app):
     if not(coordinate):
         return False
 
-    #print("Chose point",coordinate)
-
-    # # Stop watching for click events
-    # board_canvas.unbind("<Button-1>")
-
     # Get rid of all circles
     app.board_canvas.delete("circle")
 
     return Point(coordinate[0],coordinate[1],coordinate[2])
 
 
-def player_choose_road(player,players,app):
+def player_choose_road(player,available_roads,app):
     """Asks player to click two hex points on board to place road between them.
     Returns tuples of the placed road"""
-    from catan_logic import legal_road_placements
-
-    # # Watch for click events
-    # board_canvas.bind("<Button-1>", click_set)
-
-    # global click_x,click_y
-    # click_x = IntVar()  # Tkinter variable that can be watched
-    # click_y = IntVar()  # Tkinter variable that can be watched
-    # click_x.set(0)
-    # click_y.set(0)
+    clear_resource_panel(app)
+    draw_resource_panel(player,app)
 
     road_coordinates = []
     valid_road = False
-
-    #print("Choose two vertices to place a road")
-
     # Loop until player picks a valid road pair
     while(not(valid_road)):
         # Determine the places a player can legally play
-        available_roads = legal_road_placements(player,app.pieces.players,
-            app.pieces.all_roads)
         available_points = []
         for road in available_roads:
             available_points.append(road.point1)
@@ -161,11 +141,8 @@ def player_choose_road(player,players,app):
             for point in available_points:
                 if road_coordinates[0].adjacent_point(point) or \
                     road_coordinates[0]==point:
-                    #print("Point",road_coordinates[0].x,road_coordinates[0].y,
-                    #    road_coordinates[0].z,"adjacent to",point.x,point.y,point.z)
                     continue
                 else:
-                    #print("Removing point",point.x,point.y,point.z)
                     points_to_remove.append(point)
             for point in points_to_remove:
                 while point in available_points:
@@ -191,17 +168,12 @@ def player_choose_road(player,players,app):
             coordinate[2]))
 
         # Set variables to loop again
-        # valid_position = False
         app.click_x.set(0)
         app.click_y.set(0)
 
         # If there are two road coordinates, check if they make a valid road
         if len(road_coordinates)==2:
             road = Road(road_coordinates[0],road_coordinates[1])
-            # road_unowned = True
-            # for player in players:
-            #     if road in player.roads:
-            #         road_unowned = False
             if road.valid:
                 for match in available_roads:
                     if road==match:
@@ -210,40 +182,23 @@ def player_choose_road(player,players,app):
             if not(valid_road):
                 road_coordinates = []
 
-    #print("Chose road",road.point1.coordinate,road.point2.coordinate)
-
-    # # Stop watching for click events
-    # board_canvas.unbind("<Button-1>")
-
     # Get rid of all circles
     app.board_canvas.delete("circle")
 
     return road
 
 
-def player_choose_city(player,players,app):
+def player_choose_city(player,available_points,app):
     """Asks player to click hex point on board to place city.
     Returns tuple of the placed settlement"""
-    # # Watch for click events
-    # board_canvas.bind("<Button-1>", click_set)
-
-    # Determine the places a player can legally play
-    available_points = []
-    for point in player.settlements:
-        available_points.append(point)
-
-    #print("Choose a vertex to place a city")
+    clear_resource_panel(app)
+    draw_resource_panel(player,app)
 
     coordinate = placement_loop(player,available_points,app)
 
     # If the placement loop was exited early, exit this loop early too
     if not(coordinate):
         return False
-
-    #print("Chose point",coordinate)
-
-    # # Stop watching for click events
-    # board_canvas.unbind("<Button-1>")
 
     # Get rid of all circles
     app.board_canvas.delete("circle")
@@ -253,7 +208,9 @@ def player_choose_city(player,players,app):
 
 def player_place_robber(player,app):
     """Gets click of where player would like to place the robber"""
-    # valid_position = False
+    clear_resource_panel(app)
+    draw_resource_panel(player,app)
+
     app.click_x.set(int(app.style.hex_x_off-app.style.water_width)+1)
     app.click_y.set(int(app.style.hex_y_off-app.style.water_width)+1)
 
@@ -338,64 +295,17 @@ def player_discard(player,app):
 
 def player_steal_resource(player,robber_tile,app):
     """Prompts player for which player they would like to steal from"""
-    stealable_players = []
-    for guy in app.pieces.players:
-        guy_added = False
-        for point in guy.settlements:
-            if robber_tile.index in point.coordinate:
-                stealable_players.append(guy)
-                guy_added = True
-                break
-        if guy_added:
-            continue
-        for point in guy.cities:
-            if robber_tile.index in point.coordinate:
-                stealable_players.append(guy)
-                break
-    if player in stealable_players:
-        stealable_players.remove(player)
-    for guy in stealable_players:
-        if guy.resource_count()==0:
-            stealable_players.remove(guy)
-
-    if len(stealable_players)==0:
-        return
-
-    player_options = []
-    for guy in stealable_players:
-        player_options.append(guy.name)
-
-    player_choice_text = app.board_canvas.create_text(
-        int((app.style.hex_x_off-app.style.water_width)*5/10),
-        int(app.style.win_height*.4+4*app.style.txt_size),
-        text="Take a resource from:",
-        font=(app.style.txt_font,int(.8*app.style.txt_size)), tags="steal")
-    player_choice = StringVar()
-    player_choice.set("Choose a player to steal from")
-    player_choice_menu = OptionMenu(app.board_canvas, player_choice,
-        *player_options)
-    player_choice_window = app.board_canvas.create_window(
-        int((app.style.hex_x_off-app.style.water_width)*5/10),
-        int(app.style.win_height*.4+6*app.style.txt_size),
-        window=player_choice_menu, tags="steal")
-    steal_button = Button(app.board_canvas,
-        font=(app.style.txt_font,int(.8*app.style.txt_size)), text="Steal",
-        command=lambda : app.set_button_chosen(0))
-    steal_button.configure(width=10, height=1, padx=0, pady=0)
-        #background=inactive_button_color, activebackground=active_button_color)
-    steal_button_window = app.board_canvas.create_window(
-        int((app.style.hex_x_off-app.style.water_width)*5/10),
-        int(app.style.win_height*.4+8*app.style.txt_size),
-        window=steal_button, tags="steal")
+    clear_resource_panel(app)
+    draw_resource_panel(player,app)
 
     app.button_chosen.set(-1)
     while app.button_chosen.get()!=0 or \
-        player_choice.get()=="Choose a player to steal from":
+        app.displays.steal_choice.get()=="Choose a player to steal from":
         app.board_canvas.wait_variable(app.button_chosen)
     app.button_chosen.set(-1)
 
-    target_player_name = player_choice.get()
-    for guy in stealable_players:
+    target_player_name = app.displays.steal_choice.get()
+    for guy in app.pieces.players:
         if guy.name==target_player_name:
             target_player = guy
             break
@@ -429,14 +339,12 @@ def player_steal_resource(player,robber_tile,app):
 
     write_log(app,player.name,"stole a resource from",target_player.name)
 
-    app.board_canvas.delete("steal")
-    player_choice_menu.destroy()
-    steal_button.destroy()
-
 
 def trade_menu(player,app):
     """Runs trading screen for player"""
     from catan_logic import perform_trade, evaluate_port_trade
+
+    app.pieces.turn_phase = "trade"
 
     app.button_chosen.set(-1)
     while app.button_chosen.get()!=0:
@@ -470,6 +378,8 @@ def development_menu(player,app):
 
     app.button_chosen.set(-1)
     while app.button_chosen.get()!=0:
+        app.pieces.turn_phase = "development"
+        
         clear_resource_panel(app)
         draw_resource_panel(player,app)
 
@@ -498,7 +408,7 @@ def development_menu(player,app):
 
         for guy in app.pieces.players:
             guy.calculate_score()
-        
+
         draw_stats(app)
 
     app.button_chosen.set(-1)
