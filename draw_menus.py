@@ -240,6 +240,8 @@ def draw_development_screen(player,app):
         text="Reveal Victory Point Card",
         command=lambda : app.set_button_chosen(1))
     vp_button.configure(width=25, height=1, padx=0, pady=0)
+    if player.development_cards["victory point"]==0:
+        vp_button.configure(state=DISABLED)
         #background=inactive_button_color, activebackground=active_button_color)
     app.displays.add_object(vp_button)
     app.board_canvas.create_window(
@@ -252,6 +254,8 @@ def draw_development_screen(player,app):
         text="Use Knight Card",
         command=lambda : app.set_button_chosen(2))
     knight_button.configure(width=25, height=1, padx=0, pady=0)
+    if player.development_cards["knight"]==0:
+        knight_button.configure(state=DISABLED)
         #background=inactive_button_color, activebackground=active_button_color)
     app.displays.add_object(knight_button)
     app.board_canvas.create_window(
@@ -264,6 +268,8 @@ def draw_development_screen(player,app):
         text="Use Road Builder Card",
         command=lambda : app.set_button_chosen(3))
     road_builder_button.configure(width=25, height=1, padx=0, pady=0)
+    if player.development_cards["road building"]==0:
+        road_builder_button.configure(state=DISABLED)
         #background=inactive_button_color, activebackground=active_button_color)
     app.displays.add_object(road_builder_button)
     app.board_canvas.create_window(
@@ -276,6 +282,8 @@ def draw_development_screen(player,app):
         text="Use Year of Plenty Card",
         command=lambda : app.set_button_chosen(4))
     plenty_button.configure(width=25, height=1, padx=0, pady=0)
+    if player.development_cards["year of plenty"]==0:
+        plenty_button.configure(state=DISABLED)
         #background=inactive_button_color, activebackground=active_button_color)
     app.displays.add_object(plenty_button)
     app.board_canvas.create_window(
@@ -288,6 +296,8 @@ def draw_development_screen(player,app):
         text="Use Monopoly Card",
         command=lambda : app.set_button_chosen(5))
     monopoly_button.configure(width=25, height=1, padx=0, pady=0)
+    if player.development_cards["monopoly"]==0:
+        monopoly_button.configure(state=DISABLED)
         #background=inactive_button_color, activebackground=active_button_color)
     app.displays.add_object(monopoly_button)
     app.board_canvas.create_window(
@@ -480,6 +490,8 @@ def draw_main_screen(player,app):
         font=(app.style.txt_font,int(.8*app.style.txt_size)),
         text="Use Dev Card", command=lambda : app.set_button_chosen(6))
     use_dev_button.configure(width=13, height=1, padx=0, pady=0)
+    if sum(player.development_cards.values())==0:
+        use_dev_button.configure(state=DISABLED)
         #background=inactive_button_color, activebackground=active_button_color)
     app.displays.add_object(use_dev_button)
     app.board_canvas.create_window(
