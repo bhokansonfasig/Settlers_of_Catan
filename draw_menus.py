@@ -379,7 +379,7 @@ def draw_stats(app):
             int((app.style.hex_y_off-app.style.water_width)*6/10),
             text=resource_string, fill=player.color,
             font=(app.style.txt_font,int(.7*app.style.txt_size)), tags="stats")
-        development_string = "Dev: "+str(player.dev_card_count())
+        development_string = "Dev: "+str(sum(player.development_cards.values()))
         app.board_canvas.create_text(
             app.style.hex_x_off-app.style.water_width+int((i+.63)*portion),
             int((app.style.hex_y_off-app.style.water_width)*8/10),

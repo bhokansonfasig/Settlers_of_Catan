@@ -83,12 +83,6 @@ class Player:
 	def resource_count(self):
 		return self.wood + self.brick + self.wheat + self.sheep + self.stone
 
-	def dev_card_count(self):
-		total = 0
-		for key, value in self.development_cards.items():
-			total += value
-		return value
-
 	def single_resource_count(self,check_resource):
 		if check_resource.lower()=="wood":
 			return self.wood
