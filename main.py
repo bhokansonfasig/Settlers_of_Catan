@@ -13,9 +13,8 @@ if __name__ == '__main__':
 
     style = Style(900,625)
     pieces = Pieces()
-    displays = Displays()
     root = Tk()
-    app = App(root,style,pieces,displays)
+    app = App(root,style,pieces)
     # Draw window and run app
     root.mainloop()
 
@@ -106,8 +105,6 @@ def new_game(app):
     # Additional condition that players can only win on their turn
     while not(app.pieces.players[app.pieces.turn_index].index \
             in check_winner(app.pieces.players)):
-        if app.pieces.loop_index>=0:
-            clear_resource_panel(app)
         app.pieces.loop_index += 1
         app.pieces.turn_index = app.pieces.loop_index%playnum
         app.pieces.active_index = app.pieces.turn_index
@@ -119,6 +116,7 @@ def new_game(app):
         # Wait screen for human players, or if all computer players
         if app.pieces.players[app.pieces.turn_index].AI_code<0 or \
                 app.pieces.all_computers:
+            clear_resource_panel(app)
             draw_intermediate_screen(app.pieces.players[app.pieces.turn_index],
                 app)
 
@@ -136,7 +134,7 @@ def new_game(app):
                 app.pieces.active_index += 1
                 draw_stats(app)
                 draw_status_box(app)
-                if player.robbable():
+                if player.rob_count()>0:
                     if player.AI_code<0:
                         clear_resource_panel(app)
                         draw_intermediate_screen(player,app,"discard")
@@ -148,7 +146,7 @@ def new_game(app):
                 app.pieces.active_index += 1
                 draw_stats(app)
                 draw_status_box(app)
-                if player.robbable():
+                if player.rob_count()>0:
                     if player.AI_code<0:
                         clear_resource_panel(app)
                         draw_intermediate_screen(player,app,"discard")
@@ -160,9 +158,6 @@ def new_game(app):
             app.pieces.turn_phase = "place robber"
             draw_status_box(app)
             move_robber(app.pieces.players[app.pieces.turn_index],app)
-
-        draw_stats(app)
-        draw_resource_panel(app.pieces.players[app.pieces.turn_index],app)
 
         app.pieces.turn_phase = "make decisions"
         draw_status_box(app)

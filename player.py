@@ -81,6 +81,11 @@ class Player:
 	def resource_count(self):
 		return self.wood + self.brick + self.wheat + self.sheep + self.stone
 
+	def dev_card_count(self):
+		return self.knight_card + self.victory_point_card + \
+			self.road_building_card + self.monopoly_card + \
+			self.year_of_plenty_card
+
 	def single_resource_count(self,check_resource):
 		if check_resource.lower()=="wood":
 			return self.wood
@@ -94,11 +99,11 @@ class Player:
 			return self.stone
 
 	# Counting resource cards when the robber comes
-	def robbable(self):
-		if(self.resource_count() > 7):
-			return True
+	def rob_count(self):
+		if self.resource_count()<=7:
+			return 0
 		else:
-			return False
+			return int((self.resource_count()+1)/2)
 
 	def calculate_score(self):
 		self.score = 0

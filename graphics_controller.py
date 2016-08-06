@@ -1,6 +1,7 @@
 from tkinter import *
 from main import version, new_game, load_game
 from aesthetics import Style
+from display_pieces import Displays
 
 from tiles import Tile
 from player import Player
@@ -12,13 +13,13 @@ from draw_elements import draw_tile_skeleton, redraw_board
 # App screen class
 class App(Frame):
 
-    def __init__(self,parent,style,pieces,displays):
+    def __init__(self,parent,style,pieces):
         Frame.__init__(self,parent)
         # self.parent = parent
         self.board = parent
         self.style = style
         self.pieces = pieces
-        self.displays = displays
+        self.displays = Displays()
         self.initUI()
 
     def set_button_chosen(self,integer):

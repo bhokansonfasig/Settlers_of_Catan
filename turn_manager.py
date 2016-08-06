@@ -6,14 +6,19 @@ from point import Point
 from road import Road
 
 from draw_elements import draw_circle
-from draw_menus import draw_stats, draw_resources, disable_buttons, write_log
+from draw_menus import draw_stats, draw_resources
+from draw_menus import draw_resource_panel, clear_resource_panel
+from draw_menus import draw_discard_screen, write_log
 
 def turn_loop(player,app):
     from catan_logic import build_settlement, build_road, build_city
     from catan_logic import buy_development_card
-    from draw_menus import trade_menu
     from catan_logic import legal_settlement_placements, legal_road_placements
     from catan_AI import computer_take_turn
+
+    draw_stats(app)
+    clear_resource_panel(app)
+    draw_resource_panel(app.pieces.players[app.pieces.turn_index],app)
 
     # For human players, draw buttons and get button clicks
     if player.AI_code<0:
@@ -21,8 +26,9 @@ def turn_loop(player,app):
         while app.button_chosen.get()!=0:
             app.pieces.turn_phase = "make decisions"
             draw_stats(app)
-            draw_resources(player,app)
-            disable_buttons(player,app)
+            clear_resource_panel(app)
+            draw_resource_panel(app.pieces.players[app.pieces.turn_index],app)
+            
             app.board_canvas.wait_variable(app.button_chosen)
             if app.button_chosen.get()==1:
                 build_settlement(player,app)
@@ -290,136 +296,38 @@ def player_place_robber(player,app):
     return robber_tile
 
 
-def player_discard(player,new_resource_count,app):
+def player_discard(player,app):
     """Prompts player for how many of each resource they would like to
         discard. They need to get down to new_resource_count"""
-    draw_resources(player,app)
-    draw_stats(app)
 
     starting_resource_count = player.resource_count()
 
-    wood_discard_options = ["Wood","0"]
-    brick_discard_options = ["Brick","0"]
-    sheep_discard_options = ["Sheep","0"]
-    wheat_discard_options = ["Wheat","0"]
-    stone_discard_options = ["Stone","0"]
-    for i in range(player.wood):
-        wood_discard_options.append(str(i+1))
-    for i in range(player.brick):
-        brick_discard_options.append(str(i+1))
-    for i in range(player.sheep):
-        sheep_discard_options.append(str(i+1))
-    for i in range(player.wheat):
-        wheat_discard_options.append(str(i+1))
-    for i in range(player.stone):
-        stone_discard_options.append(str(i+1))
-
-    discards_needed = starting_resource_count-new_resource_count
-    discard_string = "Choose "+str(discards_needed)+" resources to give up:"
-    discard_text = app.board_canvas.create_text(
-        int((app.style.hex_x_off-app.style.water_width)*5/10),
-        int(app.style.win_height*.4), text=discard_string,
-        font=(app.style.txt_font,int(.8*app.style.txt_size)), tags="discard")
-    wood_discard = StringVar()
-    wood_discard.set(wood_discard_options[0])
-    wood_discard_menu = OptionMenu(app.board_canvas, wood_discard,
-        *wood_discard_options, command=lambda x: app.set_button_chosen(11))
-    wood_discard_window = app.board_canvas.create_window(
-        int((app.style.hex_x_off-app.style.water_width)*3/10),
-        int(app.style.win_height*.4+2*app.style.txt_size),
-        window=wood_discard_menu, tags="discard")
-    brick_discard = StringVar()
-    brick_discard.set(brick_discard_options[0])
-    brick_discard_menu = OptionMenu(app.board_canvas, brick_discard,
-        *brick_discard_options, command=lambda x: app.set_button_chosen(12))
-    brick_discard_window = app.board_canvas.create_window(
-        int((app.style.hex_x_off-app.style.water_width)*7/10),
-        int(app.style.win_height*.4+2*app.style.txt_size),
-        window=brick_discard_menu, tags="discard")
-    sheep_discard = StringVar()
-    sheep_discard.set(sheep_discard_options[0])
-    sheep_discard_menu = OptionMenu(app.board_canvas, sheep_discard,
-        *sheep_discard_options, command=lambda x: app.set_button_chosen(13))
-    sheep_discard_window = app.board_canvas.create_window(
-        int((app.style.hex_x_off-app.style.water_width)*3/10),
-        int(app.style.win_height*.4+4*app.style.txt_size),
-        window=sheep_discard_menu, tags="discard")
-    wheat_discard = StringVar()
-    wheat_discard.set(wheat_discard_options[0])
-    wheat_discard_menu = OptionMenu(app.board_canvas, wheat_discard,
-        *wheat_discard_options, command=lambda x: app.set_button_chosen(14))
-    wheat_discard_window = app.board_canvas.create_window(
-        int((app.style.hex_x_off-app.style.water_width)*7/10),
-        int(app.style.win_height*.4+4*app.style.txt_size),
-        window=wheat_discard_menu, tags="discard")
-    stone_discard = StringVar()
-    stone_discard.set(stone_discard_options[0])
-    stone_discard_menu = OptionMenu(app.board_canvas, stone_discard,
-        *stone_discard_options, command=lambda x: app.set_button_chosen(15))
-    stone_discard_window = app.board_canvas.create_window(
-        int((app.style.hex_x_off-app.style.water_width)*3/10),
-        int(app.style.win_height*.4+6*app.style.txt_size),
-        window=stone_discard_menu, tags="discard")
-    give_button = Button(app.board_canvas,
-        font=(app.style.txt_font,int(.8*app.style.txt_size)),
-        text="Give up resources", command=lambda : app.set_button_chosen(0))
-    give_button.configure(width=15, height=1, padx=0, pady=0)
-        #background=inactive_button_color, activebackground=active_button_color)
-    give_button_window = app.board_canvas.create_window(
-        int((app.style.hex_x_off-app.style.water_width)*5/10),
-        int(app.style.win_height*.4+8*app.style.txt_size),
-        window=give_button, tags="discard")
+    clear_resource_panel(app)
+    draw_resource_panel(player,app)
 
     app.button_chosen.set(-1)
     while app.button_chosen.get()!=0:
-        if app.button_chosen.get()!=-1:
-            app.board_canvas.delete(total_text)
-        try:
-            wood_discard_count = int(wood_discard.get())
-        except:
-            wood_discard_count = 0
-        try:
-            brick_discard_count = int(brick_discard.get())
-        except:
-            brick_discard_count = 0
-        try:
-            sheep_discard_count = int(sheep_discard.get())
-        except:
-            sheep_discard_count = 0
-        try:
-            wheat_discard_count = int(wheat_discard.get())
-        except:
-            wheat_discard_count = 0
-        try:
-            stone_discard_count = int(stone_discard.get())
-        except:
-            stone_discard_count = 0
-        total_discard_count = wood_discard_count+brick_discard_count+ \
-                   sheep_discard_count+wheat_discard_count+stone_discard_count
+        total_discard_count = app.displays.get_wood_discard() + \
+            app.displays.get_brick_discard() + app.displays.get_sheep_discard() + \
+            app.displays.get_wheat_discard() + app.displays.get_stone_discard()
         total_string = "Total: " + str(total_discard_count)
-        if total_discard_count>discards_needed:
+        if total_discard_count>player.rob_count():
             total_string_color = "red"
-        elif total_discard_count==discards_needed:
-            total_string_color = "#309540"
+        elif total_discard_count==player.rob_count():
+            total_string_color = "#309540" #green
         else:
             total_string_color = "black"
-        total_text = app.board_canvas.create_text(
-            int((app.style.hex_x_off-app.style.water_width)*7/10),
-            int(app.style.win_height*.4+6*app.style.txt_size),
-            text=total_string, fill=total_string_color,
-            font=(app.style.txt_font,int(.8*app.style.txt_size)),tags="discard")
+        app.board_canvas.itemconfig(app.displays.total_text,
+            text=total_string, fill=total_string_color)
+
         app.board_canvas.wait_variable(app.button_chosen)
     app.button_chosen.set(-1)
 
-    player.wood -= wood_discard_count
-    player.brick -= brick_discard_count
-    player.sheep -= sheep_discard_count
-    player.wheat -= wheat_discard_count
-    player.stone -= stone_discard_count
-
-    app.board_canvas.delete("discard")
-    wood_discard_menu.destroy()
-    give_button.destroy()
+    player.wood -= app.displays.get_wood_discard()
+    player.brick -= app.displays.get_brick_discard()
+    player.sheep -= app.displays.get_sheep_discard()
+    player.wheat -= app.displays.get_wheat_discard()
+    player.stone -= app.displays.get_stone_discard()
 
     discard_count = starting_resource_count - player.resource_count()
     return discard_count
@@ -521,3 +429,33 @@ def player_steal_resource(player,robber_tile,app):
     app.board_canvas.delete("steal")
     player_choice_menu.destroy()
     steal_button.destroy()
+
+
+def trade_menu(player,app):
+    """Runs trading screen for player"""
+    from catan_logic import perform_trade, evaluate_port_trade
+
+    app.button_chosen.set(-1)
+    while app.button_chosen.get()!=0:
+        clear_resource_panel(app)
+        draw_resource_panel(player,app)
+
+        app.board_canvas.wait_variable(app.button_chosen)
+
+        if app.button_chosen.get()==1:
+            given_resource = app.displays.port_give_text.get()
+            gotten_resource = app.displays.port_get_text.get()
+
+            sell_resource_type = given_resource.split()[1]
+            sell_resource_copies = int(given_resource.split()[0])
+            buy_resource_type = gotten_resource.split()[1]
+            buy_resource_copies = int(gotten_resource.split()[0])
+
+            trade_successful, mul, trade_ratio = evaluate_port_trade(player,sell_resource_copies,
+                sell_resource_type,buy_resource_copies,buy_resource_type)
+
+            if trade_successful:
+                perform_trade(player,sell_resource_type,buy_resource_type,
+                    app,mul,False,trade_ratio)
+
+    app.button_chosen.set(-1)

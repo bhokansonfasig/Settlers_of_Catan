@@ -79,11 +79,10 @@ def draw_status_box(app):
         justify=CENTER, tags="status")
 
 
-def trade_menu(player,app):
-    """Clears buttons and draws trading screen for player"""
-    from catan_logic import perform_trade, evaluate_port_trade
-
-    undraw_buttons(app)
+def draw_trade_screen(player,app):
+    """Draws entry for the player to trade resources by port or with other
+    players"""
+    draw_resources(player,app)
 
     # Attempt to predict what the player will trade for
     if app.pieces.loop_index<20:
@@ -109,19 +108,19 @@ def trade_menu(player,app):
     else:
         trade_ratio = 4
 
-    port_give_text = StringVar()
-    port_get_text = StringVar()
-    port_give_text.set(str(trade_ratio)+" "+fullest_resource)
-    port_get_text.set("1 "+emptiest_resource)
+    app.displays.port_give_text.set(str(trade_ratio)+" "+fullest_resource)
+    app.displays.port_get_text.set("1 "+emptiest_resource)
     port_give_entry = Entry(app.board_canvas, width=8,
-        textvariable=port_give_text)
-    port_give_window = app.board_canvas.create_window(
+        textvariable=app.displays.port_give_text)
+    app.displays.add_object(port_give_entry)
+    app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*3/10),
         int(app.style.win_height*.4+2*app.style.txt_size),
         window=port_give_entry, tags="trade")
     port_get_entry = Entry(app.board_canvas, width=8,
-        textvariable=port_get_text)
-    port_get_window = app.board_canvas.create_window(
+        textvariable=app.displays.port_get_text)
+    app.displays.add_object(port_get_entry)
+    app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*7/10),
         int(app.style.win_height*.4+2*app.style.txt_size),
         window=port_get_entry, tags="trade")
@@ -132,7 +131,8 @@ def trade_menu(player,app):
         command=lambda : app.set_button_chosen(1))
     port_trade_button.configure(width=20, height=1, padx=0, pady=0)
         #background=inactive_button_color, activebackground=active_button_color)
-    port_button_window = app.board_canvas.create_window(
+    app.displays.add_object(port_trade_button)
+    app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*5/10),
         int(app.style.win_height*.4+4*app.style.txt_size),
         window=port_trade_button, tags="trade")
@@ -143,154 +143,105 @@ def trade_menu(player,app):
         command=lambda : app.set_button_chosen(0))
     cancel_button.configure(width=15, height=1, padx=0, pady=0)
         #background=inactive_button_color, activebackground=active_button_color)
-    cancel_window = app.board_canvas.create_window(
+    app.displays.add_object(cancel_button)
+    app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*5/10),
         int(app.style.win_height*.4+10*app.style.txt_size),
         window=cancel_button, tags="trade")
 
 
-    app.button_chosen.set(-1)
-    while app.button_chosen.get()!=0:
-        draw_stats(app)
-        draw_resources(player,app)
-        app.board_canvas.wait_variable(app.button_chosen)
+def draw_discard_screen(player,app):
+    """Draws option menus for the player to discard resources"""
 
-        if app.button_chosen.get()==1:
-            given_resource = port_give_text.get()
-            gotten_resource = port_get_text.get()
+    draw_resources(player,app)
 
-            sell_resource_type = given_resource.split()[1]
-            sell_resource_copies = int(given_resource.split()[0])
-            buy_resource_type = gotten_resource.split()[1]
-            buy_resource_copies = int(gotten_resource.split()[0])
-            
-            trade_successful, mul, trade_ratio = evaluate_port_trade(player,sell_resource_copies,
-                sell_resource_type,buy_resource_copies,buy_resource_type)
+    wood_discard_options = ["Wood","0"]
+    brick_discard_options = ["Brick","0"]
+    sheep_discard_options = ["Sheep","0"]
+    wheat_discard_options = ["Wheat","0"]
+    stone_discard_options = ["Stone","0"]
+    for i in range(player.wood):
+        wood_discard_options.append(str(i+1))
+    for i in range(player.brick):
+        brick_discard_options.append(str(i+1))
+    for i in range(player.sheep):
+        sheep_discard_options.append(str(i+1))
+    for i in range(player.wheat):
+        wheat_discard_options.append(str(i+1))
+    for i in range(player.stone):
+        stone_discard_options.append(str(i+1))
 
-            if trade_successful:
-                perform_trade(player,sell_resource_type,buy_resource_type,app,mul,False,trade_ratio)
+    discard_string = "Choose "+str(player.rob_count())+" resources to give up:"
+    app.board_canvas.create_text(
+        int((app.style.hex_x_off-app.style.water_width)*5/10),
+        int(app.style.win_height*.4), text=discard_string,
+        font=(app.style.txt_font,int(.8*app.style.txt_size)), tags="discard")
+    app.displays.wood_discard.set(wood_discard_options[0])
+    wood_discard_menu = OptionMenu(app.board_canvas,app.displays.wood_discard,
+        *wood_discard_options, command=lambda x: app.set_button_chosen(11))
+    app.displays.add_object(wood_discard_menu)
+    app.board_canvas.create_window(
+        int((app.style.hex_x_off-app.style.water_width)*3/10),
+        int(app.style.win_height*.4+2*app.style.txt_size),
+        window=wood_discard_menu, tags="discard")
+    app.displays.brick_discard.set(brick_discard_options[0])
+    brick_discard_menu = OptionMenu(app.board_canvas,app.displays.brick_discard,
+        *brick_discard_options, command=lambda x: app.set_button_chosen(12))
+    app.displays.add_object(brick_discard_menu)
+    app.board_canvas.create_window(
+        int((app.style.hex_x_off-app.style.water_width)*7/10),
+        int(app.style.win_height*.4+2*app.style.txt_size),
+        window=brick_discard_menu, tags="discard")
+    app.displays.sheep_discard.set(sheep_discard_options[0])
+    sheep_discard_menu = OptionMenu(app.board_canvas,app.displays.sheep_discard,
+        *sheep_discard_options, command=lambda x: app.set_button_chosen(13))
+    app.displays.add_object(sheep_discard_menu)
+    app.board_canvas.create_window(
+        int((app.style.hex_x_off-app.style.water_width)*3/10),
+        int(app.style.win_height*.4+4*app.style.txt_size),
+        window=sheep_discard_menu, tags="discard")
+    app.displays.wheat_discard.set(wheat_discard_options[0])
+    wheat_discard_menu = OptionMenu(app.board_canvas,app.displays.wheat_discard,
+        *wheat_discard_options, command=lambda x: app.set_button_chosen(14))
+    app.displays.add_object(wheat_discard_menu)
+    app.board_canvas.create_window(
+        int((app.style.hex_x_off-app.style.water_width)*7/10),
+        int(app.style.win_height*.4+4*app.style.txt_size),
+        window=wheat_discard_menu, tags="discard")
+    app.displays.stone_discard.set(stone_discard_options[0])
+    stone_discard_menu = OptionMenu(app.board_canvas,app.displays.stone_discard,
+        *stone_discard_options, command=lambda x: app.set_button_chosen(15))
+    app.displays.add_object(stone_discard_menu)
+    app.board_canvas.create_window(
+        int((app.style.hex_x_off-app.style.water_width)*3/10),
+        int(app.style.win_height*.4+6*app.style.txt_size),
+        window=stone_discard_menu, tags="discard")
+    give_button = Button(app.board_canvas,
+        font=(app.style.txt_font,int(.8*app.style.txt_size)),
+        text="Give up resources", command=lambda : app.set_button_chosen(0))
+    give_button.configure(width=15, height=1, padx=0, pady=0)
+        #background=inactive_button_color, activebackground=active_button_color)
+    app.displays.add_object(give_button)
+    app.board_canvas.create_window(
+        int((app.style.hex_x_off-app.style.water_width)*5/10),
+        int(app.style.win_height*.4+8*app.style.txt_size),
+        window=give_button, tags="discard")
 
-    app.button_chosen.set(-1)
-
-    app.board_canvas.delete("trade")
-    port_trade_button.destroy()
-
-    draw_buttons(player,app)
-
-
-def maritime_trade(player,app):
-    """Clears buttons and draws trading screen for player"""
-    from catan_logic import perform_trade
-
-    undraw_buttons(app)
-
-    res_give_options = []
-    res_get_options = ["wood","brick","sheep","wheat","stone"]
-
-    if "any" in player.ports or "?" in player.ports:
-        trade_ratio = 3
+    total_discard_count = app.displays.get_wood_discard() + \
+        app.displays.get_brick_discard() + app.displays.get_sheep_discard() + \
+        app.displays.get_wheat_discard() + app.displays.get_stone_discard()
+    total_string = "Total: " + str(total_discard_count)
+    if total_discard_count>player.rob_count():
+        total_string_color = "red"
+    elif total_discard_count==player.rob_count():
+        total_string_color = "#309540" #green
     else:
-        trade_ratio = 4
-
-    mul = {"wood":trade_ratio,"brick":trade_ratio,"sheep":trade_ratio,"wheat":trade_ratio,"stone":trade_ratio}
-
-    if ("wood" in player.ports) and player.wood>=2:
-        res_give_options += [str(2*x)+" wood" for x in range(1,int(player.wood/2)+1)]
-        mul["wood"] = 2
-    elif player.wood>=trade_ratio:
-        res_give_options += [str(x*trade_ratio)+" wood" for x in range(1,int(player.wood/trade_ratio)+1)]
-    if ("brick" in player.ports) and player.brick>=2:
-        res_give_options += [str(2*x)+"  brick" for x in range(1,int(player.brick/2)+1)]
-        mul["brick"] = 2
-    elif player.brick>=trade_ratio:
-        res_give_options += [str(x*trade_ratio)+" brick" for x in range(1,int(player.brick/trade_ratio)+1)]
-    if ("sheep" in player.ports) and player.sheep>=2:
-        res_give_options += [str(2*x)+"  sheep" for x in range(1,int(player.sheep/2)+1)]
-        mul["sheep"] = 2
-    elif player.sheep>=trade_ratio:
-        res_give_options += [str(x*trade_ratio)+" sheep" for x in range(1,int(player.sheep/trade_ratio)+1)]
-    if ("wheat" in player.ports) and player.wheat>=2:
-        res_give_options += [str(2*x)+" wheat" for x in range(1,int(player.wheat/2)+1)]
-        mul["wheat"] = 2
-    elif player.wheat>=trade_ratio:
-        res_give_options += [str(x*trade_ratio)+" wheat" for x in range(1,int(player.wheat/trade_ratio)+1)]
-    if ("stone" in player.ports) and player.stone>=2:
-        res_give_options += [str(2*x)+" stone" for x in range(1,int(player.stone/2)+1)]
-        mul["stone"] = 2
-    elif player.stone>=trade_ratio:
-        res_give_options += [str(x*trade_ratio)+" stone" for x in range(1,int(player.stone/trade_ratio)+1)]
-
-    if len(res_give_options)!=0:
-        res_give_text = app.board_canvas.create_text(
-            int((app.style.hex_x_off-app.style.water_width)*5/10),
-            int(app.style.win_height*.4), text="Trade the resources:",
-            font=(app.style.txt_font,int(.8*app.style.txt_size)), tags="trade")
-        res_give = StringVar()
-        res_give.set("Choose a resource to give")
-        res_give_menu = OptionMenu(app.board_canvas,res_give,*res_give_options)
-        res_give_window = app.board_canvas.create_window(
-            int((app.style.hex_x_off-app.style.water_width)*5/10),
-            int(app.style.win_height*.4+2*app.style.txt_size),
-            window=res_give_menu, tags="trade")
-        res_get_text = app.board_canvas.create_text(
-            int((app.style.hex_x_off-app.style.water_width)*5/10),
-            int(app.style.win_height*.4+4*app.style.txt_size),
-            text="for the resource:",
-            font=(app.style.txt_font,int(.8*app.style.txt_size)), tags="trade")
-        res_get = StringVar()
-        res_get.set("Choose a resource to receive")
-        res_get_menu = OptionMenu(app.board_canvas,res_get,*res_get_options)
-        res_get_window = app.board_canvas.create_window(
-            int((app.style.hex_x_off-app.style.water_width)*5/10),
-            int(app.style.win_height*.4+6*app.style.txt_size),
-            window=res_get_menu, tags="trade")
-        trade_button = Button(app.board_canvas,
-            font=(app.style.txt_font,int(.8*app.style.txt_size)), text="Trade",
-            command=lambda : app.set_button_chosen(0))
-        trade_button.configure(width=10, height=1, padx=0, pady=0)
-            #background=inactive_button_color, activebackground=active_button_color)
-        trade_button_window = app.board_canvas.create_window(
-            int((app.style.hex_x_off-app.style.water_width)*5/10),
-            int(app.style.win_height*.4+8*app.style.txt_size),
-            window=trade_button, tags="trade")
-    else:
-        res_give_text = app.board_canvas.create_text(
-            int((app.style.hex_x_off-app.style.water_width)*5/10),
-            int(app.style.win_height*.4),
-            text="Not enough resources to trade!",
-            font=(app.style.txt_font,int(.8*app.style.txt_size)), tags="trade")
-        trade_button = Button(app.board_canvas,
-            font=(app.style.txt_font,int(.8*app.style.txt_size)), text="Cancel",
-            command=lambda : app.set_button_chosen(0))
-        trade_button.configure(width=10, height=1, padx=0, pady=0)
-            #background=inactive_button_color, activebackground=active_button_color)
-        trade_button_window = app.board_canvas.create_window(
-            int((app.style.hex_x_off-app.style.water_width)*5/10),
-            int(app.style.win_height*.4+8*app.style.txt_size),
-            window=trade_button, tags="trade")
-
-    while app.button_chosen.get()!=0:
-        # draw_stats(players)
-        # draw_resources(player)
-        app.board_canvas.wait_variable(app.button_chosen)
-
-    app.button_chosen.set(-1)
-
-    if len(res_give_options)!=0:
-        if res_give.get()!="Choose a resource to give" and \
-            res_get.get()!="Choose a resource to receive":
-            given_resource = res_give.get().split()[1]
-            number = int(res_give.get().split()[0])
-            gotten_resource = res_get.get()
-            perform_trade(player,given_resource,gotten_resource,app,int(number/(mul[given_resource])))
-
-        res_give_menu.destroy()
-        res_get_menu.destroy()
-
-    app.board_canvas.delete("trade")
-    trade_button.destroy()
-
-    draw_buttons(player,app)
+        total_string_color = "black"
+    app.displays.total_text = app.board_canvas.create_text(
+        int((app.style.hex_x_off-app.style.water_width)*7/10),
+        int(app.style.win_height*.4+6*app.style.txt_size),
+        text=total_string, fill=total_string_color,
+        font=(app.style.txt_font,int(.8*app.style.txt_size)),tags="discard")
 
 
 def draw_intermediate_screen(player,app,reason="turn"):
@@ -371,152 +322,162 @@ def draw_stats(app):
         #         width=int(.2*app.style.txt_size), tags="stats")
 
 
-def draw_buttons(player,app):
-    """Draws buttons for player actions on the board window"""
+def draw_main_screen(player,app):
+    """Draws buttons for player actions on the board window and sets their
+    status according to the player's resource availability."""
+    from catan_logic import legal_settlement_placements, legal_road_placements
+
+    draw_resources(player,app)
 
     # Create buttons on board window
-    app.build_settlement_button = Button(app.board_canvas,
+    build_settlement_button = Button(app.board_canvas,
         font=(app.style.txt_font,int(.8*app.style.txt_size)),
         text="Build Settlement", command=lambda : app.set_button_chosen(1))
-    app.build_settlement_button.configure(width=13, height=1, padx=0, pady=0)
+    build_settlement_button.configure(width=13, height=1, padx=0, pady=0)
         #background=inactive_button_color, activebackground=active_button_color)
-    build_settlement_button_window = app.board_canvas.create_window(
+    app.displays.add_object(build_settlement_button)
+    app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*3/10),
         int(app.style.win_height*.4),
-        window=app.build_settlement_button, tags="button")
-    settlement_cost_text = app.board_canvas.create_text(
+        window=build_settlement_button, tags="button")
+    app.board_canvas.create_text(
         int((app.style.hex_x_off-app.style.water_width)*3/10),
         int(app.style.win_height*.4+1.25*app.style.txt_size),
         text="(1 wood, 1 brick, 1 sheep, 1 wheat)",
         font=(app.style.txt_font,int(.5*app.style.txt_size)), tags="button")
-    app.build_road_button = Button(app.board_canvas,
+    build_road_button = Button(app.board_canvas,
         font=(app.style.txt_font,int(.8*app.style.txt_size)),
         text="Build Road", command=lambda : app.set_button_chosen(2))
-    app.build_road_button.configure(width=13, height=1, padx=0, pady=0)
+    build_road_button.configure(width=13, height=1, padx=0, pady=0)
         #background=inactive_button_color, activebackground=active_button_color)
-    build_road_button_window = app.board_canvas.create_window(
+    app.displays.add_object(build_road_button)
+    app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*7/10),
         int(app.style.win_height*.4),
-        window=app.build_road_button, tags="button")
-    road_cost_text = app.board_canvas.create_text(
+        window=build_road_button, tags="button")
+    app.board_canvas.create_text(
         int((app.style.hex_x_off-app.style.water_width)*7/10),
         int(app.style.win_height*.4+1.25*app.style.txt_size),
         text="(1 wood, 1 brick)",
         font=(app.style.txt_font,int(.5*app.style.txt_size)), tags="button")
-    app.build_city_button = Button(app.board_canvas,
+    build_city_button = Button(app.board_canvas,
         font=(app.style.txt_font,int(.8*app.style.txt_size)),
         text="Build City", command=lambda : app.set_button_chosen(3))
-    app.build_city_button.configure(width=13, height=1, padx=0, pady=0)
+    build_city_button.configure(width=13, height=1, padx=0, pady=0)
         #background=inactive_button_color, activebackground=active_button_color)
-    build_city_button_window = app.board_canvas.create_window(
+    app.displays.add_object(build_city_button)
+    app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*3/10),
         int(app.style.win_height*.4+3*app.style.txt_size),
-        window=app.build_city_button, tags="button")
-    city_cost_text = app.board_canvas.create_text(
+        window=build_city_button, tags="button")
+    app.board_canvas.create_text(
         int((app.style.hex_x_off-app.style.water_width)*3/10),
         int(app.style.win_height*.4+4.25*app.style.txt_size),
         text="(2 wheat, 3 stone)",
         font=(app.style.txt_font,int(.5*app.style.txt_size)), tags="button")
-    app.buy_dev_button = Button(app.board_canvas,
+    buy_dev_button = Button(app.board_canvas,
         font=(app.style.txt_font,int(.8*app.style.txt_size)),
-        text="Development", command=lambda : app.set_button_chosen(4))
-    app.buy_dev_button.configure(width=13, height=1, padx=0, pady=0)
+        text="Buy Dev Card", command=lambda : app.set_button_chosen(4))
+    buy_dev_button.configure(width=13, height=1, padx=0, pady=0)
         #background=inactive_button_color, activebackground=active_button_color)
-    buy_dev_button_window = app.board_canvas.create_window(
+    app.displays.add_object(buy_dev_button)
+    app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*7/10),
         int(app.style.win_height*.4+3*app.style.txt_size),
-        window=app.buy_dev_button, tags="button")
-    dev_cost_text = app.board_canvas.create_text(
+        window=buy_dev_button, tags="button")
+    app.board_canvas.create_text(
         int((app.style.hex_x_off-app.style.water_width)*7/10),
         int(app.style.win_height*.4+4.25*app.style.txt_size),
         text="(1 sheep, 1 wheat, 1 stone)",
         font=(app.style.txt_font,int(.5*app.style.txt_size)), tags="button")
-    app.maritime_trade_button = Button(app.board_canvas,
+    trade_button = Button(app.board_canvas,
         font=(app.style.txt_font,int(.8*app.style.txt_size)),
-        text="Port Trade", command=lambda : app.set_button_chosen(5))
-    app.maritime_trade_button.configure(width=13, height=1, padx=0, pady=0)
+        text="Trade", command=lambda : app.set_button_chosen(5))
+    trade_button.configure(width=13, height=1, padx=0, pady=0)
         #background=inactive_button_color, activebackground=active_button_color)
-    maritime_trade_button_window = app.board_canvas.create_window(
+    app.displays.add_object(trade_button)
+    app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*3/10),
         int(app.style.win_height*.4+6*app.style.txt_size),
-        window=app.maritime_trade_button, tags="button")
-    app.trading_post_button = Button(app.board_canvas,
+        window=trade_button, tags="button")
+    use_dev_button = Button(app.board_canvas,
         font=(app.style.txt_font,int(.8*app.style.txt_size)),
-        text="Player Trade", command=lambda : app.set_button_chosen(6))
-    app.trading_post_button.configure(width=13, height=1, padx=0, pady=0)
+        text="Use Dev Card", command=lambda : app.set_button_chosen(6))
+    use_dev_button.configure(width=13, height=1, padx=0, pady=0)
         #background=inactive_button_color, activebackground=active_button_color)
-    trading_post_button_window = app.board_canvas.create_window(
+    app.displays.add_object(use_dev_button)
+    app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*7/10),
         int(app.style.win_height*.4+6*app.style.txt_size),
-        window=app.trading_post_button, tags="button")
-    app.end_turn_button = Button(app.board_canvas,
+        window=use_dev_button, tags="button")
+    end_turn_button = Button(app.board_canvas,
         font=(app.style.txt_font,int(.8*app.style.txt_size)),
         text="End Turn", command=lambda : app.set_button_chosen(0))
-    app.end_turn_button.configure(width=10, height=1, padx=0, pady=0)
+    end_turn_button.configure(width=10, height=1, padx=0, pady=0)
         #background=inactive_button_color, activebackground=active_button_color)
-    end_turn_button_window = app.board_canvas.create_window(
+    app.displays.add_object(end_turn_button)
+    app.board_canvas.create_window(
         int((app.style.hex_x_off-app.style.water_width)*5/10),
         int(app.style.win_height*.4+8*app.style.txt_size),
-        window=app.end_turn_button, tags="button")
+        window=end_turn_button, tags="button")
 
-
-def disable_buttons(player,app):
-    """Disables buttons that a player cannot currently use"""
-    from catan_logic import legal_settlement_placements, legal_road_placements
-
+    # Disable unusable buttons
     if player.wood<1 or player.brick<1 or player.sheep<1 or player.wheat<1 or \
             len(legal_settlement_placements(player,app.pieces.players,
                 app.pieces.all_points))==0 or \
             len(player.settlements)>=player.settlement_max:
-        app.build_settlement_button.configure(state=DISABLED)
-    else:
-        app.build_settlement_button.configure(state=NORMAL)
+        build_settlement_button.configure(state=DISABLED)
+    # else:
+    #     build_settlement_button.configure(state=NORMAL)
     if player.wood<1 or player.brick<1 or \
             len(legal_road_placements(player,app.pieces.players,
                 app.pieces.all_roads))==0 or \
             len(player.roads)>=player.road_max:
-        app.build_road_button.configure(state=DISABLED)
-    else:
-        app.build_road_button.configure(state=NORMAL)
+        build_road_button.configure(state=DISABLED)
+    # else:
+    #     build_road_button.configure(state=NORMAL)
     if player.wheat<2 or player.stone<3 or \
         len(player.settlements)==0 or \
         len(player.cities)>=player.city_max:
-        app.build_city_button.configure(state=DISABLED)
-    else:
-        app.build_city_button.configure(state=NORMAL)
+        build_city_button.configure(state=DISABLED)
+    # else:
+    #     build_city_button.configure(state=NORMAL)
     if player.sheep<1 or player.wheat<1 or player.stone<1:
-        app.buy_dev_button.configure(state=DISABLED)
-    else:
-        app.buy_dev_button.configure(state=NORMAL)
+        buy_dev_button.configure(state=DISABLED)
+    # else:
+    #     buy_dev_button.configure(state=NORMAL)
     if len(player.settlements)>=player.settlement_max:
-        app.build_settlement_button.configure(text="Max Built")
-    else:
-        app.build_settlement_button.configure(text="Build Settlement")
+        build_settlement_button.configure(text="Max Built")
+    # else:
+    #     build_settlement_button.configure(text="Build Settlement")
     if len(player.roads)>=player.road_max:
-        app.build_road_button.configure(text="Max Built")
-    else:
-        app.build_road_button.configure(text="Build Road")
+        build_road_button.configure(text="Max Built")
+    # else:
+    #     build_road_button.configure(text="Build Road")
     if len(player.cities)>=player.city_max:
-        app.build_city_button.configure(text="Max Built")
-    else:
-        app.build_city_button.configure(text="Build City")
+        build_city_button.configure(text="Max Built")
+    # else:
+    #     build_city_button.configure(text="Build City")
+
+    if player.dev_card_count()==0:
+        use_dev_button.configure(state=DISABLED)
 
 
-def undraw_buttons(app):
-    """Undraws and deletes all player action buttons from window"""
-    app.board_canvas.delete("button")
-    app.build_settlement_button.destroy()
-    app.build_road_button.destroy()
-    app.build_city_button.destroy()
-    app.buy_dev_button.destroy()
-    app.maritime_trade_button.destroy()
-    app.trading_post_button.destroy()
-    app.end_turn_button.destroy()
+# def undraw_buttons(app):
+#     """Undraws and deletes all player action buttons from window"""
+#     app.board_canvas.delete("button")
+#     app.build_settlement_button.destroy()
+#     app.build_road_button.destroy()
+#     app.build_city_button.destroy()
+#     app.buy_dev_button.destroy()
+#     app.maritime_trade_button.destroy()
+#     app.trading_post_button.destroy()
+#     app.end_turn_button.destroy()
 
 
 def draw_resources(player,app):
     """Undraws any current resources shown and draws resources of player"""
-    app.board_canvas.delete("resources")
+    # app.board_canvas.delete("resources")
 
     # app.board_canvas.create_text(
     #     int((app.style.hex_x_off-app.style.water_width)/2),
@@ -564,49 +525,46 @@ def draw_resources(player,app):
 
 
 def draw_resource_panel(player,app):
-    """Draws resources available to player number 'index' in the resource panel
-    of the board window. Also activates buttons available to player."""
+    """Draws resources available to player and other context-dependent items in
+    the resource panel of the board window."""
 
-    draw_buttons(player,app)
-    disable_buttons(player,app)
+    if app.pieces.phase_index()<=5:
+        return
 
-    draw_resources(player,app)
-
-    # # Temporary terminal actions for player
-    # action = input("What would you like to do? ")
-    # if action=="build settlement" or action=="bs":
-    #     if legal_settlement_placements(player,players):
-    #         build_settlement(player,players)
-    #     else:
-    #         print("Nowhere to legally build a new settlement!")
-    # elif action=="build road" or action=="br":
-    #     if legal_road_placements(player,players):
-    #         build_road(player,players)
-    #     else:
-    #         print("Nowhere to legally build a new road!")
-    # elif action=="build city" or action=="bc":
-    #     if len(player.settlements)>0:
-    #         build_city(player,players)
-    #     else:
-    #         print("Nowhere to legally build a new city!")
-    # else:
-    #     pass
+    if app.pieces.turn_phase=="roll dice":
+        pass
+    elif app.pieces.turn_phase=="discard":
+        draw_discard_screen(player,app)
+    elif app.pieces.turn_phase=="trade":
+        draw_trade_screen(player,app)
+    elif app.pieces.turn_phase=="place robber":
+        draw_main_screen(player,app)
+    elif app.pieces.turn_phase=="make decisions":
+        draw_main_screen(player,app)
+    elif app.pieces.turn_phase=="build settlement":
+        draw_main_screen(player,app)
+    elif app.pieces.turn_phase=="build road":
+        draw_main_screen(player,app)
+    elif app.pieces.turn_phase=="build city":
+        draw_main_screen(player,app)
+    elif app.pieces.turn_phase=="end turn":
+        pass
 
 
 def clear_resource_panel(app):
-    """Clears out all resources from the resource panel of the board window.
-    Also dims all button states."""
-    try:
-        undraw_buttons(app)
-    except:
-        pass
+    """Clears out everything from the resource panel of the board window."""
+
     app.board_canvas.delete("resources")
+    app.board_canvas.delete("button")
+    app.board_canvas.delete("trade")
+    app.board_canvas.delete("discard")
+    app.displays.destroy_objects()
 
 
 def draw_winning_screen(player,app):
     """Draws a congratulatory screen for the winning player"""
     text_string = player.name+" wins!"
-    winning_text = app.board_canvas.create_text(
+    app.board_canvas.create_text(
         int((app.style.hex_x_off-app.style.water_width)/2),
         int(app.style.win_height/3), text=text_string, justify=CENTER,
         font=(app.style.txt_font,3*app.style.txt_size), fill=player.color,

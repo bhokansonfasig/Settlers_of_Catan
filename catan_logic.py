@@ -573,7 +573,7 @@ def occupied_points_on_board(players):
 def evaluate_port_trade(player,sell_resource_copies,sell_resource_type,buy_resource_copies,buy_resource_type):
     """For player, evaluates whether a trade of give string for get string
         is valid. Returns boolean plus multiplicity of trade"""
-    
+
 
     resources = {"wood":player.wood,"brick":player.brick,"sheep":player.sheep,"stone":player.stone,"wheat":player.wheat}
 
@@ -591,18 +591,18 @@ def evaluate_port_trade(player,sell_resource_copies,sell_resource_type,buy_resou
         trade_ratio.append(2)
 
     for ratio in trade_ratio:
-        # print 
+        # print
         if sell_resource_copies == buy_resource_copies*ratio:
             return True, int(sell_resource_copies/ratio), ratio
 
     return False, 0, 0
 
-    
+
 
 def perform_trade(player,give_resource,get_resource,app,mul = 1,AI=True,ratio=4):
     """For player, trades the necessary number of give_resource for
         get_resource"""
-    
+
     if AI: #AI always uses the "optimal" trade ratio whereas humans can use any
         if "any" in player.ports or "?" in player.ports:
             trade_ratio = 3
@@ -678,11 +678,11 @@ def discard_resources(player,app):
         half the current value (rounded up; e.g. player with 9 cards dicards to
         get down to 5)"""
     # Find out the number of resources the player needs to get down to
-    new_resource_count = int((player.resource_count()+1)/2)
+    new_resource_count = player.resource_count() - player.rob_count()
     # Just in case, loop through until the player discards enough resources
     while player.resource_count()>new_resource_count:
         if player.AI_code<0:
-            discard_count = player_discard(player,new_resource_count,app)
+            discard_count = player_discard(player,app)
         else:
             discard_count = computer_discard(player,new_resource_count)
 
