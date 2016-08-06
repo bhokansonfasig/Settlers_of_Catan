@@ -72,6 +72,7 @@ class Player:
 		self.score = 0
 		self.road_length = 0
 		self.has_longest_road = False
+		self.knight_count = 0
 		self.has_largest_army = False # For once we do development cards
 
 

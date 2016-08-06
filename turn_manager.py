@@ -466,6 +466,7 @@ def trade_menu(player,app):
 
 def development_menu(player,app):
     """Runs development card screen for player"""
+    from catan_logic import move_robber, build_road
 
     app.button_chosen.set(-1)
     while app.button_chosen.get()!=0:
@@ -475,8 +476,22 @@ def development_menu(player,app):
         app.board_canvas.wait_variable(app.button_chosen)
 
         # Implement use of development cards here
-        #if app.button_chosen.get()==1:
-            #Do VP Card stuff
-        #etc...
+        if app.button_chosen.get()==1 and player.development_cards["victory point"]!=0:
+            player.score += player.development_cards["victory point"]
+            player.development_cards["victory point"] = 0
+        elif app.button_chosen.get()==2 and player.development_cards["knight"]!=0:
+            move_robber(player,app)
+            player.development_cards["knight"]-=1
+            player.knight_count += 1
+        elif app.button_chosen.get()==3 and player.development_cards["road building"]!=0:
+            build_road(player,app)
+            build_road(player,app)
+            player.development_cards["road building"]-=1
+        elif app.button_chosen.get()==4 and player.development_cards["year of plenty"]!=0:
+            player.development_cards["year of plenty"]-=1
+            pass
+        elif app.button_chosen.get()==5 and player.development_cards["monopoly"]!=0:
+            player.development_cards["monopoly"]-=1
+            pass
 
     app.button_chosen.set(-1)

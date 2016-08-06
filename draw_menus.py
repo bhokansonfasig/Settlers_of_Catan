@@ -286,7 +286,7 @@ def draw_development_screen(player,app):
     monopoly_button = Button(app.board_canvas,
         font=(app.style.txt_font,int(.8*app.style.txt_size)),
         text="Use Monopoly Card",
-        command=lambda : app.set_button_chosen(1))
+        command=lambda : app.set_button_chosen(5))
     monopoly_button.configure(width=25, height=1, padx=0, pady=0)
         #background=inactive_button_color, activebackground=active_button_color)
     app.displays.add_object(monopoly_button)
