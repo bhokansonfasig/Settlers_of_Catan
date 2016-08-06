@@ -569,8 +569,49 @@ def occupied_points_on_board(players):
     return points
 
 
+def predict_port_trade(player,loop_index):
+    if loop_index<12:
+        resources = ["sheep","stone","wheat","wood","brick"]
+        give_totals = []
+        have_totals = []
+        for resource in resources:
+            if resource in player.ports:
+                trade_ratio = 2
+            elif "any" in player.ports or "?" in player.ports:
+                trade_ratio = 3
+            else:
+                trade_ratio = 4
+            give_totals.append(player.single_resource_count(resource) / \
+                trade_ratio)
+            have_totals.append(player.single_resource_count(resource))
+        fullest_resource = resources[give_totals.index(max(give_totals))]
+        resources.reverse()
+        have_totals.reverse()
+        emptiest_resource = resources[have_totals.index(min(have_totals))]
+    else:
+        resources = ["wood","brick","sheep","wheat","stone"]
+        give_totals = []
+        have_totals = []
+        for resource in resources:
+            if resource in player.ports:
+                trade_ratio = 2
+            elif "any" in player.ports or "?" in player.ports:
+                trade_ratio = 3
+            else:
+                trade_ratio = 4
+            give_totals.append(player.single_resource_count(resource) / \
+                trade_ratio)
+            have_totals.append(player.single_resource_count(resource))
+        fullest_resource = resources[give_totals.index(max(give_totals))]
+        resources.reverse()
+        have_totals.reverse()
+        emptiest_resource = resources[have_totals.index(min(have_totals))]
 
-def evaluate_port_trade(player,sell_resource_copies,sell_resource_type,buy_resource_copies,buy_resource_type):
+    return fullest_resource, emptiest_resource
+
+
+def evaluate_port_trade(player,sell_resource_copies,sell_resource_type,
+    buy_resource_copies,buy_resource_type):
     """For player, evaluates whether a trade of give string for get string
         is valid. Returns boolean plus multiplicity of trade"""
 

@@ -82,25 +82,13 @@ def draw_status_box(app):
 def draw_trade_screen(player,app):
     """Draws entry for the player to trade resources by port or with other
     players"""
+    from catan_logic import predict_port_trade
+
     draw_resources(player,app)
 
     # Attempt to predict what the player will trade for
-    if app.pieces.loop_index<20:
-        resources = ["sheep","stone","wheat","wood","brick"]
-        totals = [player.sheep,player.stone,player.wheat,
-            player.wood,player.brick]
-        fullest_resource = resources[totals.index(max(totals))]
-        resources.reverse()
-        totals.reverse()
-        emptiest_resource = resources[totals.index(min(totals))]
-    else:
-        resources = ["wood","brick","sheep","wheat","stone"]
-        totals = [player.wood,player.brick,player.sheep,
-            player.wheat,player.stone]
-        fullest_resource = resources[totals.index(max(totals))]
-        resources.reverse()
-        totals.reverse()
-        emptiest_resource = resources[totals.index(min(totals))]
+    fullest_resource, emptiest_resource = predict_port_trade(player,
+        app.pieces.loop_index)
     if fullest_resource in player.ports:
         trade_ratio = 2
     elif "any" in player.ports or "?" in player.ports:
