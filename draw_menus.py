@@ -246,31 +246,15 @@ def draw_discard_screen(player,app):
 
 
 def draw_steal_screen(player,app):
+    from catan_logic import get_stealable_players
+
     draw_resources(player,app)
 
     for tile in app.pieces.tiles:
         if tile.has_robber:
             robber_tile = tile
             break
-    stealable_players = []
-    for guy in app.pieces.players:
-        guy_added = False
-        for point in guy.settlements:
-            if robber_tile.index in point.coordinate:
-                stealable_players.append(guy)
-                guy_added = True
-                break
-        if guy_added:
-            continue
-        for point in guy.cities:
-            if robber_tile.index in point.coordinate:
-                stealable_players.append(guy)
-                break
-    if player in stealable_players:
-        stealable_players.remove(player)
-    for guy in stealable_players:
-        if guy.resource_count()==0:
-            stealable_players.remove(guy)
+    stealable_players = get_stealable_players(player,robber_tile,app)
     if len(stealable_players)==0:
         return
     player_options = []

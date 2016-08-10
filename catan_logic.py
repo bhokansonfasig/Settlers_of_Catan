@@ -730,6 +730,30 @@ def move_robber(player,app):
         computer_steal_resource(player,robber_tile,app)
 
 
+def get_stealable_players(player,robber_tile,app):
+    stealable_players = []
+    for guy in app.pieces.players:
+        guy_added = False
+        for point in guy.settlements:
+            if robber_tile.index in point.coordinate:
+                stealable_players.append(guy)
+                guy_added = True
+                break
+        if guy_added:
+            continue
+        for point in guy.cities:
+            if robber_tile.index in point.coordinate:
+                stealable_players.append(guy)
+                break
+    if player in stealable_players:
+        stealable_players.remove(player)
+    for guy in stealable_players:
+        if guy.resource_count()==0:
+            stealable_players.remove(guy)
+
+    return stealable_players
+
+
 def discard_resources(player,app):
     """Depending on human or computer, should discard resources to get down to
         half the current value (rounded up; e.g. player with 9 cards dicards to

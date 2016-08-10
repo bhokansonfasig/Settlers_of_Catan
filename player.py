@@ -73,7 +73,7 @@ class Player:
 		self.road_length = 0
 		self.has_longest_road = False
 		self.knight_count = 0
-		self.has_largest_army = False 
+		self.has_largest_army = False
 		self.revealed_vp = 0
 
 

@@ -295,8 +295,15 @@ def player_discard(player,app):
 
 def player_steal_resource(player,robber_tile,app):
     """Prompts player for which player they would like to steal from"""
+    from catan_logic import get_stealable_players
+
     clear_resource_panel(app)
     draw_resource_panel(player,app)
+
+    # Skip this step if there is nobody to steal from
+    stealable_players = get_stealable_players(player,robber_tile,app)
+    if len(stealable_players)==0:
+        return
 
     app.button_chosen.set(-1)
     while app.button_chosen.get()!=0 or \
@@ -379,7 +386,7 @@ def development_menu(player,app):
     app.button_chosen.set(-1)
     while app.button_chosen.get()!=0:
         app.pieces.turn_phase = "development"
-        
+
         clear_resource_panel(app)
         draw_resource_panel(player,app)
 
