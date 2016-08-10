@@ -465,37 +465,51 @@ def draw_stats(app):
 
 def draw_placement_screen(player,app,variety):
     """Draws screen with information about how to place things"""
-    if variety=="settlement":
-        placement_text = "Click on a vertex to place a settlement"
-    elif variety=="city":
-        placement_text = "Click on a vertex to place a city"
-    elif variety=="road":
-        placement_text = "Click on two vertices to place a road"
-    elif variety=="robber":
-        placement_text = "Click on a tile to place the robber"
-    elif variety=="first":
-        placement_text = "Click on a vertex to place your first settlement, "+\
-            "then click on two vertices to place a connected road"
-    elif variety=="second":
-        placement_text = "Click on a vertex to place your second settlement, "+\
-            "then click on two vertices to place a connected road"
-    else:
-        placement_text = "Click on the board, I think..."
+    if variety=="first" or variety=="second":
+        placement_text = "Click on a vertex to place your " + variety + \
+            " settlement then click on two vertices to place a connected road"
 
-    app.board_canvas.create_text(
-        int((app.style.hex_x_off-app.style.water_width)/2),
-        int(app.style.win_height/3), text=placement_text,
-        font=(app.style.txt_font,int(1.25*app.style.txt_size)),
-        justify=CENTER, tags="placement", #fill=player.color,
-        width=int(.9*(app.style.hex_x_off-app.style.water_width)))
-
-    if variety!="robber" and variety!="first" and variety!="second":
         app.board_canvas.create_text(
             int((app.style.hex_x_off-app.style.water_width)/2),
-            int(app.style.win_height*2/3), text="Click here to cancel",
+            int(app.style.win_height/3), text=placement_text,
             font=(app.style.txt_font,int(1.25*app.style.txt_size)),
             justify=CENTER, tags="placement", #fill=player.color,
             width=int(.9*(app.style.hex_x_off-app.style.water_width)))
+
+        return
+
+    else:
+        draw_resources(player,app)
+        if variety=="settlement":
+            placement_text = "Click on a vertex to place a settlement"
+        elif variety=="city":
+            placement_text = "Click on a vertex to place a city"
+        elif variety=="road":
+            placement_text = "Click on two vertices to place a road"
+        elif variety=="robber":
+            placement_text = "Click on a tile to place the robber"
+        else:
+            placement_text = "Click on the board, I think..."
+
+        app.board_canvas.create_text(
+            int((app.style.hex_x_off-app.style.water_width)/2),
+            int(app.style.win_height/2), text=placement_text,
+            font=(app.style.txt_font,int(1.25*app.style.txt_size)),
+            justify=CENTER, tags="placement", #fill=player.color,
+            width=int(.9*(app.style.hex_x_off-app.style.water_width)))
+
+        if variety!="robber":
+            cancel_button = Button(app.board_canvas,
+                font=(app.style.txt_font,int(.8*app.style.txt_size)),
+                text="Cancel",
+                command=lambda : app.set_button_chosen(20))
+            cancel_button.configure(width=15, height=1, padx=0, pady=0)
+                #background=inactive_button_color, activebackground=active_button_color)
+            app.displays.add_object(cancel_button)
+            app.board_canvas.create_window(
+                int((app.style.hex_x_off-app.style.water_width)*5/10),
+                int(app.style.win_height*.4+11*app.style.txt_size),
+                window=cancel_button, tags="placement")
 
 
 def draw_main_screen(player,app):

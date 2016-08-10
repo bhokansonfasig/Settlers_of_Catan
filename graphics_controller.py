@@ -24,6 +24,8 @@ class App(Frame):
 
     def set_button_chosen(self,integer):
         """Sets the button_chosen variable to value 'integer'"""
+        self.click_x.set(0)
+        self.click_y.set(0)
         self.button_chosen.set(integer)
 
     def initUI(self):
@@ -169,7 +171,7 @@ class App(Frame):
             """On click event, sets the x and y coordinates of the click"""
             self.click_x.set(event.x)
             self.click_y.set(event.y)
-            #print(click_x.get(),click_y.get())
+            # print(self.click_x.get(),self.click_y.get())
 
         def reset_size(event):
             """Resizes board elements when the window size is changed."""
@@ -240,7 +242,7 @@ def set_players(app):
     """Gets the number and type of players and returns an array of player
         objects"""
     app.pieces.turn_phase = "player selection"
-    
+
     app.splash.withdraw()
     app.player_window.update()
     app.player_window.deiconify()

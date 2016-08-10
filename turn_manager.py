@@ -71,9 +71,11 @@ def placement_loop(player,available_points,app):
         app.board_canvas.delete("circle")
         # If the player clicked away from the hexagons, exit the loop early
         #  Only allowed after the initial round of placements!
-        if (app.click_x.get()<app.style.hex_x_off-app.style.water_width or
-            app.click_y.get()<app.style.hex_y_off-app.style.water_width) and \
+        if app.click_x.get()==0 and app.click_y.get()==0 and \
             len(player.roads)>1:
+        # if (app.click_x.get()<app.style.hex_x_off-app.style.water_width or
+        #     app.click_y.get()<app.style.hex_y_off-app.style.water_width) and \
+        #     len(player.roads)>1:
             return False
         # Draw circles on available points
         for pt in available_points:
