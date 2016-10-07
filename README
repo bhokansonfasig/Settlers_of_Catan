@@ -17,9 +17,14 @@ Small things that could be improved (not in order of importance):
 
 1) While doing constructions, don't hide the resources and dev card info. Keep the format the same as while trading and buying/using dev cards. Have the "click here to cancel" turned into a "cancel" button just like "go back" or "end" buttons. The instructions could come above the "cancel" button.
 2) Change the way road construction works so that available roads appear as black edges, and one click builds the road. It would save a click and would probably look better.
-3) Add dots for each number indicating the odds that number showing up, like in the game. How about making the size of the circle proportional to dots as well? That would be really informative just at a glance, or maybe it wouldn't look nice.
+3) Add dots for each number indicating the odds that number showing up, like in the game. How about making the size of the circle proportional to dots as well? That would be really informative just at a glance, or maybe it wouldn't look nice. Alex's suggestion: make small dots wrap the number's circle.
 4) Should a gap be added between the player turn and the roll of dice to make it more realistic and not sudden?
 5) When resources are allocated, adding some sort of message what resources you got would be more comprehensive.
 6) Provide info to all players as to who owns the longest road and largest army.
-
+7) Don't let players use the knight card in the same turn as they bought it.
+8) Random flavor text easter eggs
+9) Key press shortcuts maybe
+10) An AI that focuses on dev card (largest army, keeps robbing people)
+11) Make drop down menus for trading, and allow one smallest trade at a time to keep things simple (but showing all possible, even non-optimal trades). Don't show trades that are not possible to further lower the possibilities.
+12) When the die gets rolled, add some sort of graphic around that numbers on the board.
 -----------------------------------------------------------------------------------------
