@@ -20,7 +20,7 @@ class Pieces():
 
         #Development cards
         self.development_cards = ['knight']*14 + ['victory point']*5 + \
-            ['road building']*2 + ['monopoly']*2 + ['year of plenty']*2
+            ['road building']*2 + ['monopoly']*0 + ['year of plenty']*0
 
     def phase_index(self):
         phases = ["prelim","player selection","setup",
