@@ -468,9 +468,9 @@ def roll_dice(app):
     die_values = [1,2,3,4,5,6]
     die_1 = choice(die_values)
     die_2 = choice(die_values)
-    while die_1+die_2 == 7:
-        die_1 = choice(die_values)
-        die_2 = choice(die_values)
+    # while die_1+die_2 == 7:
+    #     die_1 = choice(die_values)
+    #     die_2 = choice(die_values)
     write_log(app,"Rolled",die_1,"+",die_2,"=",die_1+die_2)
     return die_1, die_2
 
